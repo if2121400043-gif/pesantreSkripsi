@@ -1,0 +1,67 @@
+{
+    "id": "/",
+    "name": "Sistem Informasi Manajemen Pondok Pesantren Nurul Furqon",
+    "short_name": "PP Nurul Furqon",
+    "description": "Sistem Informasi Manajemen Pondok Pesantren Nurul Furqon",
+    "lang": "id-ID",
+    "start_url": "/?source=pwa",
+    "display": "standalone",
+    "background_color": "#065f46",
+    "theme_color": "#065f46",
+    "scope": "/",
+    "display_override": ["standalone", "minimal-ui"],
+    "orientation": "portrait-primary",
+    "categories": [
+        "education",
+        "productivity"
+    ],
+    "shortcuts": [
+        {
+            "name": "Portal Wali Santri",
+            "short_name": "Portal Wali",
+            "description": "Pantau aktivitas, nilai, dan tagihan anak",
+            "url": "/portal/beranda",
+            "icons": [
+                {
+                    "src": "/icons/icon-192x192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "Pendaftaran PSB",
+            "short_name": "Daftar PSB",
+            "description": "Pendaftaran santri baru online",
+            "url": "/psb/daftar",
+            "icons": [
+                {
+                    "src": "/icons/icon-192x192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/images/kegiatan-pesantren.jpg",
+            "sizes": "1920x1080",
+            "type": "image/jpeg",
+            "form_factor": "wide",
+            "label": "Halaman Utama Pesantren"
+        }
+    ],
+    "icons": [
+        {
+            "src": "/icons/icon-192x192.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icons/icon-512x512.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "any maskable"
+        }
+    ]
+}

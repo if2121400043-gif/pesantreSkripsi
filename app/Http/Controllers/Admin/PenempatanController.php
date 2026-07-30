@@ -47,6 +47,17 @@ class PenempatanController extends Controller
                           $rq->where('lembaga_id', $lembagaId);
                       });
                 });
+
+            // Filter by selected Rombel's gender target if rombel_id is provided in request
+            if ($request->filled('rombel_id')) {
+                $targetRombel = Rombel::find($request->rombel_id);
+                if ($targetRombel && $targetRombel->gender_target !== 'CAMPUR') {
+                    $jk = $targetRombel->gender_target === 'PUTRA' ? 'L' : 'P';
+                    $pesertaBelumDitempatkanQuery->whereHas('orang', function($q) use ($jk) {
+                        $q->where('jenis_kelamin', $jk);
+                    });
+                }
+            }
                 
             if ($request->filled('search')) {
                 $search = $request->search;
@@ -78,6 +89,16 @@ class PenempatanController extends Controller
         DB::beginTransaction();
         try {
             foreach ($request->peserta_ids as $pesertaId) {
+                $peserta = PesertaDidik::with('orang')->findOrFail($pesertaId);
+
+                // Gender Validation Check
+                if ($rombel->gender_target === 'PUTRA' && $peserta->orang->jenis_kelamin !== 'L') {
+                    throw new \Exception("Santri perempuan ({$peserta->orang->nama_lengkap}) tidak dapat dimasukkan ke kelas khusus Putra.");
+                }
+                if ($rombel->gender_target === 'PUTRI' && $peserta->orang->jenis_kelamin !== 'P') {
+                    throw new \Exception("Santri laki-laki ({$peserta->orang->nama_lengkap}) tidak dapat dimasukkan ke kelas khusus Putri.");
+                }
+
                 // Only deactivate previous active rombel IN THE SAME LEMBAGA for this academic year
                 RiwayatRombelPeserta::where('peserta_didik_id', $pesertaId)
                     ->where('tahun_pelajaran_id', $rombel->tahun_pelajaran_id)

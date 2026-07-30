@@ -67,7 +67,15 @@
                 <x-form-input name="nama" label="Nama Kelas (Grup) *" required placeholder="Contoh: 7A, X-IPA-1" value="{{ old('nama', $rombel->nama) }}" />
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-surface-700 mb-1">Target Gender Santri <span class="text-danger-500">*</span></label>
+                    <select name="gender_target" required class="w-full rounded-lg border border-surface-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        <option value="CAMPUR" {{ old('gender_target', $rombel->gender_target) == 'CAMPUR' ? 'selected' : '' }}>Campur (Putra & Putri)</option>
+                        <option value="PUTRA" {{ old('gender_target', $rombel->gender_target) == 'PUTRA' ? 'selected' : '' }}>Khusus Putra (Santri Laki-laki)</option>
+                        <option value="PUTRI" {{ old('gender_target', $rombel->gender_target) == 'PUTRI' ? 'selected' : '' }}>Khusus Putri (Santri Perempuan)</option>
+                    </select>
+                </div>
                 <div>
                     <label class="block text-sm font-medium text-surface-700 mb-1">Wali Kelas (Opsional)</label>
                     <select name="wali_kelas_id" class="w-full rounded-lg border border-surface-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">

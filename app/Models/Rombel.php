@@ -10,7 +10,7 @@ class Rombel extends Model
 {
     protected $table = 'rombel';
     protected $fillable = [
-        'lembaga_id', 'tahun_pelajaran_id', 'nama', 'tingkat', 'wali_kelas_id', 'kapasitas', 'status'
+        'lembaga_id', 'tahun_pelajaran_id', 'nama', 'tingkat', 'wali_kelas_id', 'kapasitas', 'status', 'gender_target'
     ];
 
     public function lembaga(): BelongsTo

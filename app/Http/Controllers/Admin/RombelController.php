@@ -55,6 +55,7 @@ class RombelController extends Controller
             'nama' => 'required|string|max:50',
             'wali_kelas_id' => 'nullable|exists:pegawai,id',
             'kapasitas' => 'required|integer|min:1',
+            'gender_target' => 'required|in:CAMPUR,PUTRA,PUTRI',
         ]);
 
         // Check if combination already exists
@@ -96,6 +97,7 @@ class RombelController extends Controller
             'nama' => 'required|string|max:50',
             'wali_kelas_id' => 'nullable|exists:pegawai,id',
             'kapasitas' => 'required|integer|min:1',
+            'gender_target' => 'required|in:CAMPUR,PUTRA,PUTRI',
         ]);
 
         $rombel->update($validated);

@@ -43,6 +43,7 @@ return new class extends Migration
                     'nama' => 'Kelas VIII MTs',
                     'tingkat' => '8',
                     'kapasitas' => 50,
+                    'gender_target' => 'CAMPUR',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
@@ -59,6 +60,7 @@ return new class extends Migration
                     'nama' => 'Kelas I\'dadiyah Madin',
                     'tingkat' => '1',
                     'kapasitas' => 50,
+                    'gender_target' => 'PUTRA',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
@@ -76,6 +78,7 @@ return new class extends Migration
                     'nama' => 'Jilid 2 Putri (Al-Kamal)',
                     'tingkat' => '2',
                     'kapasitas' => 50,
+                    'gender_target' => 'PUTRI',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

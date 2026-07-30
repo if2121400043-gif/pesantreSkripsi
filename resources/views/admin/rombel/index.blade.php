@@ -52,7 +52,16 @@
                 <div class="border border-surface-200 rounded-xl overflow-hidden hover:border-primary-300 transition-colors flex flex-col h-full bg-white">
                     <div class="p-4 border-b border-surface-100 flex justify-between items-start">
                         <div>
-                            <div class="text-[0.65rem] font-bold text-primary-600 uppercase tracking-wider mb-1">{{ $rombel->lembaga->singkatan ?? $rombel->lembaga->nama }}</div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-[0.65rem] font-bold text-primary-600 uppercase tracking-wider">{{ $rombel->lembaga->singkatan ?? $rombel->lembaga->nama }}</span>
+                                @if($rombel->gender_target === 'PUTRA')
+                                    <x-badge variant="info" size="sm">Putra Only</x-badge>
+                                @elseif($rombel->gender_target === 'PUTRI')
+                                    <x-badge variant="warning" size="sm">Putri Only</x-badge>
+                                @else
+                                    <x-badge variant="neutral" size="sm">Campur</x-badge>
+                                @endif
+                            </div>
                             <h3 class="font-bold text-lg text-surface-900 leading-tight">Kelas {{ $rombel->tingkat ? $rombel->tingkat . ' - ' : '' }}{{ $rombel->nama }}</h3>
                         </div>
                     </div>

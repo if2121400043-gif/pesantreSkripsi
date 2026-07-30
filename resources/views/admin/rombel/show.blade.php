@@ -65,16 +65,21 @@
                     </div>
                 </div>
                 
+                @php
+                    $activePeserta = $rombel->riwayatPeserta->where('status', 'AKTIF');
+                    $activeCount = $activePeserta->count();
+                    $displayPeserta = request('show_all') == '1' ? $rombel->riwayatPeserta : $activePeserta;
+                @endphp
                 <div class="pt-4 border-t border-surface-100">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-surface-600 font-medium">Kapasitas</span>
-                        <span class="font-bold {{ $rombel->riwayatPeserta->count() >= $rombel->kapasitas ? 'text-danger-600' : 'text-surface-900' }}">
-                            {{ $rombel->riwayatPeserta->count() }} / {{ $rombel->kapasitas }} Siswa
+                        <span class="text-surface-600 font-medium">Kapasitas Active</span>
+                        <span class="font-bold {{ $activeCount >= $rombel->kapasitas ? 'text-danger-600' : 'text-surface-900' }}">
+                            {{ $activeCount }} / {{ $rombel->kapasitas }} Siswa
                         </span>
                     </div>
                     <div class="w-full bg-surface-200 rounded-full h-2">
                         @php
-                            $percentage = min(($rombel->riwayatPeserta->count() / max($rombel->kapasitas, 1)) * 100, 100);
+                            $percentage = min(($activeCount / max($rombel->kapasitas, 1)) * 100, 100);
                             $color = $percentage >= 100 ? 'bg-danger-500' : ($percentage >= 80 ? 'bg-warning-500' : 'bg-success-500');
                         @endphp
                         <div class="{{ $color }} h-2 rounded-full" style="width: {{ $percentage }}%"></div>
@@ -88,13 +93,22 @@
     <div class="xl:col-span-3 space-y-6">
         <x-card :padding="false">
             <div class="p-4 border-b border-surface-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-surface-50 rounded-t-xl">
-                <h3 class="font-bold text-surface-900 flex items-center gap-2">
-                    <i data-lucide="users" class="w-5 h-5 text-primary-500"></i>
-                    Daftar Siswa Kelas
-                </h3>
+                <div class="flex items-center gap-3">
+                    <h3 class="font-bold text-surface-900 flex items-center gap-2">
+                        <i data-lucide="users" class="w-5 h-5 text-primary-500"></i>
+                        Daftar Siswa {{ request('show_all') == '1' ? 'Semua (Termasuk Alumni/Pindah)' : 'Aktif' }}
+                    </h3>
+                    @if($rombel->riwayatPeserta->where('status', '!=', 'AKTIF')->count() > 0)
+                        @if(request('show_all') == '1')
+                            <a href="{{ route('admin.rombel.show', $rombel) }}" class="text-xs text-primary-600 hover:underline font-medium">Tampilkan Siswa Aktif Saja</a>
+                        @else
+                            <a href="{{ route('admin.rombel.show', [$rombel, 'show_all' => 1]) }}" class="text-xs text-surface-500 hover:underline font-medium">Tampilkan Riwayat Pindah ({{ $rombel->riwayatPeserta->where('status', '!=', 'AKTIF')->count() }})</a>
+                        @endif
+                    @endif
+                </div>
                 <div class="flex gap-2 w-full sm:w-auto flex-wrap">
-                    @if($rombel->riwayatPeserta->where('status', 'AKTIF')->count() > 0)
-                        <form action="{{ route('admin.penempatan.empty-rombel') }}" method="POST" class="inline" onsubmit="return confirm('PERINGATAN: Apakah Anda yakin ingin mengeluarkan SELURUH santri ({{ $rombel->riwayatPeserta->where('status', 'AKTIF')->count() }} santri) dari kelas {{ $rombel->nama }}?')">
+                    @if($activeCount > 0)
+                        <form action="{{ route('admin.penempatan.empty-rombel') }}" method="POST" class="inline" onsubmit="return confirm('PERINGATAN: Apakah Anda yakin ingin mengeluarkan SELURUH santri ({{ $activeCount }} santri) dari kelas {{ $rombel->nama }}?')">
                             @csrf
                             <input type="hidden" name="rombel_id" value="{{ $rombel->id }}">
                             <button type="submit" class="btn-secondary text-danger-600 border-danger-200 hover:bg-danger-50 w-full sm:w-auto text-sm py-1.5 flex justify-center items-center gap-2">
@@ -121,7 +135,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-surface-100 text-surface-700">
-                        @forelse($rombel->riwayatPeserta as $index => $riwayat)
+                        @forelse($displayPeserta as $index => $riwayat)
                             <tr class="hover:bg-surface-50 transition-colors">
                                 <td class="px-6 py-3 text-center text-surface-500">{{ $index + 1 }}</td>
                                 <td class="px-6 py-3">

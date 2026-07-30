@@ -144,16 +144,9 @@ class PenempatanController extends Controller
             return back()->with('error', "Kelas {$rombel->nama} sudah kosong (tidak ada santri aktif).");
         }
 
-        if ($request->has('hard_delete') && $request->hard_delete == '1') {
-            $query->delete();
-            $msg = "Berhasil menghapus permanen seluruh {$count} santri dari kelas {$rombel->nama}.";
-        } else {
-            $query->update([
-                'status' => 'PINDAH',
-                'tanggal_keluar' => now()
-            ]);
-            $msg = "Berhasil mengeluarkan seluruh {$count} santri dari kelas {$rombel->nama}.";
-        }
+        // Delete active student placements for this rombel so class is completely emptied
+        $query->delete();
+        $msg = "Berhasil mengosongkan kelas {$rombel->nama} ({$count} santri telah dikeluarkan).";
 
         return back()->with('success', $msg);
     }

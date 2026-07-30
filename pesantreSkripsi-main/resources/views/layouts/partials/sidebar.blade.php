@@ -169,6 +169,11 @@
                         <i data-lucide="check-square" class="nav-icon"></i>
                         <span>Presensi Kelas</span>
                     </a>
+                    <a href="{{ url('/admin/jenis-presensi') }}"
+                       class="nav-sub-item {{ request()->is('admin/jenis-presensi*') ? 'active' : '' }}">
+                        <i data-lucide="list-checks" class="nav-icon"></i>
+                        <span>Jenis Presensi</span>
+                    </a>
                     <a href="{{ url('/admin/penilaian') }}"
                        class="nav-sub-item {{ request()->is('admin/penilaian*') ? 'active' : '' }}">
                         <i data-lucide="bar-chart-3" class="nav-icon"></i>

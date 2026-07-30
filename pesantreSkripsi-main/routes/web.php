@@ -36,7 +36,7 @@ Route::get('/manifest.json', function () {
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1')->name('login.submit');
 });
 
 // ── Authenticated Routes ──
@@ -123,6 +123,7 @@ Route::middleware('auth')->group(function () {
         
         Route::get('presensi', [\App\Http\Controllers\Admin\PresensiController::class, 'index'])->name('presensi.index');
         Route::post('presensi', [\App\Http\Controllers\Admin\PresensiController::class, 'store'])->name('presensi.store');
+        Route::resource('jenis-presensi', \App\Http\Controllers\Admin\JenisPresensiController::class)->except(['show']);
         
         // Keuangan
         Route::resource('komponen-biaya', \App\Http\Controllers\Admin\KomponenBiayaController::class)->except(['create', 'show', 'edit']);
@@ -273,7 +274,7 @@ Route::controller(FrontendController::class)->group(function () {
     Route::prefix('psb')->name('frontend.psb')->group(function () {
         Route::get('/', 'psb');
         Route::get('/daftar', 'daftar')->name('.daftar');
-        Route::post('/daftar', 'storePsb')->name('.store');
+        Route::post('/daftar', 'storePsb')->middleware('throttle:5,1')->name('.store');
         Route::get('/upload/{no_pendaftaran}', 'uploadBerkas')->name('.upload');
         Route::post('/upload/{no_pendaftaran}', 'storeBerkas')->name('.store-berkas');
         Route::get('/selesai/{no_pendaftaran}', 'selesai')->name('.selesai');

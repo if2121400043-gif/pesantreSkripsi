@@ -9,7 +9,8 @@ class PresensiKelas extends Model
 {
     protected $table = 'presensi_kelas';
     protected $fillable = [
-        'peserta_didik_id', 'rombel_id', 'tanggal', 'status', 'keterangan', 'dicatat_oleh'
+        'peserta_didik_id', 'jenis_presensi_id', 'rombel_id', 'asrama_id',
+        'tanggal', 'status', 'keterangan', 'dicatat_oleh'
     ];
 
     protected $casts = [
@@ -21,9 +22,19 @@ class PresensiKelas extends Model
         return $this->belongsTo(PesertaDidik::class);
     }
 
+    public function jenisPresensi(): BelongsTo
+    {
+        return $this->belongsTo(JenisPresensi::class);
+    }
+
     public function rombel(): BelongsTo
     {
         return $this->belongsTo(Rombel::class);
+    }
+
+    public function asrama(): BelongsTo
+    {
+        return $this->belongsTo(Asrama::class);
     }
 
     public function pencatat(): BelongsTo

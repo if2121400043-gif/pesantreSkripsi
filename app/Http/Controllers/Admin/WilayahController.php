@@ -46,6 +46,12 @@ class WilayahController extends Controller
             return back()->with('error', 'Data Pesantren belum diinisialisasi.');
         }
 
+        if (empty($validated['kode'])) {
+            $validated['kode'] = \App\Helpers\CodeGenerator::generate($validated['nama'], 'wilayah_pesantren', 'kode');
+        } else {
+            $validated['kode'] = \App\Helpers\CodeGenerator::generate($validated['kode'], 'wilayah_pesantren', 'kode');
+        }
+
         $validated['pesantren_id'] = $pesantren->id;
         $validated['is_active'] = true;
 
@@ -65,6 +71,12 @@ class WilayahController extends Controller
             'keterangan' => 'nullable|string',
             'is_active' => 'boolean',
         ]);
+
+        if (empty($validated['kode'])) {
+            $validated['kode'] = \App\Helpers\CodeGenerator::generate($validated['nama'], 'wilayah_pesantren', 'kode', $wilayah->id);
+        } else {
+            $validated['kode'] = \App\Helpers\CodeGenerator::generate($validated['kode'], 'wilayah_pesantren', 'kode', $wilayah->id);
+        }
 
         $wilayah->update($validated);
 

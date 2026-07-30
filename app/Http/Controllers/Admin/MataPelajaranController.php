@@ -39,9 +39,16 @@ class MataPelajaranController extends Controller
             'kelompok_mapel' => 'nullable|string|max:50',
         ]);
 
+        $kodeMapel = $validated['kode_mapel'];
+        if (empty($kodeMapel)) {
+            $kodeMapel = \App\Helpers\CodeGenerator::generate($validated['nama_mapel'], 'mata_pelajaran', 'kode');
+        } else {
+            $kodeMapel = \App\Helpers\CodeGenerator::generate($kodeMapel, 'mata_pelajaran', 'kode');
+        }
+
         MataPelajaran::create([
             'lembaga_id' => $validated['lembaga_id'],
-            'kode' => $validated['kode_mapel'],
+            'kode' => $kodeMapel,
             'nama' => $validated['nama_mapel'],
             'tingkat' => $validated['kelompok_mapel'],
             'is_active' => $request->has('is_active'),
@@ -59,9 +66,16 @@ class MataPelajaranController extends Controller
             'kelompok_mapel' => 'nullable|string|max:50',
         ]);
 
+        $kodeMapel = $validated['kode_mapel'];
+        if (empty($kodeMapel)) {
+            $kodeMapel = \App\Helpers\CodeGenerator::generate($validated['nama_mapel'], 'mata_pelajaran', 'kode', $mataPelajaran->id);
+        } else {
+            $kodeMapel = \App\Helpers\CodeGenerator::generate($kodeMapel, 'mata_pelajaran', 'kode', $mataPelajaran->id);
+        }
+
         $mataPelajaran->update([
             'lembaga_id' => $validated['lembaga_id'],
-            'kode' => $validated['kode_mapel'],
+            'kode' => $kodeMapel,
             'nama' => $validated['nama_mapel'],
             'tingkat' => $validated['kelompok_mapel'],
             'is_active' => $request->has('is_active'),

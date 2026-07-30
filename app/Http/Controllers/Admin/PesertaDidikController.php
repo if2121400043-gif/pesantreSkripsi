@@ -86,9 +86,32 @@ class PesertaDidikController extends Controller
             'catatan' => 'nullable|string',
         ]);
 
-        PesertaDidik::create($validated);
+        $pesertaDidik = PesertaDidik::create($validated);
 
-        return redirect()->route('admin.peserta-didik.index')->with('success', 'Peserta Didik berhasil didaftarkan.');
+        // Auto-create User account for login if not exist
+        $orang = Orang::find($validated['orang_id']);
+        if ($orang && !$orang->user) {
+            $username = strtolower(str_replace(['-', ' '], '', $orang->niup));
+            $user = \App\Models\User::create([
+                'orang_id' => $orang->id,
+                'username' => $username,
+                'email' => $orang->email ?? ($username . '@nurulfurqon.app'),
+                'password' => \Illuminate\Support\Facades\Hash::make('pesantren2026'),
+                'is_active' => true,
+            ]);
+
+            $santriRole = \App\Models\Role::where('nama', 'SANTRI')->first();
+            if ($santriRole) {
+                \App\Models\UserRole::create([
+                    'user_id' => $user->id,
+                    'role_id' => $santriRole->id,
+                    'is_default' => true,
+                    'is_active' => true,
+                ]);
+            }
+        }
+
+        return redirect()->route('admin.peserta-didik.index')->with('success', 'Peserta Didik berhasil didaftarkan. Akun login otomatis dibuat (Password default: pesantren2026).');
     }
 
     public function show(PesertaDidik $pesertaDidik)

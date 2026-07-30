@@ -41,6 +41,12 @@ class AsramaController extends Controller
             'keterangan' => 'nullable|string',
         ]);
 
+        if (empty($validated['kode'])) {
+            $validated['kode'] = \App\Helpers\CodeGenerator::generate($validated['nama'], 'asrama', 'kode');
+        } else {
+            $validated['kode'] = \App\Helpers\CodeGenerator::generate($validated['kode'], 'asrama', 'kode');
+        }
+
         $validated['pesantren_id'] = $pesantren->id;
         $validated['is_active'] = $request->has('is_active');
 
@@ -59,6 +65,12 @@ class AsramaController extends Controller
             'kapasitas' => 'required|integer|min:0',
             'keterangan' => 'nullable|string',
         ]);
+
+        if (empty($validated['kode'])) {
+            $validated['kode'] = \App\Helpers\CodeGenerator::generate($validated['nama'], 'asrama', 'kode', $asrama->id);
+        } else {
+            $validated['kode'] = \App\Helpers\CodeGenerator::generate($validated['kode'], 'asrama', 'kode', $asrama->id);
+        }
 
         $validated['is_active'] = $request->has('is_active');
 

@@ -170,8 +170,9 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-surface-700 mb-1">Kode Singkatan</label>
-                    <input type="text" name="kode" id="input-kode" placeholder="Contoh: WSG" class="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                    <label class="block text-sm font-medium text-surface-700 mb-1">Kode Singkatan (Opsional)</label>
+                    <input type="text" name="kode" id="input-kode" placeholder="Otomatis jika dikosongkan" class="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                    <p class="text-[0.7rem] text-primary-600 mt-1"><i data-lucide="sparkles" class="w-3 h-3 inline"></i> Preview: <strong id="preview-kode" class="font-mono bg-primary-100 px-1 py-0.5 rounded text-primary-800">-</strong></p>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-surface-700 mb-1">Peruntukan Gender <span class="text-danger-500">*</span></label>
@@ -223,6 +224,36 @@
     function closeModal() {
         document.getElementById('modal-wilayah').classList.add('hidden');
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputNama = document.getElementById('input-nama');
+        const inputKode = document.getElementById('input-kode');
+        const previewKode = document.getElementById('preview-kode');
+
+        function updatePreview() {
+            if (!previewKode) return;
+            if (inputKode && inputKode.value.trim() !== '') {
+                previewKode.innerText = inputKode.value.trim().toUpperCase();
+                return;
+            }
+            const val = inputNama ? inputNama.value.trim() : '';
+            if (!val) {
+                previewKode.innerText = '-';
+                return;
+            }
+            const words = val.split(/\s+/).filter(w => w.length > 0);
+            let code = '';
+            if (words.length >= 2) {
+                words.forEach(w => code += w[0].toUpperCase());
+            } else if (words.length === 1) {
+                code = words[0].substring(0, 4).toUpperCase();
+            }
+            previewKode.innerText = code || '-';
+        }
+
+        if (inputNama) inputNama.addEventListener('input', updatePreview);
+        if (inputKode) inputKode.addEventListener('input', updatePreview);
+    });
 </script>
 @endpush
 @endsection

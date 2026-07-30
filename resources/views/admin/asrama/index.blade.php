@@ -132,7 +132,10 @@
                         <x-form-input name="nama" id="asrama_nama" label="Nama Gedung / Asrama" required placeholder="Contoh: Asrama Al-Ghazali" />
                         
                         <div class="grid grid-cols-2 gap-4">
-                            <x-form-input name="kode" id="asrama_kode" label="Kode Gedung" placeholder="Contoh: AGZ" />
+                            <div>
+                                <x-form-input name="kode" id="asrama_kode" label="Kode Gedung (Opsional)" placeholder="Otomatis jika dikosongkan" />
+                                <p class="text-[0.7rem] text-primary-600 mt-1"><i data-lucide="sparkles" class="w-3 h-3 inline"></i> Kosongkan jika ingin dibuatkan kode otomatis dari nama.</p>
+                            </div>
                             <div>
                                 <label for="asrama_jk" class="block text-sm font-medium text-surface-700 mb-1">Peruntukan <span class="text-danger-500">*</span></label>
                                 <select name="jenis_kelamin" id="asrama_jk" class="w-full rounded-lg border border-surface-300 bg-white px-3 py-2 text-sm text-surface-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20" required>

@@ -110,7 +110,7 @@ return new class extends Migration
             ['nama' => 'Syakila Aulia Putri Susianto', 'jk' => 'P'],
         ];
 
-        $counter = 1;
+        $counter = 100;
         $now = now();
 
         foreach ($santriList as $s) {

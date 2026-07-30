@@ -37,12 +37,15 @@ class PenempatanController extends Controller
             
             $rombels = $queryRombel->orderBy('tingkat')->orderBy('nama')->get();
 
-            // Get students who are NOT in ANY rombel for this tahun_pelajaran AND are AKTIF
+            // Get students who are NOT in any active rombel FOR THIS SPECIFIC LEMBAGA in this tahun_pelajaran AND are AKTIF
             $pesertaBelumDitempatkanQuery = PesertaDidik::with('orang')
                 ->where('status', 'AKTIF')
-                ->whereDoesntHave('riwayatRombel', function ($q) use ($tahunId) {
+                ->whereDoesntHave('riwayatRombel', function ($q) use ($tahunId, $lembagaId) {
                     $q->where('tahun_pelajaran_id', $tahunId)
-                      ->where('status', 'AKTIF');
+                      ->where('status', 'AKTIF')
+                      ->whereHas('rombel', function($rq) use ($lembagaId) {
+                          $rq->where('lembaga_id', $lembagaId);
+                      });
                 });
                 
             if ($request->filled('search')) {
@@ -75,9 +78,12 @@ class PenempatanController extends Controller
         DB::beginTransaction();
         try {
             foreach ($request->peserta_ids as $pesertaId) {
-                // Remove from any active rombel in the same academic year first (if any somehow slipped through)
+                // Only deactivate previous active rombel IN THE SAME LEMBAGA for this academic year
                 RiwayatRombelPeserta::where('peserta_didik_id', $pesertaId)
                     ->where('tahun_pelajaran_id', $rombel->tahun_pelajaran_id)
+                    ->whereHas('rombel', function ($q) use ($rombel) {
+                        $q->where('lembaga_id', $rombel->lembaga_id);
+                    })
                     ->update([
                         'status' => 'PINDAH',
                         'tanggal_keluar' => now()

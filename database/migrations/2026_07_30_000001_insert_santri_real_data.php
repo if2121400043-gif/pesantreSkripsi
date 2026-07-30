@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 return new class extends Migration
 {
@@ -16,7 +17,22 @@ return new class extends Migration
         $mtsId = DB::table('lembaga')->where('singkatan', 'MTs')->value('id');
         $madinId = DB::table('lembaga')->where('singkatan', 'MADIN')->value('id');
 
-        // Check / Create Default Rombel
+        // 1. Create Non-Formal Lembaga (Metode Al-Kamal) if not exists
+        $alKamalLembagaId = DB::table('lembaga')->where('nama', 'like', '%Al-Kamal%')->value('id');
+        if (!$alKamalLembagaId && $pesantrenId) {
+            $alKamalLembagaId = DB::table('lembaga')->insertGetId([
+                'pesantren_id' => $pesantrenId,
+                'nama' => 'Pengajaran Metode Al-Kamal',
+                'singkatan' => 'AL-KAMAL',
+                'jenjang' => 'NON_FORMAL',
+                'tipe' => 'NON_FORMAL',
+                'urutan' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        // 2. Create Rombel (Formal & Non-Formal Classes)
         $rombelMtsId = null;
         if ($mtsId && $tahunPelajaranId) {
             $rombelMtsId = DB::table('rombel')->where('lembaga_id', $mtsId)->value('id');
@@ -49,7 +65,89 @@ return new class extends Migration
             }
         }
 
-        // List of real santri extracted from Pesantren Excel data
+        $rombelAlKamalId = null;
+        $targetLembagaAlKamal = $alKamalLembagaId ?? $madinId;
+        if ($targetLembagaAlKamal && $tahunPelajaranId) {
+            $rombelAlKamalId = DB::table('rombel')->where('nama', 'like', '%Al-Kamal%')->value('id');
+            if (!$rombelAlKamalId) {
+                $rombelAlKamalId = DB::table('rombel')->insertGetId([
+                    'lembaga_id' => $targetLembagaAlKamal,
+                    'tahun_pelajaran_id' => $tahunPelajaranId,
+                    'nama' => 'Jilid 2 Putri (Al-Kamal)',
+                    'tingkat' => '2',
+                    'kapasitas' => 50,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        }
+
+        // 3. Insert Real Teachers (Guru / Pengajar)
+        $guruRole = DB::table('roles')->where('nama', 'GURU')->value('id');
+        $guruData = [
+            ['nama' => 'Ach Khairul Umam', 'email' => 'kamluja12@gmail.com', 'hp' => '085233449669', 'username' => 'khairul.umam', 'jk' => 'L'],
+            ['nama' => 'Sayyidah Aulia Ul Haqqu', 'email' => 'syydhauliaa@gmail.com', 'hp' => '085843439612', 'username' => 'sayyidah.aulia', 'jk' => 'P'],
+            ['nama' => 'Alfiani Nur Sakinah', 'email' => 'sayealfian23@gmail.com', 'hp' => '089527813996', 'username' => 'alfiani.sakinah', 'jk' => 'P'],
+            ['nama' => 'Khairil Makin Huda', 'email' => 'khairilmakin44@gmail.com', 'hp' => '087841105470', 'username' => 'khairil.makin', 'jk' => 'L'],
+        ];
+
+        $now = now();
+        $guruCounter = 1;
+
+        foreach ($guruData as $g) {
+            $niup = sprintf('NIUP-GURU-%04d', $guruCounter++);
+            
+            // Insert to orang
+            $orangId = DB::table('orang')->insertGetId([
+                'niup' => $niup,
+                'nama_lengkap' => $g['nama'],
+                'jenis_kelamin' => $g['jk'],
+                'email' => strtolower($g['email']),
+                'telepon' => $g['hp'],
+                'kewarganegaraan' => 'Indonesia',
+                'desa_id' => $desaId,
+                'is_active' => true,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ]);
+
+            // Insert to pegawai
+            DB::table('pegawai')->insert([
+                'orang_id' => $orangId,
+                'jenis_pegawai' => 'GURU',
+                'status_kepegawaian' => 'TETAP',
+                'tanggal_masuk' => '2026-07-15',
+                'is_active' => true,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ]);
+
+            // Insert user account for login
+            $userId = DB::table('users')->insertGetId([
+                'orang_id' => $orangId,
+                'username' => $g['username'],
+                'email' => strtolower($g['email']),
+                'email_verified_at' => $now,
+                'password' => Hash::make('password'),
+                'is_active' => true,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ]);
+
+            // Assign GURU role
+            if ($guruRole) {
+                DB::table('user_role')->insert([
+                    'user_id' => $userId,
+                    'role_id' => $guruRole,
+                    'is_default' => true,
+                    'is_active' => true,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ]);
+            }
+        }
+
+        // 4. List of real santri extracted from Pesantren Excel data
         $santriList = [
             ['nama' => 'Ach. Aliful Adzim', 'jk' => 'L'],
             ['nama' => 'Afri Wardana', 'jk' => 'L'],
@@ -111,7 +209,6 @@ return new class extends Migration
         ];
 
         $counter = 100;
-        $now = now();
 
         foreach ($santriList as $s) {
             $niup = sprintf('NIUP-2026-%06d', $counter);
@@ -142,7 +239,7 @@ return new class extends Migration
                 'updated_at' => $now,
             ]);
 
-            // Link to peserta_lembaga_tahun (MTs)
+            // Link to peserta_lembaga_tahun (MTs Formal)
             if ($mtsId && $tahunPelajaranId) {
                 DB::table('peserta_lembaga_tahun')->insert([
                     'peserta_didik_id' => $pesertaDidikId,
@@ -154,12 +251,38 @@ return new class extends Migration
                 ]);
             }
 
-            // Link to riwayat_rombel_peserta
-            $targetRombel = $rombelMtsId ?? $rombelIdadiyahId;
-            if ($targetRombel && $tahunPelajaranId) {
+            // Link to Rombel 1: MTs Formal Rombel
+            if ($rombelMtsId && $tahunPelajaranId) {
                 DB::table('riwayat_rombel_peserta')->insert([
                     'peserta_didik_id' => $pesertaDidikId,
-                    'rombel_id' => $targetRombel,
+                    'rombel_id' => $rombelMtsId,
+                    'tahun_pelajaran_id' => $tahunPelajaranId,
+                    'tanggal_masuk' => '2026-07-15',
+                    'status' => 'AKTIF',
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ]);
+            }
+
+            // Link to Rombel 2: MULTIPLE ROMBEL / KELAS NON-FORMAL!
+            // E.g., Santri Putri ALSO enrolled in Al-Kamal Rombel
+            if ($s['jk'] === 'P' && $rombelAlKamalId && $tahunPelajaranId) {
+                DB::table('riwayat_rombel_peserta')->insert([
+                    'peserta_didik_id' => $pesertaDidikId,
+                    'rombel_id' => $rombelAlKamalId,
+                    'tahun_pelajaran_id' => $tahunPelajaranId,
+                    'tanggal_masuk' => '2026-07-15',
+                    'status' => 'AKTIF',
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ]);
+            }
+
+            // E.g., Santri Putra ALSO enrolled in I'dadiyah Madin Rombel
+            if ($s['jk'] === 'L' && $rombelIdadiyahId && $tahunPelajaranId) {
+                DB::table('riwayat_rombel_peserta')->insert([
+                    'peserta_didik_id' => $pesertaDidikId,
+                    'rombel_id' => $rombelIdadiyahId,
                     'tahun_pelajaran_id' => $tahunPelajaranId,
                     'tanggal_masuk' => '2026-07-15',
                     'status' => 'AKTIF',
@@ -174,7 +297,7 @@ return new class extends Migration
     {
         // Clean up
         $niups = [];
-        for ($i = 1; $i <= 60; $i++) {
+        for ($i = 100; $i <= 160; $i++) {
             $niups[] = sprintf('NIUP-2026-%06d', $i);
         }
         
@@ -184,6 +307,16 @@ return new class extends Migration
         DB::table('riwayat_rombel_peserta')->whereIn('peserta_didik_id', $pesertaIds)->delete();
         DB::table('peserta_lembaga_tahun')->whereIn('peserta_didik_id', $pesertaIds)->delete();
         DB::table('peserta_didik')->whereIn('id', $pesertaIds)->delete();
-        DB::table('orang')->whereIn('id', $orangIds)->delete();
+        
+        // Clean up Guru
+        $guruNiups = ['NIUP-GURU-0001', 'NIUP-GURU-0002', 'NIUP-GURU-0003', 'NIUP-GURU-0004'];
+        $guruOrangIds = DB::table('orang')->whereIn('niup', $guruNiups)->pluck('id');
+        $userIds = DB::table('users')->whereIn('orang_id', $guruOrangIds)->pluck('id');
+
+        DB::table('user_role')->whereIn('user_id', $userIds)->delete();
+        DB::table('users')->whereIn('id', $userIds)->delete();
+        DB::table('pegawai')->whereIn('orang_id', $guruOrangIds)->delete();
+
+        DB::table('orang')->whereIn('id', $orangIds->merge($guruOrangIds))->delete();
     }
 };

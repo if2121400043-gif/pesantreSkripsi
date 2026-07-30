@@ -16,6 +16,18 @@
 @endsection
 
 @section('content')
+<div class="mb-6 p-4 rounded-xl bg-primary-50/50 border border-primary-100 text-sm text-primary-900 flex items-start gap-3">
+    <i data-lucide="info" class="w-5 h-5 text-primary-600 shrink-0 mt-0.5"></i>
+    <div class="space-y-1">
+        <p class="font-semibold text-primary-950">Aturan Pengelompokan & Penempatan Santri Per Tipe Lembaga:</p>
+        <ul class="list-disc list-inside space-y-0.5 text-xs text-primary-800">
+            <li><strong class="font-semibold">Lembaga Formal (MTs, MA, SMP, SMA):</strong> Santri hanya dapat terdaftar di <span class="underline font-medium">1 Kelas Formal aktif</span> per tahun ajaran.</li>
+            <li><strong class="font-semibold">Lembaga Non-Formal (Madin, Al-Kamal, Kelas Kitab):</strong> Santri <span class="underline font-medium">bebas terdaftar di beberapa Kelas Non-Formal sekaligus</span> tanpa mengganggu kelas formalnya.</li>
+            <li><strong class="font-semibold">Pondok Pesantren:</strong> Pengelompokan asrama & pengasuhan santri mukim.</li>
+        </ul>
+    </div>
+</div>
+
 <x-card :padding="false">
     <div class="overflow-x-auto">
         <table class="w-full text-left text-sm whitespace-nowrap">

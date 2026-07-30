@@ -246,8 +246,8 @@
             }
         });
     </script>
-    @include('partials.pwa-install-banner')
-    @include('partials.pwa-network-toast')
+    @includeIf('partials.pwa-install-banner')
+    @includeIf('partials.pwa-network-toast')
     @stack('scripts')
 </body>
 </html>

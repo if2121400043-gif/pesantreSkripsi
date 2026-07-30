@@ -50,11 +50,6 @@
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200 group-open:rotate-180 text-primary-300"></i>
                 </summary>
                 <div class="pl-4 pr-1 py-1 mt-1 space-y-1 ml-4 border-l border-white/10">
-                    <a href="{{ url('/admin/wilayah') }}"
-                       class="nav-sub-item {{ request()->is('admin/wilayah*') ? 'active' : '' }}">
-                        <i data-lucide="map-pin" class="nav-icon"></i>
-                        <span>Wilayah</span>
-                    </a>
                     <a href="{{ url('/admin/lembaga') }}"
                        class="nav-sub-item {{ request()->is('admin/lembaga*') ? 'active' : '' }}">
                         <i data-lucide="landmark" class="nav-icon"></i>
@@ -64,6 +59,11 @@
                        class="nav-sub-item {{ request()->is('admin/tahun-pelajaran*') ? 'active' : '' }}">
                         <i data-lucide="calendar-range" class="nav-icon"></i>
                         <span>Tahun Pelajaran</span>
+                    </a>
+                    <a href="{{ url('/admin/wilayah') }}"
+                       class="nav-sub-item {{ request()->is('admin/wilayah*') ? 'active' : '' }}">
+                        <i data-lucide="map-pin" class="nav-icon"></i>
+                        <span>Wilayah Pesantren</span>
                     </a>
                     <a href="{{ url('/admin/asrama') }}"
                        class="nav-sub-item {{ request()->is('admin/asrama*') ? 'active' : '' }}">
@@ -111,31 +111,31 @@
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200 group-open:rotate-180 text-primary-300"></i>
                 </summary>
                 <div class="pl-4 pr-1 py-1 mt-1 space-y-1 ml-4 border-l border-white/10">
-                    <a href="{{ url('/admin/orang') }}"
-                       class="nav-sub-item {{ request()->is('admin/orang*') ? 'active' : '' }}">
-                        <i data-lucide="user-circle" class="nav-icon"></i>
-                        <span>Data Orang (NIUP)</span>
-                    </a>
                     <a href="{{ url('/admin/peserta-didik') }}"
                        class="nav-sub-item {{ request()->is('admin/peserta-didik*') ? 'active' : '' }}">
                         <i data-lucide="graduation-cap" class="nav-icon"></i>
-                        <span>Peserta Didik</span>
+                        <span>Peserta Didik / Santri</span>
                     </a>
                     <a href="{{ url('/admin/pegawai') }}"
                        class="nav-sub-item {{ request()->is('admin/pegawai*') ? 'active' : '' }}">
                         <i data-lucide="briefcase" class="nav-icon"></i>
-                        <span>Pegawai</span>
+                        <span>Pegawai & Guru</span>
                     </a>
                     <a href="{{ url('/admin/keluarga') }}"
                        class="nav-sub-item {{ request()->is('admin/keluarga*') ? 'active' : '' }}">
                         <i data-lucide="heart" class="nav-icon"></i>
                         <span>Keluarga & Wali</span>
                     </a>
+                    <a href="{{ url('/admin/orang') }}"
+                       class="nav-sub-item {{ request()->is('admin/orang*') ? 'active' : '' }}">
+                        <i data-lucide="user-circle" class="nav-icon"></i>
+                        <span>Master Data Orang (NIUP)</span>
+                    </a>
                 </div>
             </details>
 
             {{-- Akademik --}}
-            <details class="group cursor-pointer select-none" {{ request()->is('admin/rombel*', 'admin/penempatan*', 'admin/mata-pelajaran*', 'admin/jadwal-pelajaran*', 'admin/penilaian*', 'admin/presensi*') ? 'open' : '' }}>
+            <details class="group cursor-pointer select-none" {{ request()->is('admin/rombel*', 'admin/penempatan*', 'admin/mata-pelajaran*', 'admin/jadwal-pelajaran*', 'admin/penilaian*', 'admin/presensi*', 'admin/jenis-presensi*') ? 'open' : '' }}>
                 <summary class="nav-item flex items-center justify-between [&::-webkit-details-marker]:hidden list-none">
                     <div class="flex items-center gap-3">
                         <i data-lucide="book-open" class="nav-icon"></i>
@@ -144,6 +144,11 @@
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200 group-open:rotate-180 text-primary-300"></i>
                 </summary>
                 <div class="pl-4 pr-1 py-1 mt-1 space-y-1 ml-4 border-l border-white/10">
+                    <a href="{{ url('/admin/mata-pelajaran') }}"
+                       class="nav-sub-item {{ request()->is('admin/mata-pelajaran*') ? 'active' : '' }}">
+                        <i data-lucide="file-text" class="nav-icon"></i>
+                        <span>Mata Pelajaran</span>
+                    </a>
                     <a href="{{ url('/admin/rombel') }}"
                        class="nav-sub-item {{ request()->is('admin/rombel*') ? 'active' : '' }}">
                         <i data-lucide="folder-open" class="nav-icon"></i>
@@ -154,25 +159,20 @@
                         <i data-lucide="clipboard-list" class="nav-icon"></i>
                         <span>Penempatan Santri</span>
                     </a>
-                    <a href="{{ url('/admin/mata-pelajaran') }}"
-                       class="nav-sub-item {{ request()->is('admin/mata-pelajaran*') ? 'active' : '' }}">
-                        <i data-lucide="file-text" class="nav-icon"></i>
-                        <span>Mata Pelajaran</span>
-                    </a>
                     <a href="{{ url('/admin/jadwal-pelajaran') }}"
                        class="nav-sub-item {{ request()->is('admin/jadwal-pelajaran*') ? 'active' : '' }}">
                         <i data-lucide="calendar" class="nav-icon"></i>
                         <span>Jadwal Pelajaran</span>
                     </a>
-                    <a href="{{ url('/admin/presensi') }}"
-                       class="nav-sub-item {{ request()->is('admin/presensi*') ? 'active' : '' }}">
-                        <i data-lucide="check-square" class="nav-icon"></i>
-                        <span>Presensi Kelas</span>
-                    </a>
                     <a href="{{ url('/admin/jenis-presensi') }}"
                        class="nav-sub-item {{ request()->is('admin/jenis-presensi*') ? 'active' : '' }}">
                         <i data-lucide="list-checks" class="nav-icon"></i>
                         <span>Jenis Presensi</span>
+                    </a>
+                    <a href="{{ url('/admin/presensi') }}"
+                       class="nav-sub-item {{ request()->is('admin/presensi*') ? 'active' : '' }}">
+                        <i data-lucide="check-square" class="nav-icon"></i>
+                        <span>Presensi Kelas</span>
                     </a>
                     <a href="{{ url('/admin/penilaian') }}"
                        class="nav-sub-item {{ request()->is('admin/penilaian*') ? 'active' : '' }}">
@@ -263,20 +263,20 @@
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200 group-open:rotate-180 text-primary-300"></i>
                 </summary>
                 <div class="pl-4 pr-1 py-1 mt-1 space-y-1 ml-4 border-l border-white/10">
-                    <a href="{{ url('/admin/users') }}"
-                       class="nav-sub-item {{ request()->is('admin/users*') ? 'active' : '' }}">
-                        <i data-lucide="lock" class="nav-icon"></i>
-                        <span>Manajemen User</span>
+                    <a href="{{ url('/admin/konfigurasi') }}"
+                       class="nav-sub-item {{ request()->is('admin/konfigurasi*') ? 'active' : '' }}">
+                        <i data-lucide="sliders" class="nav-icon"></i>
+                        <span>Konfigurasi Sistem</span>
                     </a>
                     <a href="{{ url('/admin/roles') }}"
                        class="nav-sub-item {{ request()->is('admin/roles*') ? 'active' : '' }}">
                         <i data-lucide="shield" class="nav-icon"></i>
                         <span>Role & Permission</span>
                     </a>
-                    <a href="{{ url('/admin/konfigurasi') }}"
-                       class="nav-sub-item {{ request()->is('admin/konfigurasi*') ? 'active' : '' }}">
-                        <i data-lucide="sliders" class="nav-icon"></i>
-                        <span>Konfigurasi</span>
+                    <a href="{{ url('/admin/users') }}"
+                       class="nav-sub-item {{ request()->is('admin/users*') ? 'active' : '' }}">
+                        <i data-lucide="lock" class="nav-icon"></i>
+                        <span>Manajemen User</span>
                     </a>
                 </div>
             </details>

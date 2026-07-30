@@ -184,12 +184,15 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/chart.umd.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+if (typeof Chart === 'undefined') {
+    document.write('<script src="{{ asset("js/chart.umd.min.js") }}"><\/script>');
+}
+</script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Color tokens
-    const primary = getComputedStyle(document.documentElement).getPropertyValue('--color-primary-500').trim() || '#0d9266';
-    const secondary = getComputedStyle(document.documentElement).getPropertyValue('--color-secondary-500').trim() || '#1a7a7a';
+    if (typeof Chart === 'undefined') return;
 
     // Chart defaults
     Chart.defaults.font.family = "'Inter', sans-serif";
@@ -206,13 +209,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 datasets: [{
                     label: 'Putra',
                     data: {!! json_encode($dataPutra ?? []) !!},
-                    backgroundColor: 'oklch(0.45 0.16 160 / 0.8)',
+                    backgroundColor: '#0d9266',
                     borderRadius: 6,
                     borderSkipped: false,
                 }, {
                     label: 'Putri',
                     data: {!! json_encode($dataPutri ?? []) !!},
-                    backgroundColor: 'oklch(0.42 0.10 192 / 0.8)',
+                    backgroundColor: '#0284c7',
                     borderRadius: 6,
                     borderSkipped: false,
                 }]
@@ -240,36 +243,52 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Doughnut Chart — Distribusi Asrama
     const ctxDoughnut = document.getElementById('chart-asrama');
+    const labelsAsrama = {!! json_encode($labelsAsrama ?? []) !!};
+    const dataAsrama = {!! json_encode($dataAsrama ?? []) !!};
+    const sumAsrama = dataAsrama.reduce((a, b) => a + b, 0);
+
     if (ctxDoughnut) {
-        new Chart(ctxDoughnut, {
-            type: 'doughnut',
-            data: {
-                labels: {!! json_encode($labelsAsrama ?? []) !!},
-                datasets: [{
-                    data: {!! json_encode($dataAsrama ?? []) !!},
-                    backgroundColor: [
-                        'oklch(0.45 0.16 160)',
-                        'oklch(0.42 0.10 192)',
-                        'oklch(0.75 0.16 65)',
-                        'oklch(0.55 0.18 160 / 0.6)',
-                        'oklch(0.50 0.12 192 / 0.6)',
-                    ],
-                    borderWidth: 0,
-                    hoverOffset: 8,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '65%',
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { padding: 12 },
+        if (labelsAsrama.length === 0 || sumAsrama === 0) {
+            const container = document.getElementById('chart-asrama-container');
+            if (container) {
+                container.innerHTML = `
+                    <div class="text-center text-surface-400 p-6">
+                        <i data-lucide="home" class="w-8 h-8 mx-auto mb-2 text-surface-300"></i>
+                        <p class="text-xs font-semibold text-surface-600">Belum Ada Data Distribusi Asrama</p>
+                        <p class="text-[0.7rem] text-surface-400 mt-0.5">Tambahkan data kamar & mukim di menu Asrama</p>
+                    </div>
+                `;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+        } else {
+            const palette = ['#0d9266', '#0284c7', '#f59e0b', '#8b5cf6', '#14b8a6', '#ec4899', '#06b6d4', '#10b981'];
+            const colors = labelsAsrama.map((_, i) => palette[i % palette.length]);
+
+            new Chart(ctxDoughnut, {
+                type: 'doughnut',
+                data: {
+                    labels: labelsAsrama,
+                    datasets: [{
+                        data: dataAsrama,
+                        backgroundColor: colors,
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        hoverOffset: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { padding: 12, boxWidth: 10 },
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 });
 </script>

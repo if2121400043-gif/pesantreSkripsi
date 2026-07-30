@@ -79,24 +79,24 @@ class DashboardController extends Controller
             }
         }
 
-        // 2. Data Distribusi Asrama
-        $asramas = Asrama::where('is_active', true)->get();
+        // 2. Data Distribusi Asrama (Realtime)
+        $asramas = Asrama::where('is_active', true)->withCount('kamar')->get();
         $labelsAsrama = [];
         $dataAsrama = [];
 
-        if ($tahunAktif) {
-            foreach ($asramas as $asrama) {
-                $labelsAsrama[] = $asrama->nama;
+        foreach ($asramas as $asrama) {
+            // Count active mukim students in this asrama
+            $mukimCount = DB::table('peserta_mukim_tahun')
+                ->join('kamar', 'peserta_mukim_tahun.kamar_id', '=', 'kamar.id')
+                ->where('kamar.asrama_id', $asrama->id)
+                ->where('peserta_mukim_tahun.status_mukim', 'MUKIM')
+                ->count();
                 
-                $count = DB::table('peserta_mukim_tahun')
-                    ->join('kamar', 'peserta_mukim_tahun.kamar_id', '=', 'kamar.id')
-                    ->where('kamar.asrama_id', $asrama->id)
-                    ->where('peserta_mukim_tahun.tahun_pelajaran_id', $tahunAktif->id)
-                    ->where('peserta_mukim_tahun.status_mukim', 'MUKIM')
-                    ->count();
-                    
-                $dataAsrama[] = $count;
-            }
+            // If no mukim record yet, count total kamar in asrama so chart displays current infrastructure distribution
+            $displayValue = $mukimCount > 0 ? $mukimCount : $asrama->kamar_count;
+
+            $labelsAsrama[] = $asrama->nama;
+            $dataAsrama[] = $displayValue;
         }
 
         // 3. Rekapitulasi Tagihan (Bulan ini)

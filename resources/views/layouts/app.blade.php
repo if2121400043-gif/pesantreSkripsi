@@ -111,17 +111,60 @@
             const btnClose = document.getElementById('btn-close-sidebar');
 
             function openSidebar() {
-                if (sidebar) sidebar.classList.remove('-translate-x-full');
-                if (overlay) overlay.classList.remove('hidden');
-            }
-            function closeSidebar() {
-                if (sidebar) sidebar.classList.add('-translate-x-full');
-                if (overlay) overlay.classList.add('hidden');
+                if (sidebar) {
+                    sidebar.classList.remove('-translate-x-full');
+                }
+                if (overlay) {
+                    overlay.classList.remove('hidden');
+                }
+                document.body.classList.add('overflow-hidden', 'md:overflow-auto');
             }
 
-            if (btnOpen) btnOpen.addEventListener('click', (e) => { e.stopPropagation(); openSidebar(); });
-            if (btnClose) btnClose.addEventListener('click', closeSidebar);
-            if (overlay) overlay.addEventListener('click', closeSidebar);
+            function closeSidebar() {
+                if (sidebar) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+                if (overlay) {
+                    overlay.classList.add('hidden');
+                }
+                document.body.classList.remove('overflow-hidden', 'md:overflow-auto');
+            }
+
+            const toggleMobileSidebar = (e) => {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                if (sidebar && sidebar.classList.contains('-translate-x-full')) {
+                    openSidebar();
+                } else {
+                    closeSidebar();
+                }
+            };
+
+            if (btnOpen) {
+                btnOpen.addEventListener('click', toggleMobileSidebar);
+            }
+            if (btnClose) {
+                btnClose.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    closeSidebar();
+                });
+            }
+            if (overlay) {
+                overlay.addEventListener('click', closeSidebar);
+            }
+
+            // Auto-close sidebar on mobile when tapping a menu link
+            if (sidebar) {
+                sidebar.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth < 768) {
+                            closeSidebar();
+                        }
+                    });
+                });
+            }
 
             // === TOPBAR DROPDOWNS ===
             const btnNotif = document.getElementById('btn-notifications');

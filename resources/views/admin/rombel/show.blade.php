@@ -92,8 +92,16 @@
                     <i data-lucide="users" class="w-5 h-5 text-primary-500"></i>
                     Daftar Siswa Kelas
                 </h3>
-                <div class="flex gap-2 w-full sm:w-auto">
-                    {{-- Placeholder for future feature --}}
+                <div class="flex gap-2 w-full sm:w-auto flex-wrap">
+                    @if($rombel->riwayatPeserta->where('status', 'AKTIF')->count() > 0)
+                        <form action="{{ route('admin.penempatan.empty-rombel') }}" method="POST" class="inline" onsubmit="return confirm('PERINGATAN: Apakah Anda yakin ingin mengeluarkan SELURUH santri ({{ $rombel->riwayatPeserta->where(\'status\', \'AKTIF\')->count() }} santri) dari kelas {{ $rombel->nama }}?')">
+                            @csrf
+                            <input type="hidden" name="rombel_id" value="{{ $rombel->id }}">
+                            <button type="submit" class="btn-secondary text-danger-600 border-danger-200 hover:bg-danger-50 w-full sm:w-auto text-sm py-1.5 flex justify-center items-center gap-2">
+                                <i data-lucide="user-x" class="w-4 h-4"></i> Kosongkan Kelas
+                            </button>
+                        </form>
+                    @endif
                     <a href="{{ route('admin.penempatan.index', ['lembaga_id' => $rombel->lembaga_id, 'tahun_pelajaran_id' => $rombel->tahun_pelajaran_id]) }}" class="btn-primary w-full sm:w-auto text-sm py-1.5 flex justify-center items-center gap-2">
                         <i data-lucide="user-plus" class="w-4 h-4"></i> Kelola Penempatan Siswa
                     </a>

@@ -110,6 +110,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('rombel', \App\Http\Controllers\Admin\RombelController::class);
         Route::get('penempatan', [\App\Http\Controllers\Admin\PenempatanController::class, 'index'])->name('penempatan.index');
         Route::post('penempatan', [\App\Http\Controllers\Admin\PenempatanController::class, 'store'])->name('penempatan.store');
+        Route::post('penempatan/empty-rombel', [\App\Http\Controllers\Admin\PenempatanController::class, 'emptyRombel'])->name('penempatan.empty-rombel');
         Route::delete('penempatan/remove', [\App\Http\Controllers\Admin\PenempatanController::class, 'destroyRombelPeserta'])->name('penempatan.remove');
         
         Route::resource('mata-pelajaran', \App\Http\Controllers\Admin\MataPelajaranController::class)->except(['create', 'show', 'edit']);

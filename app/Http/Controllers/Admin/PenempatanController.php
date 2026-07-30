@@ -120,11 +120,42 @@ class PenempatanController extends Controller
                 ]);
             }
             DB::commit();
-            return back()->with('success', count($request->peserta_ids) . ' Santri berhasil ditempatkan di ' . $rombel->nama);
+            return redirect()->back()->with('success', 'Berhasil menempatkan ' . count($request->peserta_ids) . ' santri ke rombel.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Terjadi kesalahan saat memproses penempatan.');
+            return redirect()->back()->with('error', 'Gagal menempatkan santri: ' . $e->getMessage());
         }
+    }
+
+    public function emptyRombel(Request $request)
+    {
+        $request->validate([
+            'rombel_id' => 'required|exists:rombel,id'
+        ]);
+
+        $rombel = Rombel::findOrFail($request->rombel_id);
+
+        $query = RiwayatRombelPeserta::where('rombel_id', $rombel->id)
+            ->where('status', 'AKTIF');
+
+        $count = $query->count();
+
+        if ($count === 0) {
+            return back()->with('error', "Kelas {$rombel->nama} sudah kosong (tidak ada santri aktif).");
+        }
+
+        if ($request->has('hard_delete') && $request->hard_delete == '1') {
+            $query->delete();
+            $msg = "Berhasil menghapus permanen seluruh {$count} santri dari kelas {$rombel->nama}.";
+        } else {
+            $query->update([
+                'status' => 'PINDAH',
+                'tanggal_keluar' => now()
+            ]);
+            $msg = "Berhasil mengeluarkan seluruh {$count} santri dari kelas {$rombel->nama}.";
+        }
+
+        return back()->with('success', $msg);
     }
 
     public function destroyRombelPeserta(Request $request)

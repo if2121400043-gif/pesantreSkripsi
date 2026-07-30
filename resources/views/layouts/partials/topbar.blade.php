@@ -336,23 +336,7 @@
             const searchInput = document.getElementById('global-search-input');
             const searchResults = document.getElementById('global-search-results');
 
-            // 1. Sidebar Toggle Mobile
-            if (btnSidebar && sidebar) {
-                btnSidebar.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const isOpen = !sidebar.classList.contains('-translate-x-full');
-                    if (isOpen) {
-                        sidebar.classList.add('-translate-x-full');
-                        if (overlay) overlay.classList.add('hidden');
-                    } else {
-                        sidebar.classList.remove('-translate-x-full');
-                        if (overlay) overlay.classList.remove('hidden');
-                    }
-                });
-            }
-
-            // 2. Notifications Dropdown Toggle
+            // 1. Notifications Dropdown Toggle
             if (btnNotif && notifDropdown) {
                 btnNotif.addEventListener('click', (e) => {
                     e.preventDefault();

@@ -281,16 +281,30 @@
             });
         }
 
-        // Prevent BFCache (Back-Forward Cache) from showing stale pages on mobile
-        window.addEventListener('pageshow', (event) => {
-            if (event.persisted) {
-                // Page was restored from BFCache — reload to get fresh data
-                window.location.reload();
+        // Global UX Improvement: Auto Disable Submit Buttons & Show Spinner on Form Submit
+        document.addEventListener('submit', (e) => {
+            const form = e.target;
+            if (form.getAttribute('data-no-spinner') === 'true') return;
+            
+            const btn = form.querySelector('button[type="submit"]');
+            if (btn && !btn.disabled) {
+                btn.dataset.originalHtml = btn.innerHTML;
+                btn.disabled = true;
+                btn.classList.add('opacity-75', 'cursor-not-allowed');
+                btn.innerHTML = `
+                    <svg class="animate-spin h-4 w-4 text-current inline mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Memproses...</span>
+                `;
             }
         });
     </script>
     @includeIf('partials.pwa-install-banner')
     @includeIf('partials.pwa-network-toast')
+    @includeIf('partials.toast-container')
+    @includeIf('partials.shortcuts-modal')
     @stack('scripts')
 
     {{-- Global Live Search Modal (Direct child of body to guarantee full viewport overlay & fixed centering) --}}

@@ -11,7 +11,7 @@ class TahunPelajaranController extends Controller
 {
     public function index()
     {
-        $pesantren = Pesantren::first();
+        $pesantren = $this->getPesantren();
         $tahunPelajaran = TahunPelajaran::orderBy('tanggal_mulai', 'desc')->get();
         
         return view('admin.tahun_pelajaran.index', compact('tahunPelajaran', 'pesantren'));
@@ -19,7 +19,7 @@ class TahunPelajaranController extends Controller
 
     public function store(Request $request)
     {
-        $pesantren = Pesantren::first();
+        $pesantren = $this->getPesantren();
         
         $validated = $request->validate([
             'nama' => 'required|string|max:20',

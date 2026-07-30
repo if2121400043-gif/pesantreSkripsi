@@ -12,7 +12,7 @@
             <i data-lucide="building" class="w-3.5 h-3.5"></i> {{ __('Tentang Kami') }}
         </span>
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 tracking-tight text-white">{{ __('Profil Pesantren') }}</h1>
-        <p class="text-primary-100/80 dark:text-surface-400 text-lg max-w-2xl mx-auto leading-relaxed">{{ __('Mengenal lebih dekat') }} {{ $pesantren->nama ?? 'Pesantren Nurul Furqon' }}, {{ __('sejarah, visi, dan misi kami.') }}</p>
+        <p class="text-primary-100/80 dark:text-surface-400 text-lg max-w-2xl mx-auto leading-relaxed">{{ __('Mengenal lebih dekat') }} {{ $pesantren?->nama ?? 'Pesantren Nurul Furqon' }}, {{ __('sejarah, visi, dan misi kami.') }}</p>
     </div>
     <div class="absolute bottom-0 left-0 right-0">
         <svg class="w-full h-16 sm:h-20 text-surface-50 dark:text-surface-950 fill-current" viewBox="0 0 1440 120" preserveAspectRatio="none">
@@ -32,35 +32,35 @@
                     <div class="flex items-center gap-4 mb-6">
                         <img src="{{ asset('images/logo-pesantren.webp') }}?v={{ time() }}" alt="Logo" class="w-16 h-16 object-contain bg-white dark:bg-surface-800 rounded-2xl shadow-md p-1 border border-surface-100 dark:border-surface-700">
                         <div>
-                            <h2 class="text-lg font-bold text-surface-900 dark:text-white">{{ $pesantren->nama ?? 'Pesantren Nurul Furqon' }}</h2>
-                            <p class="text-surface-400 dark:text-surface-500 text-xs font-bold uppercase tracking-wider">NSPP: {{ $pesantren->nspp ?? '-' }}</p>
+                            <h2 class="text-lg font-bold text-surface-900 dark:text-white">{{ $pesantren?->nama ?? 'Pesantren Nurul Furqon' }}</h2>
+                            <p class="text-surface-400 dark:text-surface-500 text-xs font-bold uppercase tracking-wider">NSPP: {{ $pesantren?->nspp ?? '-' }}</p>
                         </div>
                     </div>
 
                     <div class="space-y-5 divide-y divide-surface-100 dark:divide-surface-800">
                         <div class="pt-4 first:pt-0">
                             <h3 class="text-[11px] font-bold uppercase tracking-widest text-surface-400 dark:text-surface-500 mb-2">{{ __('Pimpinan') }}</h3>
-                            <p class="font-semibold text-surface-900 dark:text-white text-sm">{{ $pesantren->nama_pimpinan ?? '-' }}</p>
+                            <p class="font-semibold text-surface-900 dark:text-white text-sm">{{ $pesantren?->nama_pimpinan ?? '-' }}</p>
                         </div>
                         <div class="pt-4">
                             <h3 class="text-[11px] font-bold uppercase tracking-widest text-surface-400 dark:text-surface-500 mb-3">{{ __('Kontak') }}</h3>
                             <ul class="space-y-3">
-                                @if($pesantren->telepon)
+                                @if($pesantren?->telepon)
                                 <li class="flex items-center gap-3 text-sm">
                                     <div class="w-9 h-9 rounded-xl bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 flex items-center justify-center flex-shrink-0"><i data-lucide="phone" class="w-4 h-4"></i></div>
-                                    <span class="font-medium text-surface-700 dark:text-surface-300">{{ $pesantren->telepon }}</span>
+                                    <span class="font-medium text-surface-700 dark:text-surface-300">{{ $pesantren?->telepon }}</span>
                                 </li>
                                 @endif
-                                @if($pesantren->email)
+                                @if($pesantren?->email)
                                 <li class="flex items-center gap-3 text-sm">
                                     <div class="w-9 h-9 rounded-xl bg-info-50 dark:bg-info-500/10 text-info-500 flex items-center justify-center flex-shrink-0"><i data-lucide="mail" class="w-4 h-4"></i></div>
-                                    <span class="font-medium text-surface-700 dark:text-surface-300">{{ $pesantren->email }}</span>
+                                    <span class="font-medium text-surface-700 dark:text-surface-300">{{ $pesantren?->email }}</span>
                                 </li>
                                 @endif
-                                @if($pesantren->website)
+                                @if($pesantren?->website)
                                 <li class="flex items-center gap-3 text-sm">
                                     <div class="w-9 h-9 rounded-xl bg-success-50 dark:bg-success-500/10 text-success-500 flex items-center justify-center flex-shrink-0"><i data-lucide="globe" class="w-4 h-4"></i></div>
-                                    <span class="font-medium text-surface-700 dark:text-surface-300">{{ $pesantren->website }}</span>
+                                    <span class="font-medium text-surface-700 dark:text-surface-300">{{ $pesantren?->website }}</span>
                                 </li>
                                 @endif
                             </ul>
@@ -70,8 +70,8 @@
                             <div class="flex items-start gap-3 text-sm">
                                 <div class="w-9 h-9 rounded-xl bg-accent-50 dark:bg-accent-500/10 text-accent-600 dark:text-accent-400 flex items-center justify-center flex-shrink-0 mt-0.5"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
                                 <p class="text-surface-700 dark:text-surface-300 leading-relaxed">
-                                    {{ $pesantren->alamat ?? '-' }}
-                                    @if($pesantren->kode_pos) Kode Pos: {{ $pesantren->kode_pos }} @endif
+                                    {{ $pesantren?->alamat ?? '-' }}
+                                    @if($pesantren?->kode_pos) Kode Pos: {{ $pesantren?->kode_pos }} @endif
                                 </p>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                         <h2 class="text-xl font-bold text-surface-900 dark:text-white">{{ __('Sejarah Berdiri') }}</h2>
                     </div>
                     <div class="prose prose-surface dark:prose-invert max-w-none text-surface-600 dark:text-surface-300 leading-relaxed text-[15px]">
-                        {!! $pesantren->sejarah ?? '<p class="text-surface-400 dark:text-surface-500 italic">' . __('Belum ada informasi sejarah pesantren.') . '</p>' !!}
+                        {!! $pesantren?->sejarah ?? '<p class="text-surface-400 dark:text-surface-500 italic">' . __('Belum ada informasi sejarah pesantren.') . '</p>' !!}
                     </div>
                 </div>
 
@@ -103,7 +103,7 @@
                                 <h3 class="text-lg font-bold text-surface-900 dark:text-white">{{ __('Visi') }}</h3>
                             </div>
                             <div class="prose prose-sm dark:prose-invert text-surface-600 dark:text-surface-300 leading-relaxed">
-                                {!! $pesantren->visi ?? '<p class="text-surface-400 dark:text-surface-500 italic">' . __('Belum diisi.') . '</p>' !!}
+                                {!! $pesantren?->visi ?? '<p class="text-surface-400 dark:text-surface-500 italic">' . __('Belum diisi.') . '</p>' !!}
                             </div>
                         </div>
                     </div>
@@ -116,14 +116,14 @@
                                 <h3 class="text-lg font-bold text-surface-900 dark:text-white">{{ __('Misi') }}</h3>
                             </div>
                             <div class="prose prose-sm dark:prose-invert text-surface-600 dark:text-surface-300 leading-relaxed">
-                                {!! $pesantren->misi ?? '<p class="text-surface-400 dark:text-surface-500 italic">' . __('Belum diisi.') . '</p>' !!}
+                                {!! $pesantren?->misi ?? '<p class="text-surface-400 dark:text-surface-500 italic">' . __('Belum diisi.') . '</p>' !!}
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {{-- Tahun Berdiri Badge --}}
-                @if($pesantren->tahun_berdiri)
+                @if($pesantren?->tahun_berdiri)
                 <div class="bg-gradient-to-r from-primary-600 to-secondary-600 rounded-3xl p-8 text-white flex items-center gap-6 shadow-xl shadow-primary-600/20 border border-white/10 relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-xl pointer-events-none -translate-y-1/2 translate-x-1/4"></div>
                     <div class="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center flex-shrink-0 border border-white/10">
@@ -131,8 +131,8 @@
                     </div>
                     <div class="relative z-10">
                         <p class="text-primary-100 text-sm font-bold uppercase tracking-widest">{{ __('Berdiri Sejak') }}</p>
-                        <p class="text-4xl font-extrabold mt-1">{{ $pesantren->tahun_berdiri }}</p>
-                        <p class="text-primary-100/80 text-sm mt-1 font-medium">{{ date('Y') - $pesantren->tahun_berdiri }} {{ __('tahun mengabdi untuk pendidikan Islam') }}</p>
+                        <p class="text-4xl font-extrabold mt-1">{{ $pesantren?->tahun_berdiri }}</p>
+                        <p class="text-primary-100/80 text-sm mt-1 font-medium">{{ $pesantren?->tahun_berdiri ? date('Y') - $pesantren->tahun_berdiri : 0 }} {{ __('tahun mengabdi untuk pendidikan Islam') }}</p>
                     </div>
                 </div>
                 @endif

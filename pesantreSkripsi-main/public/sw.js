@@ -3,7 +3,7 @@
 // Version: v6 (network-first, no aggressive caching)
 // ============================================================
 
-const CACHE_VERSION = 'v6';
+const CACHE_VERSION = 'v8';
 const CACHE_NAME_STATIC = `pp-nurul-furqon-static-${CACHE_VERSION}`;
 const CACHE_NAME_DYNAMIC = `pp-nurul-furqon-dynamic-${CACHE_VERSION}`;
 
@@ -14,6 +14,9 @@ const PRECACHE_ASSETS = [
     '/favicon.ico',
     '/icons/icon-192x192.png',
     '/icons/icon-512x512.png',
+    '/icons/icon-192x192-maskable.png',
+    '/icons/icon-512x512-maskable.png',
+    '/icons/apple-touch-icon.png',
     '/images/logo-pesantren.webp'
 ];
 
@@ -69,6 +72,11 @@ self.addEventListener('fetch', event => {
     const isInertia = event.request.headers.get('x-inertia');
     const isLivewire = event.request.headers.get('x-livewire');
     const isXHR = event.request.headers.get('x-requested-with') === 'XMLHttpRequest';
+
+    // ── Strategy 0: Skip auth routes — NEVER cache login/logout/register ──
+    if (url.pathname.startsWith('/login') || url.pathname.startsWith('/logout') || url.pathname.startsWith('/register') || url.pathname.startsWith('/psb/daftar')) {
+        return;
+    }
 
     // ── Strategy 1: Network-Only for API/AJAX/Inertia/Livewire ──
     if (isInertia || isLivewire || isXHR || url.pathname.startsWith('/api/') || url.pathname.includes('/api/')) {

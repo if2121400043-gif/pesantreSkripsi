@@ -8,6 +8,8 @@
     <meta name="description" content="@yield('meta_description', 'Sistem Manajemen Pondok Pesantren Nurul Furqon')">
 
     {{-- PWA Meta Tags --}}
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#065f46">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#022c22">
     <meta name="theme-color" content="#065f46">
     <meta name="application-name" content="PP Nurul Furqon">
     <meta name="mobile-web-app-capable" content="yes">
@@ -16,9 +18,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
-    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png">
-    <link rel="mask-icon" href="/icons/icon-192x192.png" color="#065f46">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="mask-icon" href="/icons/icon-192x192-maskable.png" color="#065f46">
 
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -97,11 +99,62 @@
             if (sidebarNav) {
                 const activeItem = sidebarNav.querySelector('.active');
                 if (activeItem) {
-                    // Scroll to center the active item in the view
                     const scrollPos = activeItem.offsetTop - (sidebarNav.clientHeight / 2) + (activeItem.clientHeight / 2);
                     sidebarNav.scrollTop = scrollPos > 0 ? scrollPos : 0;
                 }
             }
+
+            // === SIDEBAR MOBILE TOGGLE ===
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const btnOpen = document.getElementById('btn-toggle-sidebar');
+            const btnClose = document.getElementById('btn-close-sidebar');
+
+            function openSidebar() {
+                if (sidebar) sidebar.classList.remove('-translate-x-full');
+                if (overlay) overlay.classList.remove('hidden');
+            }
+            function closeSidebar() {
+                if (sidebar) sidebar.classList.add('-translate-x-full');
+                if (overlay) overlay.classList.add('hidden');
+            }
+
+            if (btnOpen) btnOpen.addEventListener('click', (e) => { e.stopPropagation(); openSidebar(); });
+            if (btnClose) btnClose.addEventListener('click', closeSidebar);
+            if (overlay) overlay.addEventListener('click', closeSidebar);
+
+            // === TOPBAR DROPDOWNS ===
+            const btnNotif = document.getElementById('btn-notifications');
+            const notifDrop = document.getElementById('notification-dropdown');
+            const btnUser = document.getElementById('btn-user-menu');
+            const userDrop = document.getElementById('user-dropdown');
+            const btnSearch = document.getElementById('btn-global-search');
+            const searchModal = document.getElementById('global-search-modal');
+            const btnCloseSearch = document.getElementById('btn-close-search');
+
+            if (btnNotif && notifDrop) btnNotif.addEventListener('click', (e) => { e.stopPropagation(); if (userDrop) userDrop.classList.add('hidden'); notifDrop.classList.toggle('hidden'); });
+            if (btnUser && userDrop) btnUser.addEventListener('click', (e) => { e.stopPropagation(); if (notifDrop) notifDrop.classList.add('hidden'); userDrop.classList.toggle('hidden'); });
+
+            if (btnSearch && searchModal) btnSearch.addEventListener('click', () => { searchModal.classList.remove('hidden'); });
+            if (btnCloseSearch && searchModal) btnCloseSearch.addEventListener('click', () => { searchModal.classList.add('hidden'); });
+            if (searchModal) searchModal.addEventListener('click', (e) => { if (e.target === searchModal) searchModal.classList.add('hidden'); });
+
+            // Close dropdowns on outside click
+            document.addEventListener('click', (e) => {
+                if (notifDrop && btnNotif && !btnNotif.contains(e.target)) notifDrop.classList.add('hidden');
+                if (userDrop && btnUser && !btnUser.contains(e.target)) userDrop.classList.add('hidden');
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); if (searchModal) searchModal.classList.remove('hidden'); }
+                if (e.key === 'Escape') {
+                    if (searchModal) searchModal.classList.add('hidden');
+                    if (notifDrop) notifDrop.classList.add('hidden');
+                    if (userDrop) userDrop.classList.add('hidden');
+                    if (window.innerWidth < 768) closeSidebar();
+                }
+            });
         });
     </script>
     <script>
@@ -193,6 +246,8 @@
             }
         });
     </script>
+    @include('partials.pwa-install-banner')
+    @include('partials.pwa-network-toast')
     @stack('scripts')
 </body>
 </html>

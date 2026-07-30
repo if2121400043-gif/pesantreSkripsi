@@ -12,6 +12,9 @@ class User extends Authenticatable
 {
     use Notifiable, SoftDeletes;
 
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $table = 'users';
     
     protected $fillable = [
@@ -28,6 +31,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_active' => 'boolean',
+            'must_change_password' => 'boolean',
         ];
     }
 

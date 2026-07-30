@@ -292,5 +292,34 @@
     @includeIf('partials.pwa-install-banner')
     @includeIf('partials.pwa-network-toast')
     @stack('scripts')
+
+    {{-- Global Live Search Modal (Direct child of body to guarantee full viewport overlay & fixed centering) --}}
+    <div id="global-search-modal" class="hidden fixed inset-0 z-[100] flex items-start justify-center p-4 sm:p-6 md:pt-16 bg-surface-900/60 backdrop-blur-sm transition-all animate-fade-in">
+        <div class="w-full max-w-2xl rounded-2xl bg-white shadow-2xl border border-surface-200 overflow-hidden flex flex-col max-h-[85vh]">
+            <div class="flex items-center justify-between px-5 py-3.5 border-b border-surface-100 bg-surface-50/50">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="search" class="w-4 h-4 text-emerald-600"></i>
+                    <p class="text-xs font-bold text-surface-900 font-heading">Pencarian Menu & Modul</p>
+                </div>
+                <button type="button" id="btn-close-search" class="p-1 rounded-lg text-surface-400 hover:bg-surface-200 hover:text-surface-700 transition-colors">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div class="p-4 border-b border-surface-100">
+                <div class="relative">
+                    <input id="global-search-input" type="text" autocomplete="off" placeholder="Ketik nama menu (misal: santri, spp, berita, rombel, pegawai)..."
+                           class="w-full pl-4 pr-10 py-2.5 rounded-xl border border-surface-200 text-surface-900 text-xs font-medium focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20" />
+                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[0.65rem] font-bold text-surface-400 bg-surface-100 px-1.5 py-0.5 rounded">ESC</span>
+                </div>
+            </div>
+            <div id="global-search-results" class="p-2 overflow-y-auto divide-y divide-surface-50 flex-1 min-h-[200px]">
+                {{-- Results rendered dynamically via JS --}}
+            </div>
+            <div class="border-t border-surface-100 px-4 py-2.5 text-[0.7rem] text-surface-400 flex items-center justify-between bg-surface-50/30">
+                <span>Tekan <kbd class="px-1 py-0.5 bg-white border rounded text-[0.65rem]">Enter</kbd> untuk membuka rute</span>
+                <span>PP Nurul Furqon SIM</span>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

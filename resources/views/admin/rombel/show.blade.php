@@ -94,7 +94,7 @@
                 </h3>
                 <div class="flex gap-2 w-full sm:w-auto flex-wrap">
                     @if($rombel->riwayatPeserta->where('status', 'AKTIF')->count() > 0)
-                        <form action="{{ route('admin.penempatan.empty-rombel') }}" method="POST" class="inline" onsubmit="return confirm('PERINGATAN: Apakah Anda yakin ingin mengeluarkan SELURUH santri ({{ $rombel->riwayatPeserta->where(\'status\', \'AKTIF\')->count() }} santri) dari kelas {{ $rombel->nama }}?')">
+                        <form action="{{ route('admin.penempatan.empty-rombel') }}" method="POST" class="inline" onsubmit="return confirm('PERINGATAN: Apakah Anda yakin ingin mengeluarkan SELURUH santri ({{ $rombel->riwayatPeserta->where('status', 'AKTIF')->count() }} santri) dari kelas {{ $rombel->nama }}?')">
                             @csrf
                             <input type="hidden" name="rombel_id" value="{{ $rombel->id }}">
                             <button type="submit" class="btn-secondary text-danger-600 border-danger-200 hover:bg-danger-50 w-full sm:w-auto text-sm py-1.5 flex justify-center items-center gap-2">

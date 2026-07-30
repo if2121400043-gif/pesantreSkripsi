@@ -24,14 +24,27 @@ return new class extends Migration
         });
 
         // Add constraints and columns to presensi_kelas
+        // MySQL requires dropping foreign keys before dropping unique index they depend on
         Schema::table('presensi_kelas', function (Blueprint $table) {
-            $table->dropUnique('presensi_unique'); // Drop the old unique constraint
+            // 1. Drop foreign keys that reference columns in the unique index first
+            $table->dropForeign(['rombel_id']);
+            $table->dropForeign(['peserta_didik_id']);
             
+            // 2. Now we can safely drop the unique index
+            $table->dropUnique('presensi_unique');
+        });
+        
+        Schema::table('presensi_kelas', function (Blueprint $table) {
+            // 3. Add new columns
             $table->foreignId('jenis_presensi_id')->nullable()->constrained('jenis_presensi')->cascadeOnDelete();
             $table->foreignId('asrama_id')->nullable()->constrained('asrama')->cascadeOnDelete();
             
-            // Make rombel_id nullable since not all presensi are tied to a rombel
-            $table->foreignId('rombel_id')->nullable()->change();
+            // 4. Make rombel_id nullable since not all presensi are tied to a rombel
+            $table->unsignedBigInteger('rombel_id')->nullable()->change();
+            
+            // 5. Re-add foreign keys
+            $table->foreign('rombel_id')->references('id')->on('rombel')->cascadeOnDelete();
+            $table->foreign('peserta_didik_id')->references('id')->on('peserta_didik')->cascadeOnDelete();
         });
         
         // Insert default data

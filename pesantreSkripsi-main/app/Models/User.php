@@ -12,8 +12,8 @@ class User extends Authenticatable
 {
     use Notifiable, SoftDeletes;
 
-    public $incrementing = false;
-    protected $keyType = 'string';
+
+
 
     protected $table = 'users';
     

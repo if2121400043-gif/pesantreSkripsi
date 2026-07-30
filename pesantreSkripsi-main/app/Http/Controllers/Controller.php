@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pesantren;
+
 abstract class Controller
 {
     protected function getPesantren(): ?Pesantren

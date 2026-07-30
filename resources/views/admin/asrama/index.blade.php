@@ -22,12 +22,17 @@
         <div class="p-6 border-b border-surface-100 flex-1">
             <div class="flex justify-between items-start mb-4">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center">
+                    <div class="w-10 h-10 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center shrink-0">
                         <i data-lucide="home" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-surface-900 text-lg">{{ $asrama->nama }}</h3>
-                        <p class="text-xs text-surface-500 font-medium">Kode: {{ $asrama->kode ?? '-' }}</p>
+                        <div class="flex items-center gap-2 mb-0.5">
+                            <h3 class="font-bold text-surface-900 text-lg leading-tight">{{ $asrama->nama }}</h3>
+                        </div>
+                        <p class="text-xs text-primary-600 font-medium">
+                            <i data-lucide="map-pin" class="w-3 h-3 inline mr-0.5"></i>
+                            {{ $asrama->wilayahPesantren->nama ?? 'Tanpa Wilayah' }}
+                        </p>
                     </div>
                 </div>
                 <div>
@@ -114,6 +119,16 @@
                     <input type="hidden" name="_method" id="form-method" value="POST">
                     
                     <div class="px-6 py-4 space-y-4">
+                        <div>
+                            <label for="asrama_wilayah" class="block text-sm font-medium text-surface-700 mb-1">Wilayah Pesantren (Zona) <span class="text-danger-500">*</span></label>
+                            <select name="wilayah_pesantren_id" id="asrama_wilayah" class="w-full rounded-lg border border-surface-300 bg-white px-3 py-2 text-sm text-surface-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20" required>
+                                <option value="" disabled selected>Pilih Wilayah Pesantren...</option>
+                                @foreach($wilayahs as $w)
+                                    <option value="{{ $w->id }}">{{ $w->nama }} ({{ $w->jenis_kelamin == 'L' ? 'Putra' : ($w->jenis_kelamin == 'P' ? 'Putri' : 'Campuran') }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <x-form-input name="nama" id="asrama_nama" label="Nama Gedung / Asrama" required placeholder="Contoh: Asrama Al-Ghazali" />
                         
                         <div class="grid grid-cols-2 gap-4">
@@ -174,6 +189,7 @@
         methodInput.value = "PUT";
         title.innerText = "Edit Asrama";
         
+        document.getElementById('asrama_wilayah').value = data.wilayah_pesantren_id || '';
         document.getElementById('asrama_nama').value = data.nama;
         document.getElementById('asrama_kode').value = data.kode || '';
         document.getElementById('asrama_jk').value = data.jenis_kelamin;

@@ -11,57 +11,29 @@ use Illuminate\Http\Request;
 class AsramaController extends Controller
 {
     // Menampilkan halaman daftar asrama
-    public function index()
+    public function index(Request $request)
     {
-        // Mengambil data pesantren pertama di database (asumsinya sistem ini untuk 1 pesantren tunggal)
         $pesantren = Pesantren::first();
+        $wilayahs = \App\Models\WilayahPesantren::where('is_active', true)->orderBy('nama')->get();
         
-        // Mengambil semua data asrama.
-        // 'withCount('kamar')' akan secara otomatis menghitung jumlah relasi kamar untuk setiap asrama.
-        // 'orderBy('nama')' akan mengurutkan data asrama berdasarkan abjad (A-Z).
-        // 'get()' mengeksekusi query dan mengambil hasilnya.
-        $asramas = Asrama::withCount('kamar')->orderBy('nama')->get();
+        $query = Asrama::with(['wilayahPesantren'])->withCount('kamar');
+
+        if ($request->filled('wilayah_id')) {
+            $query->where('wilayah_pesantren_id', $request->wilayah_id);
+        }
+
+        $asramas = $query->orderBy('nama')->get();
         
-        // Mengirim data $asramas dan $pesantren ke tampilan (view) 'admin.asrama.index'
-        return view('admin.asrama.index', compact('asramas', 'pesantren'));
+        return view('admin.asrama.index', compact('asramas', 'pesantren', 'wilayahs'));
     }
 
     // Menyimpan data asrama baru ke database
     public function store(Request $request)
     {
-        // Mengambil id pesantren untuk relasi asrama
         $pesantren = Pesantren::first();
         
-        // Memvalidasi data yang dikirimkan melalui form.
-        // Jika tidak sesuai aturan ini, proses akan berhenti dan kembali ke form dengan pesan error.
         $validated = $request->validate([
-            'nama' => 'required|string|max:100', // Wajib diisi, berupa teks, maksimal 100 karakter
-            'kode' => 'nullable|string|max:20',  // Boleh kosong, teks, maksimal 20 karakter
-            'jenis_kelamin' => 'required|in:L,P,CAMPURAN', // Wajib, dan nilainya harus antara L, P, atau CAMPURAN
-            'kapasitas' => 'required|integer|min:0', // Wajib, berupa angka bulat, minimal 0
-            'keterangan' => 'nullable|string', // Boleh kosong, berupa teks
-        ]);
-
-        // Menambahkan data pesantren_id ke dalam array data yang sudah divalidasi
-        $validated['pesantren_id'] = $pesantren->id;
-        
-        // Menangani input checkbox 'is_active'.
-        // Jika dicentang, form mengirim data dan bernilai true. Jika tidak, bernilai false.
-        $validated['is_active'] = $request->has('is_active');
-
-        // Menyimpan data ke database melalui Model Asrama (Mass Assignment)
-        Asrama::create($validated);
-
-        // Mengarahkan pengguna kembali ke halaman daftar asrama dengan pesan sukses
-        return redirect()->route('admin.asrama.index')->with('success', 'Asrama berhasil ditambahkan.');
-    }
-
-    // Memperbarui data asrama yang sudah ada
-    // Parameter 'Asrama $asrama' otomatis mencari data di database berdasarkan ID di URL (Route Model Binding)
-    public function update(Request $request, Asrama $asrama)
-    {
-        // Proses validasinya sama dengan saat membuat (store)
-        $validated = $request->validate([
+            'wilayah_pesantren_id' => 'nullable|exists:wilayah_pesantren,id',
             'nama' => 'required|string|max:100',
             'kode' => 'nullable|string|max:20',
             'jenis_kelamin' => 'required|in:L,P,CAMPURAN',
@@ -69,10 +41,27 @@ class AsramaController extends Controller
             'keterangan' => 'nullable|string',
         ]);
 
-        // Update status aktif/tidak berdasarkan checkbox
+        $validated['pesantren_id'] = $pesantren->id;
         $validated['is_active'] = $request->has('is_active');
 
-        // Memperbarui record spesifik yang ditemukan di database dengan data baru
+        Asrama::create($validated);
+
+        return redirect()->route('admin.asrama.index')->with('success', 'Asrama berhasil ditambahkan.');
+    }
+
+    public function update(Request $request, Asrama $asrama)
+    {
+        $validated = $request->validate([
+            'wilayah_pesantren_id' => 'nullable|exists:wilayah_pesantren,id',
+            'nama' => 'required|string|max:100',
+            'kode' => 'nullable|string|max:20',
+            'jenis_kelamin' => 'required|in:L,P,CAMPURAN',
+            'kapasitas' => 'required|integer|min:0',
+            'keterangan' => 'nullable|string',
+        ]);
+
+        $validated['is_active'] = $request->has('is_active');
+
         $asrama->update($validated);
 
         return redirect()->route('admin.asrama.index')->with('success', 'Asrama berhasil diperbarui.');

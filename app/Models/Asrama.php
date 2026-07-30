@@ -10,12 +10,17 @@ class Asrama extends Model
 {
     protected $table = 'asrama';
     protected $fillable = [
-        'pesantren_id', 'nama', 'kode', 'jenis_kelamin', 'kapasitas', 'keterangan', 'is_active'
+        'pesantren_id', 'wilayah_pesantren_id', 'nama', 'kode', 'jenis_kelamin', 'kapasitas', 'keterangan', 'is_active'
     ];
 
     public function pesantren(): BelongsTo
     {
         return $this->belongsTo(Pesantren::class);
+    }
+
+    public function wilayahPesantren(): BelongsTo
+    {
+        return $this->belongsTo(WilayahPesantren::class, 'wilayah_pesantren_id');
     }
 
     public function kamar(): HasMany

@@ -66,26 +66,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:SUPER_ADMIN')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
-        // Wilayah
-        Route::prefix('wilayah')->name('wilayah.')->group(function () {
-            Route::get('/', [\App\Http\Controllers\Admin\WilayahController::class, 'index'])->name('index');
-            // Provinsi
-            Route::post('provinsi', [\App\Http\Controllers\Admin\WilayahController::class, 'storeProvinsi'])->name('provinsi.store');
-            Route::put('provinsi/{provinsi}', [\App\Http\Controllers\Admin\WilayahController::class, 'updateProvinsi'])->name('provinsi.update');
-            Route::delete('provinsi/{provinsi}', [\App\Http\Controllers\Admin\WilayahController::class, 'destroyProvinsi'])->name('provinsi.destroy');
-            // Kabupaten
-            Route::post('kabupaten', [\App\Http\Controllers\Admin\WilayahController::class, 'storeKabupaten'])->name('kabupaten.store');
-            Route::put('kabupaten/{kabupaten}', [\App\Http\Controllers\Admin\WilayahController::class, 'updateKabupaten'])->name('kabupaten.update');
-            Route::delete('kabupaten/{kabupaten}', [\App\Http\Controllers\Admin\WilayahController::class, 'destroyKabupaten'])->name('kabupaten.destroy');
-            // Kecamatan
-            Route::post('kecamatan', [\App\Http\Controllers\Admin\WilayahController::class, 'storeKecamatan'])->name('kecamatan.store');
-            Route::put('kecamatan/{kecamatan}', [\App\Http\Controllers\Admin\WilayahController::class, 'updateKecamatan'])->name('kecamatan.update');
-            Route::delete('kecamatan/{kecamatan}', [\App\Http\Controllers\Admin\WilayahController::class, 'destroyKecamatan'])->name('kecamatan.destroy');
-            // Desa
-            Route::post('desa', [\App\Http\Controllers\Admin\WilayahController::class, 'storeDesa'])->name('desa.store');
-            Route::put('desa/{desa}', [\App\Http\Controllers\Admin\WilayahController::class, 'updateDesa'])->name('desa.update');
-            Route::delete('desa/{desa}', [\App\Http\Controllers\Admin\WilayahController::class, 'destroyDesa'])->name('desa.destroy');
-        });
+        // Wilayah Pesantren (Zona / Daerah Internal)
+        Route::resource('wilayah', \App\Http\Controllers\Admin\WilayahController::class)->except(['create', 'show', 'edit']);
 
         // Master Data
         Route::resource('lembaga', \App\Http\Controllers\Admin\LembagaController::class)->except(['create', 'show', 'edit']);

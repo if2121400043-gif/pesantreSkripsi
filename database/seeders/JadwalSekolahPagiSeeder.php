@@ -54,15 +54,57 @@ class JadwalSekolahPagiSeeder extends Seeder
             'Sayyidah Aulia U' => 'Bahasa Inggris',
         ];
 
+        // Alias map untuk menjamin semua variasi nama guru dari Excel langsung terhubung ke data master
+        $aliases = [
+            'Sayyidah Aulia U' => ['Sayyidah Aulia Ul Haqqu', 'Sayyidah Aulia', 'Sayyidah'],
+            'La Eni S.sy' => ['La Eni', 'Laeni', 'La Eni S.Sy'],
+            'Imam Malik Al-Bukhori' => ['Imam Malik', 'Imam Malik Al Bukhori', 'Imam Malik Al-Bukhari'],
+            'M. Daru Adi Nugroho' => ['M. Daru Adi Nugroho', 'Daru Adi Nugroho', 'M. Daru', 'Daru'],
+            'Sri Ruliawanti S.pd' => ['Sri Ruliawanti', 'Sri Ruliawanti S.Pd'],
+            'Hestiara Ramli S.pd' => ['Hestiara Ramli', 'Hestiara Ramli S.Pd'],
+            'Nur Aisyah Harli S.pd' => ['Nur Aisyah Harli', 'Nur Aisyah Harli S.Pd', 'Nur Aisyah'],
+            'Ariyanni S.pd' => ['Ariyanni', 'Ariyanni S.Pd'],
+            'Khairil Makin Huda' => ['Khairil Makin Huda', 'Khairil Makin', 'Khairil'],
+            'Sri Mahrani S.pd' => ['Sri Mahrani', 'Sri Mahrani S.Pd'],
+            'Ilham Maulana' => ['Ilham Maulana'],
+            'Afiez Muhajir' => ['Afiez Muhajir', 'Afiz Muhajir'],
+        ];
+
         $guruMap = [];
         foreach ($gurusData as $namaGuru => $specialty) {
-            $orang = Orang::firstOrCreate(
-                ['nama_lengkap' => $namaGuru],
-                [
+            $cleanName = trim(preg_replace('/,?\s*(S\.pd|S\.sy|M\.pd|S\.ag|S\.tp|S\.h|M\.ag|Lc)\.?/i', '', $namaGuru));
+            $parts = array_values(array_filter(explode(' ', $cleanName)));
+            $firstName = $parts[0] ?? $cleanName;
+            $secondName = $parts[1] ?? '';
+
+            $searchAliases = $aliases[$namaGuru] ?? [$cleanName];
+
+            // Tier 1: Pencarian berdasarkan Nama Lengkap / Alias / Gelar
+            $orang = Orang::where(function($query) use ($namaGuru, $cleanName, $searchAliases) {
+                $query->whereIn('nama_lengkap', array_merge([$namaGuru, $cleanName], $searchAliases));
+                foreach ($searchAliases as $alias) {
+                    $query->orWhere('nama_lengkap', 'like', "%{$alias}%");
+                }
+            })->first();
+
+            // Tier 2: Fallback 2 Kata Depan
+            if (!$orang && $secondName) {
+                $orang = Orang::where('nama_lengkap', 'like', "{$firstName} {$secondName}%")->first();
+            }
+
+            // Tier 3: Fallback 1 Kata Depan
+            if (!$orang && strlen($firstName) > 2) {
+                $orang = Orang::where('nama_lengkap', 'like', "{$firstName}%")->first();
+            }
+
+            // Tier 4: Buat Data Orang Baru jika sama sekali belum ada
+            if (!$orang) {
+                $orang = Orang::create([
+                    'nama_lengkap' => $namaGuru,
                     'niup' => 'GR-' . rand(10000, 99999),
                     'is_active' => true,
-                ]
-            );
+                ]);
+            }
 
             $pegawai = Pegawai::firstOrCreate(
                 ['orang_id' => $orang->id],

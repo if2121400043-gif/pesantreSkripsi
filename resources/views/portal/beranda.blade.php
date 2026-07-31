@@ -1,31 +1,42 @@
-@extends('layouts.app')
+@extends('layouts.portal')
 
-@section('title', 'Beranda Portal Wali')
-
-@section('page_header')
-<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-    <div>
-        <h1 class="text-2xl font-bold text-surface-900 font-heading">Assalamu'alaikum, {{ auth()->user()->orang->nama_lengkap ?? auth()->user()->username }}</h1>
-        <p class="text-sm text-surface-500 mt-1">Selamat datang di Portal Wali Santri. Pantau perkembangan ananda dari sini.</p>
-    </div>
-
-    {{-- Switch Child Selector --}}
-    @if($anakList->count() > 1)
-    <div class="w-full sm:w-auto flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-surface-200 shadow-sm">
-        <label for="anak_id" class="text-sm font-semibold text-surface-700 whitespace-nowrap">Pantau Ananda:</label>
-        <select name="anak_id" id="anak_id" onchange="window.location.href='{{ route('portal.beranda') }}?anak_id=' + this.value" class="bg-white border-0 text-surface-900 text-sm focus:ring-0 block p-0 pr-8 font-medium">
-            @foreach($anakList as $anak)
-                <option value="{{ $anak->id }}" {{ $activeAnak->id == $anak->id ? 'selected' : '' }}>
-                    {{ $anak->orang->nama_lengkap }}
-                </option>
-            @endforeach
-        </select>
-    </div>
-    @endif
-</div>
-@endsection
+@section('title', 'Portal Wali Santri — PP Nurul Furqon')
 
 @section('content')
+<div class="space-y-6">
+
+    {{-- Welcome Banner Header for Wali Santri --}}
+    <div class="bg-gradient-to-r from-primary-900 via-primary-800 to-primary-950 text-white rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-primary-200 text-xs font-semibold backdrop-blur-sm border border-white/10 mb-3">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-warning-400"></i>
+                    Portal Wali Santri
+                </div>
+                <h1 class="text-2xl md:text-3xl font-extrabold font-heading text-white">
+                    Assalamu'alaikum, {{ auth()->user()->orang->nama_lengkap ?? auth()->user()->username }}
+                </h1>
+                <p class="text-xs md:text-sm text-primary-100/90 mt-1 max-w-xl">
+                    Pantau perkembangan akademik, presensi harian, catatan kedisiplinan, dan pembayaran tagihan putra-putri Anda.
+                </p>
+            </div>
+
+            {{-- Switch Child Selector --}}
+            @if($anakList->count() > 1)
+            <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/15">
+                <label for="anak_id" class="text-xs font-bold text-primary-200 whitespace-nowrap">Pantau Ananda:</label>
+                <select name="anak_id" id="anak_id" onchange="window.location.href='{{ route('portal.beranda') }}?anak_id=' + this.value" class="bg-white/20 text-white text-xs font-bold rounded-xl border border-white/20 focus:ring-0 p-1.5 cursor-pointer">
+                    @foreach($anakList as $anak)
+                        <option value="{{ $anak->id }}" class="bg-primary-900 text-white" {{ $activeAnak && $activeAnak->id == $anak->id ? 'selected' : '' }}>
+                            {{ $anak->orang->nama_lengkap }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
+        </div>
+    </div>
 
 @if(!$activeAnak)
 <div class="bg-white rounded-2xl shadow-sm border border-surface-200 p-8 sm:p-12 text-center">
@@ -462,8 +473,8 @@
         </div>
     </div>
 </div>
-
 @endif
+</div>
 @endsection
 
 @push('scripts')

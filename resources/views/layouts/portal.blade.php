@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Portal Wali Santri') — PP Nurul Furqon</title>
+    <meta name="description" content="@yield('meta_description', 'Portal Informasi & Pembayaran Wali Santri PP Nurul Furqon')">
+
+    {{-- PWA Meta Tags --}}
+    <meta name="theme-color" content="#065f46">
+    <meta name="application-name" content="PP Nurul Furqon">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="PP Nurul Furqon">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+
+    {{-- Google Fonts --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    {{-- Lucide Icons --}}
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @stack('styles')
+</head>
+<body class="min-h-screen bg-surface-50 overflow-x-hidden text-surface-900 font-sans pb-20 md:pb-6">
+    {{-- Skip to content (accessibility) --}}
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 bg-primary-600 text-white px-4 py-2 rounded-lg font-medium">
+        Langsung ke konten
+    </a>
+
+    <div class="min-h-screen flex flex-col" id="app-portal-layout">
+        {{-- Top Bar (Wali Santri Brand & Profile) --}}
+        <header class="bg-primary-900 text-white border-b border-primary-800 sticky top-0 z-30 shadow-md">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+                
+                {{-- Left: Brand Logo & Title --}}
+                <a href="{{ route('portal.beranda') }}" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-warning-400 group-hover:scale-105 transition-transform">
+                        <i data-lucide="user-check" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="font-extrabold text-sm sm:text-base text-white font-heading tracking-wide">PORTAL WALI SANTRI</div>
+                        <div class="text-[0.65rem] text-primary-200 uppercase tracking-wider">PP Nurul Furqon</div>
+                    </div>
+                </a>
+
+                {{-- Right: Quick Navigation Tabs (Desktop) & Role --}}
+                <div class="flex items-center gap-2">
+                    <nav class="hidden md:flex items-center gap-1 bg-white/10 p-1 rounded-2xl border border-white/10 text-xs font-semibold">
+                        <a href="{{ route('portal.beranda') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.beranda') ? 'bg-white text-primary-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}">
+                            Beranda
+                        </a>
+                        <a href="{{ route('portal.tagihan') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.tagihan*') ? 'bg-white text-primary-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}">
+                            Tagihan & Bayar
+                        </a>
+                        <a href="{{ route('portal.presensi') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.presensi*') ? 'bg-white text-primary-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}">
+                            Presensi
+                        </a>
+                        <a href="{{ route('portal.kedisiplinan') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.kedisiplinan*') ? 'bg-white text-primary-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}">
+                            Kedisiplinan
+                        </a>
+                    </nav>
+
+                    <div class="flex items-center gap-2 pl-2 border-l border-primary-800">
+                        <a href="{{ route('akun.ganti-peran') }}" title="Ganti Peran / Switch Role" class="px-2.5 py-1.5 rounded-xl bg-warning-500/20 text-warning-300 hover:bg-warning-500/30 text-xs font-bold transition-colors border border-warning-500/30 flex items-center gap-1">
+                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                            <span class="hidden lg:inline">Ganti Peran</span>
+                        </a>
+
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" title="Keluar" class="p-2 rounded-xl bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 text-xs font-bold transition-colors border border-rose-500/30 flex items-center justify-center">
+                                <i data-lucide="log-out" class="w-4 h-4"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </header>
+
+        {{-- Flash Messages --}}
+        <div class="max-w-6xl mx-auto w-full px-4 sm:px-6 mt-4">
+            @if(session('success'))
+                <div class="p-4 mb-4 rounded-2xl bg-success-50 border border-success-200 text-success-800 flex items-center justify-between text-xs font-medium shadow-sm">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-success-600"></i>
+                        <span>{{ session('success') }}</span>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="text-success-600 hover:text-success-900"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="p-4 mb-4 rounded-2xl bg-danger-50 border border-danger-200 text-danger-800 flex items-center justify-between text-xs font-medium shadow-sm">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="alert-circle" class="w-5 h-5 text-danger-600"></i>
+                        <span>{{ session('error') }}</span>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="text-danger-600 hover:text-danger-900"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+            @endif
+        </div>
+
+        {{-- Main Content Container (Centered max-w-6xl) --}}
+        <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6" id="main-content">
+            @yield('content')
+        </main>
+
+        {{-- Bottom Navigation Bar for Mobile Phones --}}
+        <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-surface-200 z-40 px-2 py-1.5 shadow-lg flex justify-around items-center">
+            <a href="{{ route('portal.beranda') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.beranda') ? 'text-primary-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
+                <i data-lucide="home" class="w-5 h-5"></i>
+                <span>Beranda</span>
+            </a>
+            <a href="{{ route('portal.tagihan') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.tagihan*') ? 'text-primary-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
+                <i data-lucide="wallet" class="w-5 h-5"></i>
+                <span>Tagihan</span>
+            </a>
+            <a href="{{ route('portal.presensi') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.presensi*') ? 'text-primary-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
+                <i data-lucide="calendar-check" class="w-5 h-5"></i>
+                <span>Presensi</span>
+            </a>
+            <a href="{{ route('portal.kedisiplinan') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.kedisiplinan*') ? 'text-primary-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
+                <i data-lucide="shield-check" class="w-5 h-5"></i>
+                <span>Kedisiplinan</span>
+            </a>
+        </nav>
+
+        {{-- Footer (Desktop) --}}
+        <footer class="hidden md:block bg-white border-t border-surface-200 py-6 mt-auto">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center text-xs text-surface-500">
+                &copy; {{ date('Y') }} PP Nurul Furqon — Portal Wali Santri.
+            </div>
+        </footer>
+    </div>
+
+    {{-- Toast Container Partial --}}
+    @include('partials.toast-container')
+
+    @stack('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>

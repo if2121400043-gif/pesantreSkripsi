@@ -110,24 +110,36 @@
             const btnOpen = document.getElementById('btn-toggle-sidebar');
             const btnClose = document.getElementById('btn-close-sidebar');
 
+            let isSidebarOpen = false;
+
             function openSidebar() {
                 if (sidebar) {
+                    sidebar.style.setProperty('transform', 'translateX(0)', 'important');
                     sidebar.classList.remove('-translate-x-full');
                 }
                 if (overlay) {
                     overlay.classList.remove('hidden');
+                    overlay.style.display = 'block';
                 }
-                document.body.classList.add('overflow-hidden', 'md:overflow-auto');
+                document.body.classList.add('overflow-hidden');
+                isSidebarOpen = true;
             }
 
             function closeSidebar() {
                 if (sidebar) {
+                    if (window.innerWidth < 768) {
+                        sidebar.style.setProperty('transform', 'translateX(-100%)', 'important');
+                    } else {
+                        sidebar.style.transform = '';
+                    }
                     sidebar.classList.add('-translate-x-full');
                 }
                 if (overlay) {
                     overlay.classList.add('hidden');
+                    overlay.style.display = 'none';
                 }
-                document.body.classList.remove('overflow-hidden', 'md:overflow-auto');
+                document.body.classList.remove('overflow-hidden');
+                isSidebarOpen = false;
             }
 
             const toggleMobileSidebar = (e) => {
@@ -135,7 +147,7 @@
                     e.preventDefault();
                     e.stopPropagation();
                 }
-                if (sidebar && sidebar.classList.contains('-translate-x-full')) {
+                if (!isSidebarOpen) {
                     openSidebar();
                 } else {
                     closeSidebar();
@@ -144,6 +156,7 @@
 
             if (btnOpen) {
                 btnOpen.addEventListener('click', toggleMobileSidebar);
+                btnOpen.addEventListener('touchstart', toggleMobileSidebar, { passive: false });
             }
             if (btnClose) {
                 btnClose.addEventListener('click', (e) => {
@@ -153,7 +166,15 @@
             }
             if (overlay) {
                 overlay.addEventListener('click', closeSidebar);
+                overlay.addEventListener('touchstart', closeSidebar, { passive: true });
             }
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth >= 768 && sidebar) {
+                    sidebar.style.transform = '';
+                    if (overlay) overlay.style.display = '';
+                }
+            });
 
             // Auto-close sidebar on mobile when tapping a menu link
             if (sidebar) {

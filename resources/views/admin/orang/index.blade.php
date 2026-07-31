@@ -26,12 +26,12 @@
             
             {{-- Search Box with Guaranteed Padding --}}
             <div class="flex-1 relative">
-                <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-surface-400 pointer-events-none flex items-center justify-center">
+                <div class="absolute top-1/2 -translate-y-1/2 text-surface-400 pointer-events-none flex items-center justify-center" style="left: 1.25rem !important;">
                     <i data-lucide="search" class="w-4 h-4"></i>
                 </div>
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Nama, NIUP, atau NIK..." 
                        class="w-full pr-4 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-colors"
-                       style="padding-left: 2.75rem !important;">
+                       style="padding-left: 3.25rem !important;">
             </div>
 
             {{-- Filter Gender --}}
@@ -60,7 +60,6 @@
                 <tr>
                     <th class="px-6 py-3.5">NIUP & Identitas</th>
                     <th class="px-6 py-4 font-semibold text-center">L/P</th>
-                    <th class="px-6 py-4 font-semibold">TTL</th>
                     <th class="px-6 py-4 font-semibold">Relasi Sistem</th>
                     <th class="px-6 py-4 font-semibold">Status</th>
                     <th class="px-6 py-4 font-semibold text-right">Aksi</th>
@@ -88,10 +87,6 @@
                         <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-md font-extrabold text-[0.65rem] uppercase {{ $orang->jenis_kelamin === 'L' ? 'bg-blue-100 text-blue-700' : 'bg-pink-100 text-pink-700' }}">
                             {{ $orang->jenis_kelamin }}
                         </span>
-                    </td>
-                    <td class="px-6 py-3.5">
-                        <div class="font-bold text-surface-900">{{ $orang->tempat_lahir ?? '-' }},</div>
-                        <div class="text-[0.65rem] text-surface-500 font-medium">{{ $orang->tanggal_lahir ? $orang->tanggal_lahir->format('d M Y') : '-' }}</div>
                     </td>
                     <td class="px-6 py-3.5">
                         <div class="flex gap-1 flex-wrap w-36">
@@ -136,7 +131,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-6 py-12 text-center text-surface-500">
+                    <td colspan="5" class="px-6 py-12 text-center text-surface-500">
                         <div class="flex flex-col items-center justify-center">
                             <i data-lucide="users" class="w-12 h-12 text-surface-300 mb-3"></i>
                             <p class="font-bold text-surface-900 mb-1">Data Induk Kosong</p>

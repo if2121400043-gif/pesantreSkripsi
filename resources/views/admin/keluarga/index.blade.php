@@ -62,12 +62,12 @@
     <div class="p-4 border-b border-surface-100 bg-surface-50/70">
         <form action="{{ route('admin.keluarga.index') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
             <div class="flex-1 relative">
-                <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-surface-400 pointer-events-none flex items-center justify-center">
+                <div class="absolute top-1/2 -translate-y-1/2 text-surface-400 pointer-events-none flex items-center justify-center" style="left: 1.25rem !important;">
                     <i data-lucide="search" class="w-4 h-4"></i>
                 </div>
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Nama Santri atau Nama Wali..." 
                        class="w-full pr-4 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-colors"
-                       style="padding-left: 2.75rem !important;">
+                       style="padding-left: 3.25rem !important;">
             </div>
 
             <button type="submit" class="btn-primary py-2.5 px-5 rounded-xl text-xs font-bold shrink-0">Cari Data</button>

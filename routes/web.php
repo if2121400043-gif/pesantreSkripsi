@@ -189,6 +189,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/kedisiplinan/pelanggaran', [\App\Http\Controllers\Guru\KedisiplinanController::class, 'storePelanggaran'])->name('pelanggaran.store');
         Route::post('/kedisiplinan/prestasi', [\App\Http\Controllers\Guru\KedisiplinanController::class, 'storePrestasi'])->name('prestasi.store');
         Route::get('/api/search-santri', [\App\Http\Controllers\Guru\KedisiplinanController::class, 'searchSantri'])->name('api.search-santri');
+        
+        // Jadwal Mengajar & Cetak
+        Route::get('/jadwal-mengajar', [\App\Http\Controllers\Guru\DashboardController::class, 'jadwalMengajar'])->name('jadwal-mengajar');
+        Route::get('/jadwal-mengajar/cetak', [\App\Http\Controllers\Guru\DashboardController::class, 'cetakJadwal'])->name('jadwal-mengajar.cetak');
     });
 
     // ── Panitia PSB Routes ──

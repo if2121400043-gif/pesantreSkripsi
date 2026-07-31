@@ -78,4 +78,52 @@ class DashboardController extends Controller
 
         return view('guru.dashboard', compact('pegawai', 'jadwalHariIni', 'totalKelasDiajar', 'waliKelas', 'hariIni', 'hariEnum'));
     }
+
+    /**
+     * Halaman Jadwal Mengajar Mingguan Guru (lengkap semua hari).
+     */
+    public function jadwalMengajar()
+    {
+        $pegawai = $this->getPegawai();
+
+        if (!$pegawai) {
+            return view('guru.dashboard_empty');
+        }
+
+        $hariOrder = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'AHAD'];
+
+        $semuaJadwal = JadwalPelajaran::with(['mataPelajaran', 'rombel'])
+            ->where('pegawai_id', $pegawai->id)
+            ->orderByRaw("FIELD(hari, '" . implode("','", $hariOrder) . "')")
+            ->orderBy('jam_mulai')
+            ->get()
+            ->groupBy('hari');
+
+        return view('guru.jadwal_mengajar', compact('pegawai', 'semuaJadwal', 'hariOrder'));
+    }
+
+    /**
+     * Halaman Cetak Jadwal Mengajar Guru (Print-Friendly, tanpa navigasi portal).
+     */
+    public function cetakJadwal()
+    {
+        $pegawai = $this->getPegawai();
+
+        if (!$pegawai) {
+            return redirect()->route('guru.dashboard')->with('error', 'Data pegawai tidak ditemukan.');
+        }
+
+        $hariOrder = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'AHAD'];
+
+        $semuaJadwal = JadwalPelajaran::with(['mataPelajaran', 'rombel'])
+            ->where('pegawai_id', $pegawai->id)
+            ->orderByRaw("FIELD(hari, '" . implode("','", $hariOrder) . "')")
+            ->orderBy('jam_mulai')
+            ->get()
+            ->groupBy('hari');
+
+        $tahunPelajaran = $pegawai->lembaga ?? null;
+
+        return view('guru.cetak_jadwal', compact('pegawai', 'semuaJadwal', 'hariOrder'));
+    }
 }

@@ -126,6 +126,22 @@
                 </div>
             </a>
 
+            {{-- Card 4: Jadwal Mengajar & Cetak --}}
+            <a href="{{ route('guru.jadwal-mengajar') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-amber-400 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute -right-8 -top-8 w-28 h-28 bg-amber-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 text-white flex items-center justify-center shadow-md shadow-amber-500/20 mb-4 group-hover:rotate-6 transition-transform">
+                        <i data-lucide="calendar-days" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-surface-900 group-hover:text-amber-600 transition-colors">Jadwal Mengajar</h3>
+                    <p class="text-xs text-surface-500 mt-1 leading-relaxed">Lihat jadwal mengajar mingguan lengkap dan cetak dalam format dokumen resmi.</p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-surface-100 flex items-center justify-between text-xs font-bold text-amber-600">
+                    <span>Lihat & Cetak Jadwal</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
         </div>
     </div>
 

@@ -47,14 +47,25 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $messages = [
+            'username.required' => 'Username wajib diisi.',
+            'username.unique' => 'Username sudah digunakan oleh akun lain.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan oleh akun lain.',
+            'password.required' => 'Password wajib diisi.',
+            'password.min' => 'Password minimal harus 6 karakter.',
+            'role_ids.required' => 'Pilih minimal satu Peran (Role) untuk akun ini.',
+        ];
+
         $validated = $request->validate([
             'username' => 'required|string|max:50|unique:users,username',
             'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:6',
             'orang_id' => 'nullable|exists:orang,id',
             'role_ids' => 'required|array|min:1',
             'role_ids.*' => 'exists:roles,id',
-        ]);
+        ], $messages);
 
         $user = User::create([
             'username' => $validated['username'],
@@ -88,13 +99,23 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        $messages = [
+            'username.required' => 'Username wajib diisi.',
+            'username.unique' => 'Username sudah digunakan oleh akun lain.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan oleh akun lain.',
+            'password.min' => 'Password minimal harus 6 karakter.',
+            'role_ids.required' => 'Pilih minimal satu Peran (Role) untuk akun ini.',
+        ];
+
         $validated = $request->validate([
             'username' => 'required|string|max:50|unique:users,username,' . $user->id,
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:8',
+            'password' => 'nullable|string|min:6',
             'role_ids' => 'required|array|min:1',
             'role_ids.*' => 'exists:roles,id',
-        ]);
+        ], $messages);
 
         $updateData = [
             'username' => $validated['username'],

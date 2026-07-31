@@ -1,18 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'Registrasi Identitas Baru')
+@section('title', 'Registrasi Identitas Induk (NIUP) — PP Nurul Furqon')
 
 @section('page_header')
 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
     <div>
-        <div class="flex items-center gap-2 text-sm text-surface-500 mb-2">
-            <a href="{{ route('admin.orang.index') }}" class="hover:text-primary-600 transition-colors">Data Orang</a>
-            <i data-lucide="chevron-right" class="w-4 h-4"></i>
-            <span class="text-surface-900 font-medium">Registrasi NIUP</span>
+        <div class="flex items-center gap-2 text-xs text-surface-500 mb-1.5">
+            <a href="{{ route('admin.orang.index') }}" class="hover:text-primary-600 transition-colors font-medium">Data Orang</a>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+            <span class="text-surface-900 font-bold">Registrasi NIUP</span>
         </div>
         <h1 class="text-2xl font-bold text-surface-900 font-heading">Formulir Identitas Induk</h1>
     </div>
-    <a href="{{ route('admin.orang.index') }}" class="btn-secondary flex items-center gap-2">
+    <a href="{{ route('admin.orang.index') }}" class="btn-secondary flex items-center gap-2 text-xs font-bold py-2 px-4 rounded-xl">
         <i data-lucide="arrow-left" class="w-4 h-4"></i>
         <span>Kembali</span>
     </a>
@@ -25,12 +25,12 @@
 
     {{-- Notifikasi Error Global --}}
     @if($errors->any())
-        <div class="bg-danger-50 text-danger-700 p-4 rounded-xl border border-danger-200">
+        <div class="bg-danger-50 text-danger-800 p-4 rounded-2xl border border-danger-200 shadow-sm">
             <div class="flex gap-3">
-                <i data-lucide="alert-circle" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+                <i data-lucide="alert-circle" class="w-5 h-5 text-danger-600 flex-shrink-0 mt-0.5"></i>
                 <div>
-                    <h3 class="font-semibold mb-1">Terdapat kesalahan pengisian:</h3>
-                    <ul class="list-disc pl-5 space-y-1 text-sm">
+                    <h3 class="font-bold text-xs mb-1">Terdapat kesalahan pengisian:</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-xs font-medium">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
@@ -42,36 +42,69 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        {{-- Kolom Kiri: Info Dasar --}}
+        {{-- Kolom Kiri: Info Dasar & Alamat --}}
         <div class="lg:col-span-2 space-y-6">
-            <x-card title="Informasi Pribadi Dasar">
+            
+            {{-- Card 1: Informasi Pribadi --}}
+            <div class="bg-white rounded-3xl p-6 border border-surface-200 shadow-sm relative overflow-hidden">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-2xl bg-primary-100 text-primary-700 flex items-center justify-center font-bold shrink-0">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-extrabold text-surface-900">Informasi Pribadi Dasar</h3>
+                        <p class="text-xs text-surface-500">Data identitas utama sesuai dokumen resmi kependudukan.</p>
+                    </div>
+                </div>
+
                 <div class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form-input name="nama_lengkap" label="Nama Lengkap (Sesuai Ijazah/Akte)" required value="{{ old('nama_lengkap') }}" />
-                        <x-form-input name="nama_panggilan" label="Nama Panggilan" value="{{ old('nama_panggilan') }}" />
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Nama Lengkap (Sesuai Ijazah/Akte) <span class="text-danger-500">*</span></label>
+                            <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required placeholder="Ketik nama lengkap..." class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Nama Panggilan</label>
+                            <input type="text" name="nama_panggilan" value="{{ old('nama_panggilan') }}" placeholder="Nama panggilan..." class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <x-form-input name="nik" label="NIK (KTP/KIA)" value="{{ old('nik') }}" maxlength="16" />
-                        <x-form-input name="no_kk" label="Nomor Kartu Keluarga" value="{{ old('no_kk') }}" maxlength="16" />
-                        
                         <div>
-                            <label class="block text-sm font-medium text-surface-700 mb-1">Jenis Kelamin <span class="text-danger-500">*</span></label>
-                            <select name="jenis_kelamin" required class="w-full rounded-lg border border-surface-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                            <label class="block text-xs font-bold text-surface-700 mb-1">NIK (KTP/KIA)</label>
+                            <input type="text" name="nik" value="{{ old('nik') }}" maxlength="16" placeholder="16 Digit NIK..." class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Nomor Kartu Keluarga</label>
+                            <input type="text" name="no_kk" value="{{ old('no_kk') }}" maxlength="16" placeholder="16 Digit No. KK..." class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Jenis Kelamin <span class="text-danger-500">*</span></label>
+                            <select name="jenis_kelamin" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-sm font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                                 <option value="" disabled {{ old('jenis_kelamin') ? '' : 'selected' }}>Pilih...</option>
-                                <option value="L" {{ old('jenis_kelamin') === 'L' ? 'selected' : '' }}>Laki-laki</option>
-                                <option value="P" {{ old('jenis_kelamin') === 'P' ? 'selected' : '' }}>Perempuan</option>
+                                <option value="L" {{ old('jenis_kelamin') === 'L' ? 'selected' : '' }}>Laki-laki (Putra)</option>
+                                <option value="P" {{ old('jenis_kelamin') === 'P' ? 'selected' : '' }}>Perempuan (Putri)</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <x-form-input name="tempat_lahir" label="Tempat Lahir" value="{{ old('tempat_lahir') }}" />
-                        <x-form-input type="date" name="tanggal_lahir" label="Tanggal Lahir" value="{{ old('tanggal_lahir') }}" />
-                        
                         <div>
-                            <label class="block text-sm font-medium text-surface-700 mb-1">Golongan Darah</label>
-                            <select name="golongan_darah" class="w-full rounded-lg border border-surface-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Tempat Lahir</label>
+                            <input type="text" name="tempat_lahir" value="{{ old('tempat_lahir') }}" placeholder="Kota/Kab Tempat Lahir" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Tanggal Lahir</label>
+                            <input type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Golongan Darah</label>
+                            <select name="golongan_darah" class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-sm font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                                 <option value="" {{ !old('golongan_darah') ? 'selected' : '' }}>Tidak Tahu</option>
                                 <option value="A" {{ old('golongan_darah') === 'A' ? 'selected' : '' }}>A</option>
                                 <option value="B" {{ old('golongan_darah') === 'B' ? 'selected' : '' }}>B</option>
@@ -82,33 +115,64 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <x-form-input name="kewarganegaraan" label="Kewarganegaraan" required value="{{ old('kewarganegaraan', 'Indonesia') }}" />
-                        <x-form-input type="number" name="anak_ke" label="Anak Ke" min="1" value="{{ old('anak_ke') }}" />
-                        <x-form-input type="number" name="jumlah_saudara" label="Jumlah Saudara" min="0" value="{{ old('jumlah_saudara') }}" />
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Kewarganegaraan <span class="text-danger-500">*</span></label>
+                            <input type="text" name="kewarganegaraan" value="{{ old('kewarganegaraan', 'Indonesia') }}" required class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Anak Ke</label>
+                            <input type="number" name="anak_ke" min="1" value="{{ old('anak_ke') }}" placeholder="1" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Jumlah Saudara</label>
+                            <input type="number" name="jumlah_saudara" min="0" value="{{ old('jumlah_saudara') }}" placeholder="0" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        </div>
                     </div>
                 </div>
-            </x-card>
+            </div>
 
-            <x-card title="Alamat & Kontak">
+            {{-- Card 2: Alamat & Kontak --}}
+            <div class="bg-white rounded-3xl p-6 border border-surface-200 shadow-sm relative overflow-hidden">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-2xl bg-info-100 text-info-700 flex items-center justify-center font-bold shrink-0">
+                        <i data-lucide="map-pin" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-extrabold text-surface-900">Alamat Domisili & Kontak</h3>
+                        <p class="text-xs text-surface-500">Rincian lokasi tempat tinggal & nomor telepon aktif.</p>
+                    </div>
+                </div>
+
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-surface-700 mb-1">Jalan / Dusun / Rincian Alamat</label>
-                        <textarea name="alamat_lengkap" rows="2" class="w-full rounded-lg border border-surface-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">{{ old('alamat_lengkap') }}</textarea>
+                        <label class="block text-xs font-bold text-surface-700 mb-1">Jalan / Dusun / Rincian Alamat</label>
+                        <textarea name="alamat_lengkap" rows="2" placeholder="Nama jalan, RT/RW, nomor rumah..." class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">{{ old('alamat_lengkap') }}</textarea>
                     </div>
 
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <x-form-input name="rt" label="RT" placeholder="001" value="{{ old('rt') }}" />
-                        <x-form-input name="rw" label="RW" placeholder="002" value="{{ old('rw') }}" />
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">RT</label>
+                            <input type="text" name="rt" value="{{ old('rt') }}" placeholder="001" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">RW</label>
+                            <input type="text" name="rw" value="{{ old('rw') }}" placeholder="002" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        </div>
+
                         <div class="col-span-2">
-                            <x-form-input name="kode_pos" label="Kode Pos" value="{{ old('kode_pos') }}" />
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Kode Pos</label>
+                            <input type="text" name="kode_pos" value="{{ old('kode_pos') }}" placeholder="67123" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                         </div>
                     </div>
 
                     {{-- Cascading Dropdowns for Wilayah --}}
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-surface-50 p-4 rounded-xl border border-surface-100">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-surface-50 p-4 rounded-2xl border border-surface-200">
                         <div>
-                            <label class="block text-sm font-medium text-surface-700 mb-1">Provinsi</label>
-                            <select id="provinsi_id" class="w-full rounded-lg border border-surface-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500" onchange="loadKabupaten(this.value)">
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Provinsi</label>
+                            <select id="provinsi_id" class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500" onchange="loadKabupaten(this.value)">
                                 <option value="">Pilih Provinsi...</option>
                                 @foreach($provinsis as $prov)
                                     <option value="{{ $prov->id }}">{{ $prov->nama }}</option>
@@ -116,58 +180,78 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-surface-700 mb-1">Kabupaten/Kota</label>
-                            <select id="kabupaten_id" disabled class="w-full rounded-lg border border-surface-300 bg-surface-100 px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500" onchange="loadKecamatan(this.value)">
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Kabupaten/Kota</label>
+                            <select id="kabupaten_id" disabled class="w-full rounded-xl border border-surface-300 bg-surface-100 px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500" onchange="loadKecamatan(this.value)">
                                 <option value="">Pilih Kabupaten...</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-surface-700 mb-1">Kecamatan</label>
-                            <select id="kecamatan_id" disabled class="w-full rounded-lg border border-surface-300 bg-surface-100 px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500" onchange="loadDesa(this.value)">
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Kecamatan</label>
+                            <select id="kecamatan_id" disabled class="w-full rounded-xl border border-surface-300 bg-surface-100 px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500" onchange="loadDesa(this.value)">
                                 <option value="">Pilih Kecamatan...</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-surface-700 mb-1">Desa/Kelurahan</label>
-                            <select name="desa_id" id="desa_id" disabled class="w-full rounded-lg border border-surface-300 bg-surface-100 px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Desa/Kelurahan</label>
+                            <select name="desa_id" id="desa_id" disabled class="w-full rounded-xl border border-surface-300 bg-surface-100 px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                                 <option value="">Pilih Desa...</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form-input type="tel" name="telepon" label="Nomor WhatsApp / HP Aktif" value="{{ old('telepon') }}" />
-                        <x-form-input type="email" name="email" label="Alamat Email (Opsional)" value="{{ old('email') }}" />
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Nomor WhatsApp / HP Aktif</label>
+                            <input type="tel" name="telepon" value="{{ old('telepon') }}" placeholder="08xxxxxxxxxx" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Alamat Email (Opsional)</label>
+                            <input type="email" name="email" value="{{ old('email') }}" placeholder="email@domain.com" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        </div>
                     </div>
                 </div>
-            </x-card>
+            </div>
+
         </div>
 
-        {{-- Kolom Kanan: Status & Simpan --}}
+        {{-- Kolom Kanan: Pengaturan Data NIUP & Submit --}}
         <div class="lg:col-span-1 space-y-6">
-            <x-card title="Pengaturan Data">
+            <div class="bg-white rounded-3xl p-6 border border-surface-200 shadow-sm sticky top-20">
+                <h3 class="text-base font-extrabold text-surface-900 mb-4 pb-3 border-b border-surface-100 flex items-center gap-2">
+                    <i data-lucide="settings" class="w-5 h-5 text-primary-600"></i>
+                    Pengaturan Identitas
+                </h3>
                 
-                <div class="p-4 bg-primary-50 border border-primary-100 rounded-xl mb-4 text-center">
-                    <i data-lucide="fingerprint" class="w-8 h-8 text-primary-500 mx-auto mb-2"></i>
-                    <h4 class="font-bold text-primary-900">Auto Generate NIUP</h4>
-                    <p class="text-xs text-primary-600 mt-1">Nomor Induk Unik Pesantren akan digenerasi otomatis saat disimpan.</p>
+                {{-- NIUP Banner --}}
+                <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl mb-5 text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-2 font-bold">
+                        <i data-lucide="fingerprint" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-extrabold text-emerald-900 text-sm">Auto Generate NIUP</h4>
+                    <p class="text-[0.68rem] text-emerald-700 mt-1 leading-relaxed">
+                        Nomor Induk Unik Pesantren (NIUP) akan dibuatkan otomatis oleh sistem setelah disimpan.
+                    </p>
                 </div>
 
-                <div class="flex items-center gap-3 p-3 bg-surface-50 border border-surface-200 rounded-lg">
-                    <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', '1') == '1' ? 'checked' : '' }} class="w-5 h-5 rounded border-surface-300 text-primary-600 focus:ring-primary-500">
-                    <label for="is_active" class="text-sm font-medium text-surface-900 cursor-pointer">
+                {{-- Status Keaktifan --}}
+                <div class="flex items-center gap-3 p-3.5 bg-surface-50 border border-surface-200 rounded-2xl mb-6">
+                    <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', '1') == '1' ? 'checked' : '' }} class="w-5 h-5 rounded border-surface-300 text-primary-600 focus:ring-primary-500 cursor-pointer">
+                    <label for="is_active" class="text-xs font-bold text-surface-900 cursor-pointer">
                         Status Orang Ini Aktif (Hidup)
                     </label>
                 </div>
 
-                <div class="mt-6 pt-6 border-t border-surface-100">
-                    <button type="submit" class="btn-primary w-full justify-center flex items-center gap-2 py-3">
-                        <i data-lucide="save" class="w-5 h-5"></i>
-                        <span class="font-bold">Simpan & Generate NIUP</span>
-                    </button>
-                    <p class="text-xs text-center text-surface-400 mt-3">Pastikan data yang diinput sesuai dengan dokumen resmi kependudukan.</p>
-                </div>
-            </x-card>
+                {{-- Submit Button --}}
+                <button type="submit" class="btn-primary w-full justify-center flex items-center gap-2 py-3 px-6 rounded-xl font-bold text-xs shadow-md shadow-primary-700/20" style="color: #ffffff !important; background-color: #047857 !important;">
+                    <i data-lucide="save" class="w-4 h-4 text-white" style="color: #ffffff !important;"></i>
+                    <span style="color: #ffffff !important;">Simpan & Generate NIUP</span>
+                </button>
+                
+                <p class="text-[0.65rem] text-center text-surface-450 mt-3 leading-relaxed">
+                    Pastikan rincian nama dan tanggal lahir sudah sesuai dengan akte/KTP kependudukan resmi.
+                </p>
+            </div>
         </div>
 
     </div>

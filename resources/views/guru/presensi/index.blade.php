@@ -41,9 +41,10 @@ $labelHari = [
                 $isActive = ($hari === $h);
             @endphp
             <a href="{{ route('guru.presensi.index', ['hari' => $h]) }}" 
-               class="px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-1.5 {{ $isActive ? 'bg-primary-700 text-white border-primary-700 shadow-md shadow-primary-700/20 scale-105' : 'bg-white text-surface-600 border-surface-200 hover:bg-surface-50 hover:text-surface-900' }}">
+               class="px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-1.5 {{ $isActive ? 'bg-primary-800 text-white border-primary-800 shadow-md shadow-primary-800/20 scale-105' : 'bg-white text-surface-600 border-surface-200 hover:bg-surface-50 hover:text-surface-900' }}"
+               style="{{ $isActive ? 'color: #ffffff !important; background-color: #064e3b !important;' : '' }}">
                 <i data-lucide="calendar" class="w-3.5 h-3.5 {{ $isActive ? 'text-warning-300' : 'text-surface-400' }}"></i>
-                Hari {{ $labelHari[$h] ?? $h }}
+                <span style="{{ $isActive ? 'color: #ffffff !important;' : '' }}">Hari {{ $labelHari[$h] ?? $h }}</span>
             </a>
         @endforeach
     </div>
@@ -73,8 +74,8 @@ $labelHari = [
                         <div>
                             {{-- Header: Time Badge --}}
                             <div class="flex items-center justify-between gap-2 mb-3">
-                                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-primary-50 text-primary-700 font-bold text-xs border border-primary-100">
-                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-primary-500"></i>
+                                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-primary-50 text-primary-800 font-bold text-xs border border-primary-100">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-primary-600"></i>
                                     <span>Pukul {{ $jamFormatted }} @if($jamSelesaiFormatted && $jamSelesaiFormatted !== '00:00') - {{ $jamSelesaiFormatted }} @endif WIB</span>
                                 </div>
                             </div>
@@ -100,9 +101,9 @@ $labelHari = [
 
                         {{-- Action Button --}}
                         <div class="mt-6 pt-4 border-t border-surface-100">
-                            <a href="{{ route('guru.presensi.create', $jadwal->id) }}" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary-700 hover:bg-primary-800 text-white font-bold text-xs shadow-sm shadow-primary-700/20 transition-all group-hover:shadow-md">
-                                <i data-lucide="check-square" class="w-4 h-4"></i>
-                                <span>Isi Presensi Santri</span>
+                            <a href="{{ route('guru.presensi.create', $jadwal->id) }}" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary-700 hover:bg-primary-800 text-white font-bold text-xs shadow-md transition-all" style="color: #ffffff !important; background-color: #065f46 !important;">
+                                <i data-lucide="check-square" class="w-4 h-4 text-white" style="color: #ffffff !important;"></i>
+                                <span style="color: #ffffff !important;">Isi Presensi Santri</span>
                             </a>
                         </div>
                     </div>

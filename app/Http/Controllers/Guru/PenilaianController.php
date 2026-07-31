@@ -25,7 +25,7 @@ class PenilaianController extends Controller
 
         // Menampilkan daftar kelas yang diampu (distinct berdasarkan rombel dan mata pelajaran)
         // Kita bisa ambil dari jadwal_pelajaran
-        $jadwals = JadwalPelajaran::with(['mataPelajaran', 'rombel', 'tahunPelajaran'])
+        $jadwals = JadwalPelajaran::with(['mataPelajaran', 'rombel.tahunPelajaran'])
             ->where('pegawai_id', $pegawai->id)
             ->get()
             ->unique(function ($item) {

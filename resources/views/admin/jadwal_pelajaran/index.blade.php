@@ -2,46 +2,6 @@
 
 @section('title', 'Jadwal Pelajaran — PP Nurul Furqon')
 
-@push('styles')
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<style>
-    .select2-container--default .select2-selection--single {
-        height: 2.75rem !important;
-        border-radius: 0.75rem !important;
-        border-color: #cbd5e1 !important;
-        display: flex !important;
-        align-items: center !important;
-        padding-left: 0.5rem !important;
-        background-color: #ffffff !important;
-    }
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        color: #0f172a !important;
-        font-size: 0.8125rem !important;
-        font-weight: 600 !important;
-    }
-    .select2-container--default .select2-selection--single .select2-selection__arrow {
-        height: 2.75rem !important;
-        right: 0.75rem !important;
-    }
-    .select2-dropdown {
-        border-radius: 0.75rem !important;
-        border-color: #cbd5e1 !important;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
-        overflow: hidden !important;
-        z-index: 9999 !important;
-    }
-    .select2-container--default .select2-search--dropdown .select2-search__field {
-        border-radius: 0.5rem !important;
-        border-color: #cbd5e1 !important;
-        padding: 0.5rem 0.75rem !important;
-    }
-    .select2-container--default .select2-results__option--highlighted[aria-selected] {
-        background-color: #047857 !important;
-        color: #ffffff !important;
-    }
-</style>
-@endpush
-
 @section('page_header')
 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
     <div>
@@ -49,10 +9,10 @@
         <p class="text-sm text-surface-500 mt-1">Kelola jam mengajar guru dan jadwal per kelas.</p>
     </div>
     @if($rombelId)
-    <button onclick="openModal()" class="btn-primary flex items-center gap-2 py-2.5 px-4 rounded-xl font-bold text-xs shadow-md shadow-primary-700/20 shrink-0">
+    <a href="{{ route('admin.jadwal-pelajaran.create', ['rombel_id' => $rombelId, 'tahun_pelajaran_id' => $tahunId]) }}" class="btn-primary flex items-center gap-2 py-2.5 px-4 rounded-xl font-bold text-xs shadow-md shadow-primary-700/20 shrink-0">
         <i data-lucide="plus" class="w-4 h-4"></i>
         <span>+ Tambah Jadwal Baru</span>
-    </button>
+    </a>
     @endif
 </div>
 @endsection
@@ -172,101 +132,4 @@
         </div>
     @endif
 </div>
-
-@if($rombelId)
-{{-- Modal Tambah Jadwal --}}
-<div id="modal-jadwal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-    <div class="fixed inset-0 bg-surface-900/50 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
-    
-    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <div class="relative transform overflow-visible rounded-3xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md border border-surface-200">
-                <div class="px-6 py-4 border-b border-surface-100 flex justify-between items-center bg-surface-50 rounded-t-3xl">
-                    <h3 class="text-base font-bold text-surface-900 font-heading">Tambah Jadwal Baru</h3>
-                    <button type="button" onclick="closeModal()" class="text-surface-400 hover:text-surface-600">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                    </button>
-                </div>
-                
-                <form action="{{ route('admin.jadwal-pelajaran.store') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="rombel_id" value="{{ $rombelId }}">
-                    
-                    <div class="px-6 py-4 space-y-4 text-xs">
-                        <div>
-                            <label class="block font-bold text-surface-700 mb-1">Hari <span class="text-danger-500">*</span></label>
-                            <select name="hari" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
-                                @foreach(['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'AHAD'] as $h)
-                                    <option value="{{ $h }}">{{ $h }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block font-bold text-surface-700 mb-1">Jam Mulai <span class="text-danger-500">*</span></label>
-                                <input type="time" name="jam_mulai" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
-                            </div>
-                            <div>
-                                <label class="block font-bold text-surface-700 mb-1">Jam Selesai <span class="text-danger-500">*</span></label>
-                                <input type="time" name="jam_selesai" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block font-bold text-surface-700 mb-1">Mata Pelajaran <span class="text-danger-500">*</span></label>
-                            <select name="mata_pelajaran_id" required class="select2-modal-jadwal w-full">
-                                <option value="" disabled selected>Ketik nama mapel...</option>
-                                @foreach($mapels as $m)
-                                    <option value="{{ $m->id }}">{{ $m->nama_mapel }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block font-bold text-surface-700 mb-1">Guru Pengampu (Opsional)</label>
-                            <select name="pegawai_id" class="select2-modal-jadwal w-full">
-                                <option value="" selected>Belum Ditentukan</option>
-                                @foreach($gurus as $g)
-                                    <option value="{{ $g->id }}">{{ $g->orang->nama_lengkap }} ({{ $g->orang->niup }})</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="px-6 py-4 bg-surface-50 border-t border-surface-100 flex justify-end gap-3 rounded-b-3xl">
-                        <button type="button" onclick="closeModal()" class="btn-secondary text-xs font-bold py-2.5 px-4 rounded-xl">Batal</button>
-                        <button type="submit" class="btn-primary text-xs font-bold py-2.5 px-5 rounded-xl shadow-md flex items-center gap-1.5" style="color: #ffffff !important; background-color: #047857 !important;">
-                            <i data-lucide="save" class="w-4 h-4 text-white" style="color: #ffffff !important;"></i>
-                            <span style="color: #ffffff !important;">Simpan Jadwal</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-@push('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('.select2-modal-jadwal').select2({
-            placeholder: 'Ketik nama...',
-            allowClear: true,
-            width: '100%',
-            dropdownParent: $('#modal-jadwal')
-        });
-    });
-
-    function openModal() {
-        document.getElementById('modal-jadwal').classList.remove('hidden');
-    }
-    function closeModal() {
-        document.getElementById('modal-jadwal').classList.add('hidden');
-    }
-</script>
-@endpush
-@endif
 @endsection

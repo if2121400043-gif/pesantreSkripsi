@@ -36,6 +36,12 @@ class KeluargaController extends Controller
         return view('admin.keluarga.index', compact('hubungannya', 'semuaOrang'));
     }
 
+    public function create()
+    {
+        $semuaOrang = Orang::where('is_active', true)->orderBy('nama_lengkap')->get(['id', 'nama_lengkap', 'niup']);
+        return view('admin.keluarga.create', compact('semuaOrang'));
+    }
+
     public function store(Request $request)
     {
         $mode = $request->input('mode_wali', 'existing');
@@ -58,7 +64,7 @@ class KeluargaController extends Controller
                     'nama_lengkap' => $validated['nama_wali'],
                     'telepon' => $validated['telepon_wali'],
                     'alamat_lengkap' => $validated['alamat_wali'],
-                    'jenis_kelamin' => in_array($validated['hubungan'], ['AYAH', 'KAKEK', 'PAMAN', 'KAKAK']) ? 'L' : 'P', // Best guess
+                    'jenis_kelamin' => in_array($validated['hubungan'], ['AYAH', 'KAKEK', 'PAMAN', 'KAKAK']) ? 'L' : 'P',
                 ]);
 
                 // 2. Create User Portal
@@ -84,7 +90,6 @@ class KeluargaController extends Controller
                 // 3. Set Hubungan
                 $keluarga_id = $wali->id;
 
-                // Kirim Notifikasi WA (Background task / Async if possible, but we'll do sync for now as per previous Fonnte implementation)
                 $santri = Orang::find($validated['orang_id']);
                 $portalUrl = url('/portal/beranda');
                 $pesan = "Assalamu'alaikum Wr. Wb.\n\nYth. Bapak/Ibu {$wali->nama_lengkap},\nData Anda telah didaftarkan sebagai Wali Santri dari ananda *{$santri->nama_lengkap}*.\n\nBerikut adalah akses Portal Wali Anda:\nLogin: {$portalUrl}\nUsername: {$user->username}\nPassword: {$validated['telepon_wali']}\n\nHarap segera login dan mengubah password Anda demi keamanan.\n\nJazakumullahu Khairan.";
@@ -133,10 +138,15 @@ class KeluargaController extends Controller
 
         if ($mode === 'new') {
             DB::commit();
-            return back()->with('success', 'Wali baru berhasil dibuat dan direlasikan, serta akun portal telah dikirim via WhatsApp.');
+            return redirect()->route('admin.keluarga.index')->with('success', 'Wali baru berhasil dibuat dan direlasikan, serta akun portal telah dikirim via WhatsApp.');
         }
 
-        return back()->with('success', 'Relasi keluarga berhasil ditambahkan.');
+        return redirect()->route('admin.keluarga.index')->with('success', 'Relasi keluarga berhasil ditambahkan.');
+    }
+
+    public function editWali(Orang $orang)
+    {
+        return view('admin.keluarga.edit_wali', compact('orang'));
     }
 
     public function updateWali(Request $request, Orang $orang)
@@ -149,7 +159,7 @@ class KeluargaController extends Controller
 
         $orang->update($validated);
 
-        return back()->with('success', 'Profil Wali berhasil diperbarui.');
+        return redirect()->route('admin.keluarga.index')->with('success', 'Profil Wali berhasil diperbarui.');
     }
 
     public function resetPassword(Request $request, Orang $orang)
@@ -209,7 +219,7 @@ class KeluargaController extends Controller
 
         $keluarga->update($validated);
 
-        return back()->with('success', 'Relasi keluarga berhasil diperbarui.');
+        return redirect()->route('admin.keluarga.index')->with('success', 'Relasi keluarga berhasil diperbarui.');
     }
 
     public function destroy(HubunganKeluarga $keluarga)

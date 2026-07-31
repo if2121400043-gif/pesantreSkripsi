@@ -84,8 +84,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('orang', \App\Http\Controllers\Admin\OrangController::class);
         Route::resource('peserta-didik', \App\Http\Controllers\Admin\PesertaDidikController::class);
         Route::resource('pegawai', \App\Http\Controllers\Admin\PegawaiController::class);
-        Route::resource('keluarga', \App\Http\Controllers\Admin\KeluargaController::class)->except(['create', 'show', 'edit']);
+        Route::resource('keluarga', \App\Http\Controllers\Admin\KeluargaController::class);
         Route::put('keluarga/wali/{orang}/update', [\App\Http\Controllers\Admin\KeluargaController::class, 'updateWali'])->name('keluarga.wali.update');
+        Route::get('keluarga/wali/{orang}/edit', [\App\Http\Controllers\Admin\KeluargaController::class, 'editWali'])->name('keluarga.wali.edit');
         Route::post('keluarga/wali/{orang}/reset-password', [\App\Http\Controllers\Admin\KeluargaController::class, 'resetPassword'])->name('keluarga.wali.reset-password');
 
         // Akademik
@@ -100,9 +101,7 @@ Route::middleware('auth')->group(function () {
         Route::get('penilaian', [\App\Http\Controllers\Admin\PenilaianController::class, 'index'])->name('penilaian.index');
         Route::post('penilaian', [\App\Http\Controllers\Admin\PenilaianController::class, 'store'])->name('penilaian.store');
         
-        Route::get('jadwal-pelajaran', [\App\Http\Controllers\Admin\JadwalPelajaranController::class, 'index'])->name('jadwal-pelajaran.index');
-        Route::post('jadwal-pelajaran', [\App\Http\Controllers\Admin\JadwalPelajaranController::class, 'store'])->name('jadwal-pelajaran.store');
-        Route::delete('jadwal-pelajaran/{jadwal}', [\App\Http\Controllers\Admin\JadwalPelajaranController::class, 'destroy'])->name('jadwal-pelajaran.destroy');
+        Route::resource('jadwal-pelajaran', \App\Http\Controllers\Admin\JadwalPelajaranController::class)->except(['show', 'edit']);
         
         Route::get('presensi', [\App\Http\Controllers\Admin\PresensiController::class, 'index'])->name('presensi.index');
         Route::post('presensi', [\App\Http\Controllers\Admin\PresensiController::class, 'store'])->name('presensi.store');

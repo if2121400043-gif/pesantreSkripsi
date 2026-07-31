@@ -46,12 +46,34 @@ class JadwalPelajaranController extends Controller
                 // Group by hari
                 $jadwals = $jadwalsQuery->groupBy('hari');
                 
-                $mapels = MataPelajaran::where('lembaga_id', $rombel->lembaga_id)->where('is_active', true)->orderBy('nama')->get();
+                $mapels = MataPelajaran::where('lembaga_id', $rombel->lembaga_id)->where('is_active', true)->orderBy('nama_mapel')->get();
                 $gurus = Pegawai::with('orang')->where('is_active', true)->whereIn('jenis_pegawai', ['GURU', 'USTADZ', 'PENGASUH'])->get();
             }
         }
 
         return view('admin.jadwal_pelajaran.index', compact('rombels', 'jadwals', 'mapels', 'gurus', 'rombelId', 'tahuns', 'tahunId'));
+    }
+
+    public function create(Request $request)
+    {
+        $rombelId = $request->get('rombel_id');
+        $tahunId = $request->get('tahun_pelajaran_id');
+
+        $rombel = null;
+        $mapels = collect();
+        $gurus = collect();
+
+        if ($rombelId) {
+            $rombel = Rombel::with('lembaga', 'tahunPelajaran')->find($rombelId);
+            if ($rombel) {
+                $mapels = MataPelajaran::where('lembaga_id', $rombel->lembaga_id)->where('is_active', true)->orderBy('nama_mapel')->get();
+            }
+        }
+
+        $gurus = Pegawai::with('orang')->where('is_active', true)->whereIn('jenis_pegawai', ['GURU', 'USTADZ', 'PENGASUH'])->get();
+        $rombels = Rombel::with('lembaga')->orderBy('nama')->get();
+
+        return view('admin.jadwal_pelajaran.create', compact('rombel', 'rombels', 'mapels', 'gurus', 'rombelId', 'tahunId'));
     }
 
     public function store(Request $request)
@@ -67,7 +89,12 @@ class JadwalPelajaranController extends Controller
 
         JadwalPelajaran::create($validated);
 
-        return back()->with('success', 'Jadwal pelajaran berhasil ditambahkan.');
+        $rombel = Rombel::find($validated['rombel_id']);
+
+        return redirect()->route('admin.jadwal-pelajaran.index', [
+            'rombel_id' => $validated['rombel_id'],
+            'tahun_pelajaran_id' => $rombel?->tahun_pelajaran_id
+        ])->with('success', 'Jadwal pelajaran berhasil ditambahkan.');
     }
 
     public function destroy(JadwalPelajaran $jadwal)

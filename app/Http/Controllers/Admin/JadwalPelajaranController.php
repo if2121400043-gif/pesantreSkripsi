@@ -46,7 +46,7 @@ class JadwalPelajaranController extends Controller
                 // Group by hari
                 $jadwals = $jadwalsQuery->groupBy('hari');
                 
-                $mapels = MataPelajaran::where('lembaga_id', $rombel->lembaga_id)->where('is_active', true)->orderBy('nama_mapel')->get();
+                $mapels = MataPelajaran::where('lembaga_id', $rombel->lembaga_id)->where('is_active', true)->orderBy('nama')->get();
                 $gurus = Pegawai::with('orang')->where('is_active', true)->whereIn('jenis_pegawai', ['GURU', 'USTADZ', 'PENGASUH'])->get();
             }
         }
@@ -66,7 +66,7 @@ class JadwalPelajaranController extends Controller
         if ($rombelId) {
             $rombel = Rombel::with('lembaga', 'tahunPelajaran')->find($rombelId);
             if ($rombel) {
-                $mapels = MataPelajaran::where('lembaga_id', $rombel->lembaga_id)->where('is_active', true)->orderBy('nama_mapel')->get();
+                $mapels = MataPelajaran::where('lembaga_id', $rombel->lembaga_id)->where('is_active', true)->orderBy('nama')->get();
             }
         }
 

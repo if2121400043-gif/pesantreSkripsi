@@ -2,6 +2,46 @@
 
 @section('title', 'Jadwal Pelajaran — PP Nurul Furqon')
 
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    .select2-container--default .select2-selection--single {
+        height: 2.75rem !important;
+        border-radius: 0.75rem !important;
+        border-color: #cbd5e1 !important;
+        display: flex !important;
+        align-items: center !important;
+        padding-left: 0.5rem !important;
+        background-color: #ffffff !important;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #0f172a !important;
+        font-size: 0.8125rem !important;
+        font-weight: 600 !important;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 2.75rem !important;
+        right: 0.75rem !important;
+    }
+    .select2-dropdown {
+        border-radius: 0.75rem !important;
+        border-color: #cbd5e1 !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
+        overflow: hidden !important;
+        z-index: 9999 !important;
+    }
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+        border-radius: 0.5rem !important;
+        border-color: #cbd5e1 !important;
+        padding: 0.5rem 0.75rem !important;
+    }
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #047857 !important;
+        color: #ffffff !important;
+    }
+</style>
+@endpush
+
 @section('page_header')
 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
     <div>
@@ -175,8 +215,8 @@
 
                         <div>
                             <label class="block font-bold text-surface-700 mb-1">Mata Pelajaran <span class="text-danger-500">*</span></label>
-                            <select name="mata_pelajaran_id" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
-                                <option value="" disabled selected>Pilih Mapel...</option>
+                            <select name="mata_pelajaran_id" required class="select2-modal-jadwal w-full">
+                                <option value="" disabled selected>Ketik nama mapel...</option>
                                 @foreach($mapels as $m)
                                     <option value="{{ $m->id }}">{{ $m->nama_mapel }}</option>
                                 @endforeach
@@ -185,18 +225,21 @@
 
                         <div>
                             <label class="block font-bold text-surface-700 mb-1">Guru Pengampu (Opsional)</label>
-                            <select name="pegawai_id" class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                            <select name="pegawai_id" class="select2-modal-jadwal w-full">
                                 <option value="" selected>Belum Ditentukan</option>
                                 @foreach($gurus as $g)
-                                    <option value="{{ $g->id }}">{{ $g->orang->nama_lengkap }}</option>
+                                    <option value="{{ $g->id }}">{{ $g->orang->nama_lengkap }} ({{ $g->orang->niup }})</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     
                     <div class="px-6 py-4 bg-surface-50 border-t border-surface-100 flex justify-end gap-3 rounded-b-3xl">
-                        <button type="button" onclick="closeModal()" class="btn-secondary text-xs font-bold py-2 px-4 rounded-xl">Batal</button>
-                        <button type="submit" class="btn-primary text-xs font-bold py-2 px-5 rounded-xl">Simpan Jadwal</button>
+                        <button type="button" onclick="closeModal()" class="btn-secondary text-xs font-bold py-2.5 px-4 rounded-xl">Batal</button>
+                        <button type="submit" class="btn-primary text-xs font-bold py-2.5 px-5 rounded-xl shadow-md flex items-center gap-1.5" style="color: #ffffff !important; background-color: #047857 !important;">
+                            <i data-lucide="save" class="w-4 h-4 text-white" style="color: #ffffff !important;"></i>
+                            <span style="color: #ffffff !important;">Simpan Jadwal</span>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -205,7 +248,18 @@
 </div>
 
 @push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
+    $(document).ready(function() {
+        $('.select2-modal-jadwal').select2({
+            placeholder: 'Ketik nama...',
+            allowClear: true,
+            width: '100%',
+            dropdownParent: $('#modal-jadwal')
+        });
+    });
+
     function openModal() {
         document.getElementById('modal-jadwal').classList.remove('hidden');
     }

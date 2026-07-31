@@ -18,8 +18,6 @@ return new class extends Migration
             $table->foreignId('wali_kelas_id')->nullable()->constrained('pegawai')->nullOnDelete();
             $table->integer('kapasitas')->default(30);
             $table->timestamps();
-
-            $table->unique(['lembaga_id', 'tahun_pelajaran_id', 'nama'], 'rombel_unique');
         });
 
         // Pendaftaran Peserta ke Lembaga per Tahun

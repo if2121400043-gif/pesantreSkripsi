@@ -117,7 +117,6 @@ class JadwalSekolahPagiSeeder extends Seeder
                 [
                     'lembaga_id' => $lembaga->id,
                     'tingkat' => $tingkat,
-                    'is_active' => true,
                 ]
             );
             $rombelMap[$namaRombel] = $rombel->id;

@@ -96,7 +96,7 @@ class JadwalSekolahPagiSeeder extends Seeder
         $mapelMap = [];
         foreach ($mapelsData as $namaMapel) {
             $mapel = MataPelajaran::firstOrCreate(
-                ['nama_mapel' => $namaMapel, 'lembaga_id' => $lembaga->id],
+                ['nama' => $namaMapel, 'lembaga_id' => $lembaga->id],
                 ['is_active' => true]
             );
             $mapelMap[$namaMapel] = $mapel->id;

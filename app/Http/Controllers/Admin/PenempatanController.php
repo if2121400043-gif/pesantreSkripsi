@@ -59,6 +59,22 @@ class PenempatanController extends Controller
                 }
             }
                 
+            // Filter by jenis_kelamin explicitly if requested
+            if ($request->filled('jenis_kelamin')) {
+                $jk = $request->jenis_kelamin;
+                $pesertaBelumDitempatkanQuery->whereHas('orang', function($q) use ($jk) {
+                    $q->where('jenis_kelamin', $jk);
+                });
+            }
+                
+            // Filter by jenis_kelamin explicitly if requested
+            if ($request->filled('jenis_kelamin')) {
+                $jk = $request->jenis_kelamin;
+                $pesertaBelumDitempatkanQuery->whereHas('orang', function($q) use ($jk) {
+                    $q->where('jenis_kelamin', $jk);
+                });
+            }
+                
             if ($request->filled('search')) {
                 $search = $request->search;
                 $pesertaBelumDitempatkanQuery->whereHas('orang', function($q) use ($search) {

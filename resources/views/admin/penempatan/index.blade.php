@@ -70,15 +70,16 @@
                                     <i data-lucide="users" class="w-5 h-5 text-warning-500"></i>
                                     Santri Belum Dapat Kelas
                                 </h3>
-                                <p class="text-xs text-surface-500 mt-1">Pilih santri yang akan ditempatkan (Bisa banyak)</p>
+                                <p class="text-xs text-surface-500 mt-1">Pilih santri yang akan ditempatkan (Bisa centang banyak)</p>
                             </div>
                             
                             <div class="flex gap-2 w-full sm:w-auto p-2 bg-white rounded-lg border border-surface-200">
                                 <select name="rombel_id" required class="w-full sm:w-48 text-sm border-none bg-transparent focus:ring-0 py-1" id="target_rombel">
                                     <option value="" disabled selected>-- Pilih Kelas Tujuan --</option>
                                     @foreach($rombels as $rombel)
-                                        <option value="{{ $rombel->id }}" data-capacity="{{ $rombel->kapasitas }}" data-filled="{{ $rombel->riwayat_peserta_count }}">
+                                        <option value="{{ $rombel->id }}" data-capacity="{{ $rombel->kapasitas }}" data-filled="{{ $rombel->riwayat_peserta_count }}" data-gender="{{ $rombel->gender_target }}">
                                             Kelas {{ $rombel->tingkat ? $rombel->tingkat . '-' : '' }}{{ $rombel->nama }} 
+                                            ({{ $rombel->gender_target }}) 
                                             ({{ $rombel->riwayat_peserta_count }}/{{ $rombel->kapasitas }})
                                         </option>
                                     @endforeach
@@ -88,9 +89,23 @@
                                 </button>
                             </div>
                         </div>
+
+                        {{-- Search & Live Instant Filter Bar --}}
+                        <div class="p-3 bg-white border-b border-surface-100 flex flex-col sm:flex-row justify-between items-center gap-3">
+                            <div class="relative w-full sm:w-80">
+                                <i data-lucide="search" class="w-4 h-4 text-surface-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                                <input type="text" id="live-search-santri" placeholder="Cari nama santri, NIUP, atau NISN secara instan..." class="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-surface-300 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20">
+                            </div>
+                            <div class="flex items-center gap-1 text-xs w-full sm:w-auto justify-end">
+                                <span class="text-surface-500 font-medium mr-1">Filter Gender:</span>
+                                <button type="button" onclick="setGenderFilter('ALL')" id="btn-filter-all" class="gender-filter-btn px-2.5 py-1 rounded-md bg-primary-100 text-primary-700 font-bold hover:bg-primary-200 transition-colors">Semua</button>
+                                <button type="button" onclick="setGenderFilter('L')" id="btn-filter-l" class="gender-filter-btn px-2.5 py-1 rounded-md bg-surface-100 text-surface-600 font-medium hover:bg-surface-200 transition-colors">Putra (L)</button>
+                                <button type="button" onclick="setGenderFilter('P')" id="btn-filter-p" class="gender-filter-btn px-2.5 py-1 rounded-md bg-surface-100 text-surface-600 font-medium hover:bg-surface-200 transition-colors">Putri (P)</button>
+                            </div>
+                        </div>
                         
                         <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
-                            <table class="w-full text-left text-sm whitespace-nowrap">
+                            <table class="w-full text-left text-sm whitespace-nowrap" id="table-santri-plotting">
                                 <thead class="bg-surface-50/50 text-surface-600 sticky top-0 border-b border-surface-100 z-10 backdrop-blur-sm">
                                     <tr>
                                         <th class="px-4 py-3 font-semibold w-10 text-center">
@@ -101,9 +116,9 @@
                                         <th class="px-4 py-3 font-semibold text-center">L/P</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-surface-100 text-surface-700">
+                                <tbody class="divide-y divide-surface-100 text-surface-700" id="tbody-santri-plotting">
                                     @forelse($pesertaBelumDitempatkan as $peserta)
-                                        <tr class="hover:bg-primary-50/50 transition-colors cursor-pointer row-clickable">
+                                        <tr class="hover:bg-primary-50/50 transition-colors cursor-pointer row-clickable santri-row" data-name="{{ strtolower($peserta->orang->nama_lengkap) }}" data-niup="{{ strtolower($peserta->orang->niup) }}" data-nis="{{ strtolower($peserta->nis ?? '') }}" data-nisn="{{ strtolower($peserta->nisn ?? '') }}" data-gender="{{ $peserta->orang->jenis_kelamin }}">
                                             <td class="px-4 py-3 text-center">
                                                 <input type="checkbox" name="peserta_ids[]" value="{{ $peserta->id }}" class="peserta-checkbox rounded border-surface-300 text-primary-600 focus:ring-primary-500 w-4 h-4 cursor-pointer">
                                             </td>
@@ -134,7 +149,7 @@
                             </table>
                         </div>
                         <div class="p-3 bg-surface-50 border-t border-surface-100 text-xs text-surface-500 flex justify-between items-center">
-                            <span>Total: <strong>{{ count($pesertaBelumDitempatkan) }}</strong> Santri Belum Terplot.</span>
+                            <span>Tampil: <strong id="visible-count">{{ count($pesertaBelumDitempatkan) }}</strong> / <strong>{{ count($pesertaBelumDitempatkan) }}</strong> Santri Belum Terplot.</span>
                             <span id="selected-count" class="font-bold text-primary-600">0 Dipilih</span>
                         </div>
                     </form>
@@ -250,7 +265,72 @@
                     cb.dispatchEvent(new Event('change'));
                 }
             });
-        });
+        // Live Search & Gender Filter Logic
+        const searchInput = document.getElementById('live-search-santri');
+        const visibleCountDisplay = document.getElementById('visible-count');
+        const targetRombelSelect = document.getElementById('target_rombel');
+        let currentGenderFilter = 'ALL';
+
+        window.setGenderFilter = function(gender) {
+            currentGenderFilter = gender;
+            document.querySelectorAll('.gender-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-primary-100', 'text-primary-700', 'font-bold');
+                btn.classList.add('bg-surface-100', 'text-surface-600', 'font-medium');
+            });
+            const activeBtn = document.getElementById('btn-filter-' + gender.toLowerCase());
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-surface-100', 'text-surface-600', 'font-medium');
+                activeBtn.classList.add('bg-primary-100', 'text-primary-700', 'font-bold');
+            }
+            filterRows();
+        };
+
+        function filterRows() {
+            const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+            const rows = document.querySelectorAll('.santri-row');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const name = row.dataset.name || '';
+                const niup = row.dataset.niup || '';
+                const nis = row.dataset.nis || '';
+                const nisn = row.dataset.nisn || '';
+                const gender = row.dataset.gender || '';
+
+                const matchesQuery = !query || name.includes(query) || niup.includes(query) || nis.includes(query) || nisn.includes(query);
+                const matchesGender = currentGenderFilter === 'ALL' || gender === currentGenderFilter;
+
+                if (matchesQuery && matchesGender) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            if (visibleCountDisplay) {
+                visibleCountDisplay.innerText = visibleCount;
+            }
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', filterRows);
+        }
+
+        // Auto-filter by target rombel gender
+        if (targetRombelSelect) {
+            targetRombelSelect.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                const rombelGender = selectedOption.dataset.gender;
+                if (rombelGender === 'PUTRA') {
+                    setGenderFilter('L');
+                } else if (rombelGender === 'PUTRI') {
+                    setGenderFilter('P');
+                } else {
+                    setGenderFilter('ALL');
+                }
+            });
+        }
     });
 
     function submitPenempatan() {

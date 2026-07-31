@@ -134,29 +134,34 @@
                         </div>
                     </td>
                     <td class="px-6 py-3.5 text-right">
-                        <!-- Group Relasi -->
-                        <div class="inline-flex items-center gap-1 border-r border-surface-200 pr-2 mr-1">
-                            <button onclick="editRelasi({{ json_encode($rel) }})" class="text-primary-600 hover:text-primary-800 p-1.5 rounded-lg hover:bg-primary-50 transition-colors" title="Edit Relasi (Status, Hak Akses)">
-                                <i data-lucide="link" class="w-4 h-4"></i>
+                        <div class="inline-flex items-center justify-end gap-1.5 flex-wrap">
+                            {{-- Edit Relasi --}}
+                            <button onclick="editRelasi({{ json_encode($rel) }})" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white border border-blue-200 text-xs font-bold transition-all shadow-2xs" title="Edit Relasi (Status, Hak Akses)">
+                                <i data-lucide="link" class="w-3.5 h-3.5"></i>
+                                <span>Relasi</span>
                             </button>
+                            
+                            {{-- Edit Profil Wali --}}
+                            <button onclick="editProfilWali({{ json_encode($rel->orangTuaAtauWali) }})" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-50 text-amber-700 hover:bg-amber-600 hover:text-white border border-amber-200 text-xs font-bold transition-all shadow-2xs" title="Edit Profil Wali (Nama, No HP)">
+                                <i data-lucide="user-edit" class="w-3.5 h-3.5"></i>
+                                <span>Profil</span>
+                            </button>
+
+                            {{-- Reset Password --}}
+                            <form action="{{ route('admin.keluarga.wali.reset-password', $rel->orangTuaAtauWali->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Reset password akun portal untuk Wali ini menjadi nomor HP-nya?');">
+                                @csrf
+                                <button type="submit" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-600 hover:text-white border border-indigo-200 text-xs font-bold transition-all shadow-2xs" title="Reset Password Portal ke No HP">
+                                    <i data-lucide="key-round" class="w-3.5 h-3.5"></i>
+                                    <span>Reset</span>
+                                </button>
+                            </form>
+
+                            {{-- Hapus --}}
                             <form action="{{ route('admin.keluarga.destroy', $rel) }}" method="POST" class="inline-block" onsubmit="return confirm('Hapus relasi keluarga ini? Data orang tidak akan terhapus.');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-rose-500 hover:text-rose-700 p-1.5 rounded-lg hover:bg-rose-50 transition-colors" title="Hapus Relasi">
-                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                </button>
-                            </form>
-                        </div>
-                        
-                        <!-- Group Profil Wali -->
-                        <div class="inline-flex items-center gap-1">
-                            <button onclick="editProfilWali({{ json_encode($rel->orangTuaAtauWali) }})" class="text-amber-600 hover:text-amber-700 p-1.5 rounded-lg hover:bg-amber-50 transition-colors" title="Edit Profil Wali (Nama, No HP)">
-                                <i data-lucide="user-edit" class="w-4 h-4"></i>
-                            </button>
-                            <form action="{{ route('admin.keluarga.wali.reset-password', $rel->orangTuaAtauWali->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Reset password akun portal untuk Wali ini menjadi nomor HP-nya?');">
-                                @csrf
-                                <button type="submit" class="text-indigo-600 hover:text-indigo-700 p-1.5 rounded-lg hover:bg-indigo-50 transition-colors" title="Reset Password Portal ke No HP">
-                                    <i data-lucide="key-round" class="w-4 h-4"></i>
+                                <button type="submit" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-rose-50 text-rose-700 hover:bg-rose-600 hover:text-white border border-rose-200 text-xs font-bold transition-all shadow-2xs" title="Hapus Relasi">
+                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                                 </button>
                             </form>
                         </div>

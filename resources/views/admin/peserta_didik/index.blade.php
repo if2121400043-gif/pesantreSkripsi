@@ -146,12 +146,14 @@
                             @endif
                         </td>
                         <td class="px-6 py-3.5 text-right">
-                            <div class="inline-flex items-center gap-1">
-                                <a href="{{ route('admin.peserta-didik.show', $pd) }}" class="p-1.5 rounded-lg text-surface-500 hover:text-primary-700 hover:bg-primary-50 transition-colors" title="Lihat Profil Akademik">
-                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                            <div class="inline-flex items-center justify-end gap-1.5">
+                                <a href="{{ route('admin.peserta-didik.show', $pd) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white border border-emerald-200 text-xs font-bold transition-all shadow-2xs" title="Lihat Profil Akademik">
+                                    <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                                    <span>Detail</span>
                                 </a>
-                                <a href="{{ route('admin.peserta-didik.edit', $pd) }}" class="p-1.5 rounded-lg text-primary-600 hover:text-primary-800 hover:bg-primary-50 transition-colors" title="Edit Data Santri">
-                                    <i data-lucide="edit" class="w-4 h-4"></i>
+                                <a href="{{ route('admin.peserta-didik.edit', $pd) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white border border-blue-200 text-xs font-bold transition-all shadow-2xs" title="Edit Data Santri">
+                                    <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                                    <span>Edit</span>
                                 </a>
                             </div>
                         </td>

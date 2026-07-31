@@ -114,6 +114,7 @@
 
             function openSidebar() {
                 if (sidebar) {
+                    sidebar.style.setProperty('translate', '0', 'important');
                     sidebar.style.setProperty('transform', 'translateX(0)', 'important');
                     sidebar.classList.remove('-translate-x-full');
                 }
@@ -128,8 +129,10 @@
             function closeSidebar() {
                 if (sidebar) {
                     if (window.innerWidth < 768) {
+                        sidebar.style.setProperty('translate', '-100% 0', 'important');
                         sidebar.style.setProperty('transform', 'translateX(-100%)', 'important');
                     } else {
+                        sidebar.style.translate = '';
                         sidebar.style.transform = '';
                     }
                     sidebar.classList.add('-translate-x-full');

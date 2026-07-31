@@ -91,16 +91,30 @@
                         </div>
 
                         {{-- Search & Live Instant Filter Bar --}}
-                        <div class="p-3 bg-white border-b border-surface-100 flex flex-col sm:flex-row justify-between items-center gap-3">
-                            <div class="relative w-full sm:w-80">
-                                <i data-lucide="search" class="w-4 h-4 text-surface-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                                <input type="text" id="live-search-santri" placeholder="Cari nama santri, NIUP, atau NISN secara instan..." class="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-surface-300 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20">
+                        <div class="p-3.5 bg-surface-50/80 border-b border-surface-200 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-3">
+                            <div class="relative flex-1 max-w-md">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-surface-400">
+                                    <i data-lucide="search" class="w-4 h-4"></i>
+                                </div>
+                                <input type="text" id="live-search-santri" placeholder="Cari nama santri, NIUP, NISN..." class="w-full pl-9 pr-8 py-2 text-xs rounded-xl border border-surface-300 bg-white text-surface-900 shadow-sm focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all">
+                                <button type="button" id="btn-clear-search" class="hidden absolute inset-y-0 right-0 pr-2.5 flex items-center text-surface-400 hover:text-surface-700">
+                                    <i data-lucide="x-circle" class="w-4 h-4"></i>
+                                </button>
                             </div>
-                            <div class="flex items-center gap-1 text-xs w-full sm:w-auto justify-end">
-                                <span class="text-surface-500 font-medium mr-1">Filter Gender:</span>
-                                <button type="button" onclick="setGenderFilter('ALL')" id="btn-filter-all" class="gender-filter-btn px-2.5 py-1 rounded-md bg-primary-100 text-primary-700 font-bold hover:bg-primary-200 transition-colors">Semua</button>
-                                <button type="button" onclick="setGenderFilter('L')" id="btn-filter-l" class="gender-filter-btn px-2.5 py-1 rounded-md bg-surface-100 text-surface-600 font-medium hover:bg-surface-200 transition-colors">Putra (L)</button>
-                                <button type="button" onclick="setGenderFilter('P')" id="btn-filter-p" class="gender-filter-btn px-2.5 py-1 rounded-md bg-surface-100 text-surface-600 font-medium hover:bg-surface-200 transition-colors">Putri (P)</button>
+
+                            <div class="flex items-center gap-2 text-xs overflow-x-auto pb-1 md:pb-0">
+                                <span class="text-surface-500 font-semibold shrink-0">Filter Gender:</span>
+                                <div class="inline-flex rounded-xl p-1 bg-surface-200/60 border border-surface-200">
+                                    <button type="button" id="btn-filter-all" data-gender="ALL" class="gender-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-white text-primary-700 shadow-sm transition-all">
+                                        Semua Santri
+                                    </button>
+                                    <button type="button" id="btn-filter-l" data-gender="L" class="gender-filter-btn px-3 py-1 rounded-lg text-xs font-medium text-surface-600 hover:text-surface-900 transition-all">
+                                        👦 Putra (L)
+                                    </button>
+                                    <button type="button" id="btn-filter-p" data-gender="P" class="gender-filter-btn px-3 py-1 rounded-lg text-xs font-medium text-surface-600 hover:text-surface-900 transition-all">
+                                        👧 Putri (P)
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         
@@ -137,7 +151,7 @@
                                             </td>
                                         </tr>
                                     @empty
-                                        <tr>
+                                        <tr id="empty-db-row">
                                             <td colspan="4" class="px-4 py-12 text-center text-surface-500">
                                                 <i data-lucide="check-circle" class="w-12 h-12 text-success-400 mx-auto mb-3"></i>
                                                 <p class="font-medium text-surface-900 mb-1">Semua Santri Sudah Memiliki Kelas!</p>
@@ -145,11 +159,21 @@
                                             </td>
                                         </tr>
                                     @endforelse
+                                    <tr id="no-search-match-row" class="hidden">
+                                        <td colspan="4" class="px-4 py-12 text-center text-surface-500">
+                                            <i data-lucide="search-x" class="w-10 h-10 text-surface-400 mx-auto mb-2"></i>
+                                            <p class="font-bold text-surface-800 text-sm">Tidak Ada Santri yang Cocok</p>
+                                            <p class="text-xs text-surface-500 mt-0.5">Coba ubah kata kunci pencarian atau reset filter gender.</p>
+                                            <button type="button" id="btn-reset-filters" class="mt-3 px-3 py-1 bg-surface-100 text-surface-700 text-xs font-semibold rounded-lg hover:bg-surface-200 transition-colors">
+                                                Reset Filter Pencarian
+                                            </button>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="p-3 bg-surface-50 border-t border-surface-100 text-xs text-surface-500 flex justify-between items-center">
-                            <span>Tampil: <strong id="visible-count">{{ count($pesertaBelumDitempatkan) }}</strong> / <strong>{{ count($pesertaBelumDitempatkan) }}</strong> Santri Belum Terplot.</span>
+                            <span>Tampil: <strong id="visible-count" class="text-surface-900">{{ count($pesertaBelumDitempatkan) }}</strong> / <strong>{{ count($pesertaBelumDitempatkan) }}</strong> Santri Belum Terplot.</span>
                             <span id="selected-count" class="font-bold text-primary-600">0 Dipilih</span>
                         </div>
                     </form>
@@ -221,6 +245,15 @@
         const checkboxes = document.querySelectorAll('.peserta-checkbox');
         const countDisplay = document.getElementById('selected-count');
         const rows = document.querySelectorAll('.row-clickable');
+        const searchInput = document.getElementById('live-search-santri');
+        const clearSearchBtn = document.getElementById('btn-clear-search');
+        const visibleCountDisplay = document.getElementById('visible-count');
+        const targetRombelSelect = document.getElementById('target_rombel');
+        const genderBtns = document.querySelectorAll('.gender-filter-btn');
+        const noMatchRow = document.getElementById('no-search-match-row');
+        const resetFiltersBtn = document.getElementById('btn-reset-filters');
+        
+        let currentGenderFilter = 'ALL';
 
         function updateCount() {
             if(!countDisplay) return;
@@ -236,8 +269,11 @@
 
         if(checkAll) {
             checkAll.addEventListener('change', function() {
-                checkboxes.forEach(cb => {
-                    cb.checked = checkAll.checked;
+                document.querySelectorAll('.santri-row').forEach(row => {
+                    if (row.style.display !== 'none') {
+                        const cb = row.querySelector('.peserta-checkbox');
+                        if (cb) cb.checked = checkAll.checked;
+                    }
                 });
                 updateCount();
             });
@@ -245,14 +281,8 @@
 
         checkboxes.forEach(cb => {
             cb.addEventListener('change', function(e) {
-                e.stopPropagation(); // Prevent row click
+                e.stopPropagation();
                 updateCount();
-                
-                // Update checkAll state
-                if(!this.checked) checkAll.checked = false;
-                if(document.querySelectorAll('.peserta-checkbox:checked').length === checkboxes.length) {
-                    checkAll.checked = true;
-                }
             });
         });
 
@@ -261,36 +291,29 @@
             row.addEventListener('click', function(e) {
                 if(e.target.tagName !== 'INPUT') {
                     const cb = this.querySelector('.peserta-checkbox');
-                    cb.checked = !cb.checked;
-                    cb.dispatchEvent(new Event('change'));
+                    if (cb) {
+                        cb.checked = !cb.checked;
+                        cb.dispatchEvent(new Event('change'));
+                    }
                 }
             });
-        // Live Search & Gender Filter Logic
-        const searchInput = document.getElementById('live-search-santri');
-        const visibleCountDisplay = document.getElementById('visible-count');
-        const targetRombelSelect = document.getElementById('target_rombel');
-        let currentGenderFilter = 'ALL';
+        });
 
-        window.setGenderFilter = function(gender) {
-            currentGenderFilter = gender;
-            document.querySelectorAll('.gender-filter-btn').forEach(btn => {
-                btn.classList.remove('bg-primary-100', 'text-primary-700', 'font-bold');
-                btn.classList.add('bg-surface-100', 'text-surface-600', 'font-medium');
-            });
-            const activeBtn = document.getElementById('btn-filter-' + gender.toLowerCase());
-            if (activeBtn) {
-                activeBtn.classList.remove('bg-surface-100', 'text-surface-600', 'font-medium');
-                activeBtn.classList.add('bg-primary-100', 'text-primary-700', 'font-bold');
-            }
-            filterRows();
-        };
-
+        // Instant Filter Logic
         function filterRows() {
             const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
-            const rows = document.querySelectorAll('.santri-row');
+            const santriRows = document.querySelectorAll('.santri-row');
             let visibleCount = 0;
 
-            rows.forEach(row => {
+            if (clearSearchBtn) {
+                if (query.length > 0) {
+                    clearSearchBtn.classList.remove('hidden');
+                } else {
+                    clearSearchBtn.classList.add('hidden');
+                }
+            }
+
+            santriRows.forEach(row => {
                 const name = row.dataset.name || '';
                 const niup = row.dataset.niup || '';
                 const nis = row.dataset.nis || '';
@@ -311,11 +334,59 @@
             if (visibleCountDisplay) {
                 visibleCountDisplay.innerText = visibleCount;
             }
+
+            if (noMatchRow) {
+                if (visibleCount === 0 && santriRows.length > 0) {
+                    noMatchRow.classList.remove('hidden');
+                } else {
+                    noMatchRow.classList.add('hidden');
+                }
+            }
         }
 
+        // Search Input Event
         if (searchInput) {
             searchInput.addEventListener('input', filterRows);
+            searchInput.addEventListener('keyup', filterRows);
         }
+
+        if (clearSearchBtn) {
+            clearSearchBtn.addEventListener('click', function() {
+                if (searchInput) {
+                    searchInput.value = '';
+                    filterRows();
+                    searchInput.focus();
+                }
+            });
+        }
+
+        if (resetFiltersBtn) {
+            resetFiltersBtn.addEventListener('click', function() {
+                if (searchInput) searchInput.value = '';
+                setActiveGenderBtn('ALL');
+                filterRows();
+            });
+        }
+
+        function setActiveGenderBtn(gender) {
+            currentGenderFilter = gender;
+            genderBtns.forEach(btn => {
+                const btnGender = btn.dataset.gender;
+                if (btnGender === gender) {
+                    btn.className = 'gender-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-white text-primary-700 shadow-sm transition-all';
+                } else {
+                    btn.className = 'gender-filter-btn px-3 py-1 rounded-lg text-xs font-medium text-surface-600 hover:text-surface-900 transition-all';
+                }
+            });
+        }
+
+        genderBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const gender = this.dataset.gender;
+                setActiveGenderBtn(gender);
+                filterRows();
+            });
+        });
 
         // Auto-filter by target rombel gender
         if (targetRombelSelect) {
@@ -323,12 +394,13 @@
                 const selectedOption = this.options[this.selectedIndex];
                 const rombelGender = selectedOption.dataset.gender;
                 if (rombelGender === 'PUTRA') {
-                    setGenderFilter('L');
+                    setActiveGenderBtn('L');
                 } else if (rombelGender === 'PUTRI') {
-                    setGenderFilter('P');
+                    setActiveGenderBtn('P');
                 } else {
-                    setGenderFilter('ALL');
+                    setActiveGenderBtn('ALL');
                 }
+                filterRows();
             });
         }
     });
@@ -347,7 +419,6 @@
             return;
         }
         
-        // Optional: Check capacity warning
         const option = document.querySelector('#target_rombel option:checked');
         const capacity = parseInt(option.dataset.capacity);
         const filled = parseInt(option.dataset.filled);

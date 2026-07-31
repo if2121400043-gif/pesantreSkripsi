@@ -6,29 +6,29 @@
 <div class="space-y-6">
 
     {{-- Welcome Banner Header --}}
-    <div class="bg-gradient-to-r from-primary-900 via-primary-800 to-primary-950 text-white rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden">
+    <div class="rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #1e1b4b, #312e81) !important; color: #ffffff !important;">
         <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
         <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-primary-200 text-xs font-semibold backdrop-blur-sm border border-white/10 mb-3">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-xs font-semibold backdrop-blur-sm border border-white/20 mb-3" style="color: #ffffff !important;">
                     <i data-lucide="sparkles" class="w-3.5 h-3.5 text-warning-400"></i>
                     Portal Operasional Guru & Pengajar
                 </div>
-                <h1 class="text-2xl md:text-3xl font-extrabold font-heading text-white">
+                <h1 class="text-2xl md:text-3xl font-extrabold font-heading" style="color: #ffffff !important;">
                     Ahlan wa Sahlan, {{ auth()->user()->orang->nama_lengkap ?? auth()->user()->name }}
                 </h1>
-                <p class="text-xs md:text-sm text-primary-100/90 mt-1 max-w-xl">
+                <p class="text-xs md:text-sm mt-1 max-w-xl" style="color: #c7d2fe !important;">
                     Pilih menu aksi cepat di bawah ini untuk pencatatan presensi, input nilai rapor, atau laporan kedisiplinan santri hari ini.
                 </p>
             </div>
             
-            <div class="flex items-center gap-3 shrink-0 bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/15">
+            <div class="flex items-center gap-3 shrink-0 p-3 rounded-2xl border border-white/20" style="background-color: rgba(255, 255, 255, 0.15) !important;">
                 <div class="w-10 h-10 rounded-xl bg-warning-400/20 text-warning-300 flex items-center justify-center font-bold">
                     <i data-lucide="calendar" class="w-5 h-5"></i>
                 </div>
                 <div>
-                    <div class="text-[0.65rem] text-primary-200 uppercase tracking-wider font-semibold">Hari Ini</div>
-                    <div class="text-sm font-bold text-white">{{ $hariIni }}, {{ \Carbon\Carbon::now()->translatedFormat('d M Y') }}</div>
+                    <div class="text-[0.65rem] uppercase tracking-wider font-semibold" style="color: #c7d2fe !important;">Hari Ini</div>
+                    <div class="text-sm font-bold" style="color: #ffffff !important;">{{ $hariIni }}, {{ \Carbon\Carbon::now()->translatedFormat('d M Y') }}</div>
                 </div>
             </div>
         </div>

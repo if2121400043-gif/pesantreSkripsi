@@ -8,7 +8,7 @@
     <meta name="description" content="@yield('meta_description', 'Portal Guru & Pengajar PP Nurul Furqon')">
 
     {{-- PWA Meta Tags --}}
-    <meta name="theme-color" content="#065f46">
+    <meta name="theme-color" content="#1e1b4b">
     <meta name="application-name" content="PP Nurul Furqon">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -31,42 +31,42 @@
 </head>
 <body class="min-h-screen bg-surface-50 overflow-x-hidden text-surface-900 font-sans">
     {{-- Skip to content (accessibility) --}}
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 bg-primary-600 text-white px-4 py-2 rounded-lg font-medium">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium">
         Langsung ke konten
     </a>
 
     <div class="min-h-screen flex flex-col" id="app-guru-layout">
         {{-- Top Bar (Guru Brand & User Profile) --}}
-        <header class="bg-primary-900 text-white border-b border-primary-800 sticky top-0 z-30 shadow-md">
+        <header class="sticky top-0 z-30 shadow-md border-b border-indigo-900" style="background-color: #1e1b4b !important; color: #ffffff !important;">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
                 
                 {{-- Left: Brand Logo & Title --}}
                 <a href="{{ route('guru.dashboard') }}" class="flex items-center gap-3 group">
-                    <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-warning-400 group-hover:scale-105 transition-transform">
+                    <div class="w-10 h-10 rounded-xl bg-white/15 border border-white/25 flex items-center justify-center text-amber-300 group-hover:scale-105 transition-transform">
                         <i data-lucide="graduation-cap" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <div class="font-extrabold text-sm sm:text-base text-white font-heading tracking-wide">PORTAL GURU</div>
-                        <div class="text-[0.65rem] text-primary-200 uppercase tracking-wider">PP Nurul Furqon</div>
+                        <div class="font-extrabold text-sm sm:text-base font-heading tracking-wide" style="color: #ffffff !important;">PORTAL GURU</div>
+                        <div class="text-[0.65rem] uppercase tracking-wider font-semibold" style="color: #c7d2fe !important;">PP Nurul Furqon</div>
                     </div>
                 </a>
 
                 {{-- Right: User Actions & Switch Role --}}
                 <div class="flex items-center gap-3">
-                    <a href="{{ route('guru.dashboard') }}" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-white transition-colors border border-white/10">
+                    <a href="{{ route('guru.dashboard') }}" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-xs font-bold transition-colors border border-white/20" style="color: #ffffff !important;">
                         <i data-lucide="home" class="w-4 h-4"></i> Beranda
                     </a>
 
                     {{-- User Dropdown / Role Badge --}}
-                    <div class="flex items-center gap-2 pl-2 border-l border-primary-800">
-                        <a href="{{ route('akun.ganti-peran') }}" title="Ganti Peran / Switch Role" class="px-2.5 py-1.5 rounded-xl bg-warning-500/20 text-warning-300 hover:bg-warning-500/30 text-xs font-bold transition-colors border border-warning-500/30 flex items-center gap-1">
+                    <div class="flex items-center gap-2 pl-2 border-l border-white/20">
+                        <a href="{{ route('akun.ganti-peran') }}" title="Ganti Peran / Switch Role" class="px-3 py-1.5 rounded-xl text-xs font-extrabold transition-colors border border-amber-300 shadow-sm flex items-center gap-1" style="color: #1e1b4b !important; background-color: #fbbf24 !important;">
                             <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
                             <span class="hidden md:inline">Ganti Peran</span>
                         </a>
 
                         <form action="{{ route('logout') }}" method="POST" class="inline">
                             @csrf
-                            <button type="submit" title="Keluar" class="p-2 rounded-xl bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 text-xs font-bold transition-colors border border-rose-500/30 flex items-center justify-center">
+                            <button type="submit" title="Keluar" class="p-2 rounded-xl bg-rose-500 text-white hover:bg-rose-600 text-xs font-bold transition-colors shadow-sm flex items-center justify-center" style="color: #ffffff !important; background-color: #e11d48 !important;">
                                 <i data-lucide="log-out" class="w-4 h-4"></i>
                             </button>
                         </form>
@@ -107,7 +107,7 @@
         {{-- Footer --}}
         <footer class="bg-white border-t border-surface-200 py-6 mt-auto">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center text-xs text-surface-500">
-                &copy; {{ date('Y') }} PP Nurul Furqon — Portal Operasional Guru & Pengajar.
+                &copy; {{ date('Y') }} PP Nurul Furqon — Portal Guru & Pengajar.
             </div>
         </footer>
     </div>

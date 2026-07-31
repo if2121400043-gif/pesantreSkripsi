@@ -31,52 +31,52 @@
 </head>
 <body class="min-h-screen bg-surface-50 overflow-x-hidden text-surface-900 font-sans pb-20 md:pb-6">
     {{-- Skip to content (accessibility) --}}
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 bg-primary-600 text-white px-4 py-2 rounded-lg font-medium">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 bg-emerald-700 text-white px-4 py-2 rounded-lg font-medium">
         Langsung ke konten
     </a>
 
     <div class="min-h-screen flex flex-col" id="app-portal-layout">
         {{-- Top Bar (Wali Santri Brand & Profile) --}}
-        <header class="bg-primary-900 text-white border-b border-primary-800 sticky top-0 z-30 shadow-md">
+        <header class="sticky top-0 z-30 shadow-md border-b border-emerald-800" style="background-color: #065f46 !important; color: #ffffff !important;">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
                 
                 {{-- Left: Brand Logo & Title --}}
                 <a href="{{ route('portal.beranda') }}" class="flex items-center gap-3 group">
-                    <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-warning-400 group-hover:scale-105 transition-transform">
+                    <div class="w-10 h-10 rounded-xl bg-white/15 border border-white/25 flex items-center justify-center text-amber-300 group-hover:scale-105 transition-transform">
                         <i data-lucide="user-check" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <div class="font-extrabold text-sm sm:text-base text-white font-heading tracking-wide">PORTAL WALI SANTRI</div>
-                        <div class="text-[0.65rem] text-primary-200 uppercase tracking-wider">PP Nurul Furqon</div>
+                        <div class="font-extrabold text-sm sm:text-base font-heading tracking-wide" style="color: #ffffff !important;">PORTAL WALI SANTRI</div>
+                        <div class="text-[0.65rem] uppercase tracking-wider font-semibold" style="color: #d1fae5 !important;">PP Nurul Furqon</div>
                     </div>
                 </a>
 
                 {{-- Right: Quick Navigation Tabs (Desktop) & Role --}}
                 <div class="flex items-center gap-2">
-                    <nav class="hidden md:flex items-center gap-1 bg-white/10 p-1 rounded-2xl border border-white/10 text-xs font-semibold">
-                        <a href="{{ route('portal.beranda') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.beranda') ? 'bg-white text-primary-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}">
+                    <nav class="hidden md:flex items-center gap-1 p-1 rounded-2xl border border-white/20 text-xs font-semibold" style="background-color: rgba(255, 255, 255, 0.15) !important;">
+                        <a href="{{ route('portal.beranda') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.beranda') ? 'bg-white text-emerald-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}" style="{{ request()->routeIs('portal.beranda') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
                             Beranda
                         </a>
-                        <a href="{{ route('portal.tagihan') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.tagihan*') ? 'bg-white text-primary-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}">
+                        <a href="{{ route('portal.tagihan') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.tagihan*') ? 'bg-white text-emerald-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}" style="{{ request()->routeIs('portal.tagihan*') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
                             Tagihan & Bayar
                         </a>
-                        <a href="{{ route('portal.presensi') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.presensi*') ? 'bg-white text-primary-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}">
+                        <a href="{{ route('portal.presensi') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.presensi*') ? 'bg-white text-emerald-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}" style="{{ request()->routeIs('portal.presensi*') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
                             Presensi
                         </a>
-                        <a href="{{ route('portal.kedisiplinan') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.kedisiplinan*') ? 'bg-white text-primary-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}">
+                        <a href="{{ route('portal.kedisiplinan') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.kedisiplinan*') ? 'bg-white text-emerald-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}" style="{{ request()->routeIs('portal.kedisiplinan*') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
                             Kedisiplinan
                         </a>
                     </nav>
 
-                    <div class="flex items-center gap-2 pl-2 border-l border-primary-800">
-                        <a href="{{ route('akun.ganti-peran') }}" title="Ganti Peran / Switch Role" class="px-2.5 py-1.5 rounded-xl bg-warning-500/20 text-warning-300 hover:bg-warning-500/30 text-xs font-bold transition-colors border border-warning-500/30 flex items-center gap-1">
+                    <div class="flex items-center gap-2 pl-2 border-l border-white/20">
+                        <a href="{{ route('akun.ganti-peran') }}" title="Ganti Peran / Switch Role" class="px-3 py-1.5 rounded-xl text-xs font-extrabold transition-colors border border-amber-300 shadow-sm flex items-center gap-1" style="color: #064e3b !important; background-color: #fbbf24 !important;">
                             <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
                             <span class="hidden lg:inline">Ganti Peran</span>
                         </a>
 
                         <form action="{{ route('logout') }}" method="POST" class="inline">
                             @csrf
-                            <button type="submit" title="Keluar" class="p-2 rounded-xl bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 text-xs font-bold transition-colors border border-rose-500/30 flex items-center justify-center">
+                            <button type="submit" title="Keluar" class="p-2 rounded-xl bg-rose-500 text-white hover:bg-rose-600 text-xs font-bold transition-colors shadow-sm flex items-center justify-center" style="color: #ffffff !important; background-color: #e11d48 !important;">
                                 <i data-lucide="log-out" class="w-4 h-4"></i>
                             </button>
                         </form>
@@ -116,19 +116,19 @@
 
         {{-- Bottom Navigation Bar for Mobile Phones --}}
         <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-surface-200 z-40 px-2 py-1.5 shadow-lg flex justify-around items-center">
-            <a href="{{ route('portal.beranda') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.beranda') ? 'text-primary-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
+            <a href="{{ route('portal.beranda') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.beranda') ? 'text-emerald-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
                 <i data-lucide="home" class="w-5 h-5"></i>
                 <span>Beranda</span>
             </a>
-            <a href="{{ route('portal.tagihan') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.tagihan*') ? 'text-primary-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
+            <a href="{{ route('portal.tagihan') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.tagihan*') ? 'text-emerald-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
                 <i data-lucide="wallet" class="w-5 h-5"></i>
                 <span>Tagihan</span>
             </a>
-            <a href="{{ route('portal.presensi') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.presensi*') ? 'text-primary-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
+            <a href="{{ route('portal.presensi') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.presensi*') ? 'text-emerald-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
                 <i data-lucide="calendar-check" class="w-5 h-5"></i>
                 <span>Presensi</span>
             </a>
-            <a href="{{ route('portal.kedisiplinan') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.kedisiplinan*') ? 'text-primary-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
+            <a href="{{ route('portal.kedisiplinan') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.kedisiplinan*') ? 'text-emerald-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
                 <i data-lucide="shield-check" class="w-5 h-5"></i>
                 <span>Kedisiplinan</span>
             </a>

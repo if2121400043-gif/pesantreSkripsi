@@ -1,151 +1,186 @@
-@extends('layouts.app')
+@extends('layouts.guru')
 
-@section('title', 'Dashboard Guru')
-
-@section('page_header')
-<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-    <div>
-        <h1 class="text-2xl font-bold text-surface-900 font-heading">Ahlan wa Sahlan, Ustadz/ah {{ auth()->user()->name }}</h1>
-        <p class="text-sm text-surface-500 mt-1">Portal manajemen akademik dan kepesantrenan.</p>
-    </div>
-</div>
-@endsection
+@section('title', 'Dashboard Guru — PP Nurul Furqon')
 
 @section('content')
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-    {{-- Card Jadwal Hari Ini --}}
-    <div class="bg-white rounded-2xl p-6 border border-surface-100 shadow-sm relative overflow-hidden group">
-        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-primary-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"></div>
-        <div class="relative z-10">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-primary-100 text-primary-600 rounded-xl flex items-center justify-center">
-                    <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+<div class="space-y-6">
+
+    {{-- Welcome Banner Header --}}
+    <div class="bg-gradient-to-r from-primary-900 via-primary-800 to-primary-950 text-white rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-primary-200 text-xs font-semibold backdrop-blur-sm border border-white/10 mb-3">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-warning-400"></i>
+                    Portal Operasional Guru & Pengajar
                 </div>
-                <span class="text-xs font-bold text-primary-600 bg-primary-50 px-3 py-1 rounded-full border border-primary-100 uppercase tracking-wider">{{ $hariIni }}</span>
+                <h1 class="text-2xl md:text-3xl font-extrabold font-heading text-white">
+                    Ahlan wa Sahlan, {{ auth()->user()->orang->nama_lengkap ?? auth()->user()->name }}
+                </h1>
+                <p class="text-xs md:text-sm text-primary-100/90 mt-1 max-w-xl">
+                    Pilih menu aksi cepat di bawah ini untuk pencatatan presensi, input nilai rapor, atau laporan kedisiplinan santri hari ini.
+                </p>
             </div>
-            <h3 class="text-sm font-medium text-surface-500 mb-1">Jadwal Mengajar Hari Ini</h3>
-            <p class="text-2xl font-bold text-surface-900">{{ $jadwalHariIni->count() }} Kelas</p>
+            
+            <div class="flex items-center gap-3 shrink-0 bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/15">
+                <div class="w-10 h-10 rounded-xl bg-warning-400/20 text-warning-300 flex items-center justify-center font-bold">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <div class="text-[0.65rem] text-primary-200 uppercase tracking-wider font-semibold">Hari Ini</div>
+                    <div class="text-sm font-bold text-white">{{ $hariIni }}, {{ \Carbon\Carbon::now()->translatedFormat('d M Y') }}</div>
+                </div>
+            </div>
         </div>
     </div>
 
-    {{-- Card Total Kelas --}}
-    <div class="bg-white rounded-2xl p-6 border border-surface-100 shadow-sm relative overflow-hidden group">
-        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-info-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"></div>
-        <div class="relative z-10">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-info-100 text-info-600 rounded-xl flex items-center justify-center">
-                    <i data-lucide="users" class="w-6 h-6"></i>
+    {{-- Stats Bar --}}
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-2xl border border-surface-200 shadow-sm flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center shrink-0">
+                <i data-lucide="calendar-clock" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <div class="text-xs text-surface-500 font-medium">Jadwal Hari Ini</div>
+                <div class="text-lg font-bold text-surface-900">{{ $jadwalHariIni->count() }} Kelas</div>
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-surface-200 shadow-sm flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-info-50 text-info-600 flex items-center justify-center shrink-0">
+                <i data-lucide="book-open" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <div class="text-xs text-surface-500 font-medium">Kelas Diampu</div>
+                <div class="text-lg font-bold text-surface-900">{{ $totalKelasDiajar }} Rombel</div>
+            </div>
+        </div>
+
+        <div class="col-span-2 md:col-span-1 bg-white p-4 rounded-2xl border border-surface-200 shadow-sm flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-success-50 text-success-600 flex items-center justify-center shrink-0">
+                <i data-lucide="award" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <div class="text-xs text-surface-500 font-medium">Amanah Wali Kelas</div>
+                <div class="text-lg font-bold text-surface-900">
+                    {{ $waliKelas->count() > 0 ? $waliKelas->first()->nama : 'Bukan Wali Kelas' }}
                 </div>
             </div>
-            <h3 class="text-sm font-medium text-surface-500 mb-1">Total Kelas Diampu</h3>
-            <p class="text-2xl font-bold text-surface-900">{{ $totalKelasDiajar }} Rombel</p>
         </div>
     </div>
 
-    {{-- Card Wali Kelas --}}
-    <div class="bg-white rounded-2xl p-6 border border-surface-100 shadow-sm relative overflow-hidden group">
-        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-success-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"></div>
-        <div class="relative z-10">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-success-100 text-success-600 rounded-xl flex items-center justify-center">
-                    <i data-lucide="award" class="w-6 h-6"></i>
-                </div>
-            </div>
-            <h3 class="text-sm font-medium text-surface-500 mb-1">Amanah Wali Kelas</h3>
-            @if($waliKelas->count() > 0)
-                <p class="text-2xl font-bold text-surface-900">{{ $waliKelas->count() }} Kelas</p>
-            @else
-                <p class="text-lg font-medium text-surface-500 mt-1">Tidak Ada</p>
-            @endif
-        </div>
-    </div>
-</div>
-
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <div class="lg:col-span-2 space-y-6">
-        {{-- Jadwal Hari Ini --}}
-        <x-card title="Jadwal Mengajar Hari Ini ({{ $hariIni }})">
-            @if($jadwalHariIni->count() > 0)
-                <div class="space-y-4">
-                    @foreach($jadwalHariIni as $jadwal)
-                        <div class="flex items-start gap-4 p-4 rounded-xl border border-surface-200 bg-surface-50 hover:border-primary-300 hover:bg-primary-50/30 transition-all group">
-                            <div class="w-14 h-14 rounded-xl bg-white border border-surface-200 flex flex-col items-center justify-center text-center flex-shrink-0 group-hover:border-primary-200 group-hover:shadow-sm">
-                                <span class="text-xs text-surface-400 font-medium">Jam Ke</span>
-                                <span class="text-lg font-bold text-surface-900">{{ $jadwal->jam_mulai }}</span>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex justify-between items-start">
-                                    <h4 class="font-bold text-surface-900 text-lg truncate group-hover:text-primary-700 transition-colors">{{ $jadwal->mataPelajaran->nama ?? '-' }}</h4>
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-surface-200 text-xs font-bold text-surface-700 shadow-sm">
-                                        <i data-lucide="users" class="w-3.5 h-3.5 text-surface-400"></i> {{ $jadwal->rombel->nama ?? '-' }}
-                                    </span>
-                                </div>
-                                <div class="mt-2 flex items-center gap-3">
-                                    <a href="{{ route('guru.presensi.create', $jadwal->id) }}" class="text-sm font-semibold text-primary-600 hover:text-primary-700 flex items-center gap-1.5">
-                                        <i data-lucide="check-square" class="w-4 h-4"></i> Isi Presensi
-                                    </a>
-                                    <span class="w-1 h-1 rounded-full bg-surface-300"></span>
-                                    <a href="{{ route('guru.penilaian.create', $jadwal->id) }}" class="text-sm font-semibold text-info-600 hover:text-info-700 flex items-center gap-1.5">
-                                        <i data-lucide="edit-3" class="w-4 h-4"></i> Input Nilai
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            @else
-                <div class="py-12 text-center border-2 border-dashed border-surface-200 rounded-xl">
-                    <div class="w-16 h-16 bg-surface-100 text-surface-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i data-lucide="coffee" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-surface-900 mb-1">Alhamdulillah</h3>
-                    <p class="text-surface-500 text-sm max-w-xs mx-auto">Anda tidak memiliki jadwal mengajar di kelas pada hari {{ $hariIni }}.</p>
-                </div>
-            @endif
-        </x-card>
-    </div>
-    
-    <div class="lg:col-span-1 space-y-6">
-        @if($waliKelas->count() > 0)
-            <x-card title="Kelas Perwalian">
-                <div class="space-y-3">
-                    @foreach($waliKelas as $rombel)
-                        <div class="p-4 rounded-xl border border-surface-200 bg-white shadow-sm flex justify-between items-center">
-                            <div>
-                                <h4 class="font-bold text-surface-900">{{ $rombel->nama }}</h4>
-                                <p class="text-xs text-surface-500">{{ $rombel->lembaga->nama ?? '-' }}</p>
-                            </div>
-                            <div class="w-10 h-10 rounded-full bg-success-50 text-success-600 flex items-center justify-center">
-                                <i data-lucide="users" class="w-5 h-5"></i>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </x-card>
-        @endif
+    {{-- MAIN ACTION CARDS GRID (Aksi Utama Guru) --}}
+    <div>
+        <h2 class="text-base font-bold text-surface-900 mb-3 flex items-center gap-2">
+            <i data-lucide="grid" class="w-5 h-5 text-primary-600"></i>
+            Menu Utama Guru & Pengajar
+        </h2>
         
-        <x-card title="Pintasan">
-            <div class="space-y-2">
-                <a href="{{ route('guru.kedisiplinan.index') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-50 transition-colors group border border-transparent hover:border-surface-200">
-                    <div class="w-10 h-10 rounded-lg bg-danger-50 text-danger-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                        <i data-lucide="shield-alert" class="w-5 h-5"></i>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            
+            {{-- Card 1: Input Presensi --}}
+            <a href="{{ route('guru.presensi.index') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-primary-400 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute -right-8 -top-8 w-28 h-28 bg-primary-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 text-white flex items-center justify-center shadow-md shadow-primary-500/20 mb-4 group-hover:rotate-6 transition-transform">
+                        <i data-lucide="clipboard-check" class="w-7 h-7"></i>
                     </div>
-                    <div>
-                        <p class="font-bold text-surface-900 text-sm">Lapor Pelanggaran</p>
-                        <p class="text-xs text-surface-500">Catat kasus indisipliner santri</p>
+                    <h3 class="text-lg font-bold text-surface-900 group-hover:text-primary-600 transition-colors">Presensi Santri</h3>
+                    <p class="text-xs text-surface-500 mt-1 leading-relaxed">Catat kehadiran santri harian pada kelas dan jadwal pelajaran yang diampu.</p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-surface-100 flex items-center justify-between text-xs font-bold text-primary-600">
+                    <span>Isi Absen Kelas</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+            {{-- Card 2: Input Nilai --}}
+            <a href="{{ route('guru.penilaian.index') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-success-400 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute -right-8 -top-8 w-28 h-28 bg-success-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-success-500 to-emerald-700 text-white flex items-center justify-center shadow-md shadow-success-500/20 mb-4 group-hover:rotate-6 transition-transform">
+                        <i data-lucide="award" class="w-7 h-7"></i>
                     </div>
-                </a>
-                <a href="{{ route('guru.kedisiplinan.index') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-50 transition-colors group border border-transparent hover:border-surface-200">
-                    <div class="w-10 h-10 rounded-lg bg-warning-50 text-warning-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                        <i data-lucide="trophy" class="w-5 h-5"></i>
+                    <h3 class="text-lg font-bold text-surface-900 group-hover:text-success-600 transition-colors">Input Nilai Rapor</h3>
+                    <p class="text-xs text-surface-500 mt-1 leading-relaxed">Entry nilai tugas, harian, UTS, dan UAS untuk santri pada mata pelajaran diampu.</p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-surface-100 flex items-center justify-between text-xs font-bold text-success-600">
+                    <span>Input Nilai Mapel</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+            {{-- Card 3: Kedisiplinan & Pelanggaran --}}
+            <a href="{{ route('guru.kedisiplinan.index') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-danger-400 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute -right-8 -top-8 w-28 h-28 bg-danger-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500 to-danger-700 text-white flex items-center justify-center shadow-md shadow-rose-500/20 mb-4 group-hover:rotate-6 transition-transform">
+                        <i data-lucide="shield-alert" class="w-7 h-7"></i>
                     </div>
-                    <div>
-                        <p class="font-bold text-surface-900 text-sm">Catat Prestasi</p>
-                        <p class="text-xs text-surface-500">Berikan apresiasi pada santri</p>
-                    </div>
-                </a>
-            </div>
-        </x-card>
+                    <h3 class="text-lg font-bold text-surface-900 group-hover:text-rose-600 transition-colors">Lapor Kedisiplinan</h3>
+                    <p class="text-xs text-surface-500 mt-1 leading-relaxed">Catat poin pelanggaran atau catatan apresiasi prestasi santri secara fleksibel.</p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-surface-100 flex items-center justify-between text-xs font-bold text-rose-600">
+                    <span>Catat Pelanggaran/Prestasi</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+        </div>
     </div>
+
+    {{-- Jadwal Mengajar Hari Ini Section --}}
+    <div class="bg-white rounded-3xl p-6 border border-surface-200 shadow-sm">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-surface-900 text-base flex items-center gap-2">
+                <i data-lucide="clock" class="w-5 h-5 text-primary-600"></i>
+                Jadwal Mengajar Hari Ini ({{ $hariIni }})
+            </h3>
+            <span class="text-xs text-surface-500 font-medium">{{ $jadwalHariIni->count() }} Kelas Ditemukan</span>
+        </div>
+
+        @if($jadwalHariIni->count() > 0)
+            <div class="divide-y divide-surface-100">
+                @foreach($jadwalHariIni as $jadwal)
+                    <div class="py-4 first:pt-0 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-surface-50 p-3 rounded-2xl transition-colors">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-12 h-12 rounded-2xl bg-primary-50 text-primary-700 font-bold flex flex-col items-center justify-center text-xs shrink-0 border border-primary-100">
+                                <span class="text-[0.6rem] text-primary-500 font-medium">Jam</span>
+                                {{ $jadwal->jam_mulai }}
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-surface-900 text-sm">{{ $jadwal->mataPelajaran->nama ?? '-' }}</h4>
+                                <div class="flex items-center gap-2 mt-1 text-xs text-surface-500">
+                                    <span class="inline-flex items-center gap-1 font-semibold text-primary-700 bg-primary-50 px-2 py-0.5 rounded-md border border-primary-100">
+                                        <i data-lucide="users" class="w-3 h-3"></i> {{ $jadwal->rombel->nama ?? '-' }}
+                                    </span>
+                                    <span>•</span>
+                                    <span>Selesai {{ $jadwal->jam_selesai }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-2 self-end sm:self-auto">
+                            <a href="{{ route('guru.presensi.create', $jadwal->id) }}" class="btn-primary text-xs py-1.5 px-3 rounded-xl flex items-center gap-1">
+                                <i data-lucide="check-square" class="w-3.5 h-3.5"></i> Absen
+                            </a>
+                            <a href="{{ route('guru.penilaian.create', $jadwal->id) }}" class="btn-secondary text-xs py-1.5 px-3 rounded-xl flex items-center gap-1">
+                                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Nilai
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <div class="py-10 text-center border-2 border-dashed border-surface-200 rounded-2xl bg-surface-50">
+                <div class="w-12 h-12 bg-primary-100 text-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <i data-lucide="coffee" class="w-6 h-6"></i>
+                </div>
+                <h4 class="font-bold text-surface-900 text-sm">Tidak Ada Jadwal Mengajar Hari Ini</h4>
+                <p class="text-xs text-surface-500 mt-1">Alhamdulillah, tidak ada jam tatap muka kelas pada hari {{ $hariIni }}.</p>
+            </div>
+        @endif
+    </div>
+
 </div>
 @endsection

@@ -46,13 +46,13 @@
              class="fixed inset-0 bg-black/50 z-40 hidden md:hidden transition-opacity duration-300">
         </div>
 
-        {{-- Sidebar (hidden for portal routes and role-switch page) --}}
-        @if(!request()->routeIs('portal.*') && !request()->routeIs('akun.ganti-peran'))
+        {{-- Sidebar (hidden for portal routes, guru routes, and role-switch page) --}}
+        @if(!request()->routeIs('portal.*') && !request()->routeIs('guru.*') && !request()->routeIs('akun.ganti-peran'))
             @include('layouts.partials.sidebar')
         @endif
 
         {{-- Main Content Area --}}
-        <div class="flex-1 min-w-0 w-full flex flex-col min-h-screen transition-all duration-300 {{ request()->routeIs('portal.*') || request()->routeIs('akun.ganti-peran') ? '' : 'md:ml-[var(--spacing-sidebar)]' }}" id="main-wrapper">
+        <div class="flex-1 min-w-0 w-full flex flex-col min-h-screen transition-all duration-300 {{ request()->routeIs('portal.*') || request()->routeIs('guru.*') || request()->routeIs('akun.ganti-peran') ? '' : 'md:ml-[var(--spacing-sidebar)]' }}" id="main-wrapper">
             {{-- Top Bar --}}
             @if(!request()->routeIs('akun.ganti-peran'))
                 @include('layouts.partials.topbar')

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.panitia-psb')
 
 @section('title', 'Pendaftaran Calon Santri Baru')
 

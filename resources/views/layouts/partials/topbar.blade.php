@@ -117,13 +117,15 @@
     <div class="flex items-center justify-between h-14 sm:h-16 px-3 sm:px-4 lg:px-8">
         {{-- Left: Hamburger + Breadcrumb --}}
         <div class="flex items-center gap-2 sm:gap-4 min-w-0">
-            {{-- Mobile menu toggle --}}
+            {{-- Mobile menu toggle (Only for admin routes with sidebar) --}}
+            @if(!request()->routeIs('portal.*') && !request()->routeIs('guru.*') && !request()->routeIs('bendahara.*') && !request()->routeIs('panitia-psb.*'))
             <button type="button"
                     class="p-2 rounded-lg text-surface-500 hover:bg-surface-100 hover:text-surface-700 transition-colors md:hidden"
                     id="btn-toggle-sidebar"
                     aria-label="Toggle menu">
                 <i data-lucide="menu" class="w-5 h-5"></i>
             </button>
+            @endif
 
             {{-- Breadcrumb --}}
             <nav aria-label="Breadcrumb" class="hidden sm:flex items-center gap-1.5 text-sm min-w-0">

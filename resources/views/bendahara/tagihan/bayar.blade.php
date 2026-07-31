@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.bendahara')
 
 @section('title', 'Terima Pembayaran: INV-' . str_pad($tagihan->id, 6, '0', STR_PAD_LEFT))
 

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.bendahara')
 
 @section('title', 'Data Tagihan & Pembayaran')
 

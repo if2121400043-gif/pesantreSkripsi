@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.panitia-psb')
 
 @section('title', 'Verifikasi Calon Santri: ' . $calonSantri->nama_lengkap)
 

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.portal')
 
 @section('title', 'Kehadiran Kelas')
 

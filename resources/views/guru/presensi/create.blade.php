@@ -1,20 +1,24 @@
-@extends('layouts.app')
+@extends('layouts.guru')
 
-@section('title', 'Isi Presensi Kelas')
-
-@section('page_header')
-<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-    <div>
-        <h1 class="text-2xl font-bold text-surface-900 font-heading">Daftar Hadir Santri</h1>
-        <p class="text-sm text-surface-500 mt-1">Kelas: <strong>{{ $jadwal->rombel->nama }}</strong> | Mapel: <strong>{{ $jadwal->mataPelajaran->nama }}</strong></p>
-    </div>
-    <a href="{{ route('guru.presensi.index', ['hari' => $jadwal->hari]) }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-surface-200 text-surface-700 font-medium rounded-xl hover:bg-surface-50 hover:text-surface-900 transition-colors shadow-sm">
-        <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
-    </a>
-</div>
-@endsection
+@section('title', 'Isi Presensi Kelas — PP Nurul Furqon')
 
 @section('content')
+<div class="space-y-6">
+
+    {{-- Page Header Bar --}}
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-3xl border border-surface-200 shadow-sm">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-semibold text-primary-600 mb-1">
+                <span class="px-2 py-0.5 rounded-md bg-primary-50 border border-primary-100">Kelas {{ $jadwal->rombel->nama }}</span>
+                <span>•</span>
+                <span>{{ $jadwal->mataPelajaran->nama }}</span>
+            </div>
+            <h1 class="text-xl font-bold text-surface-900 font-heading">Daftar Hadir Santri</h1>
+        </div>
+        <a href="{{ route('guru.presensi.index', ['hari' => $jadwal->hari]) }}" class="inline-flex items-center gap-2 px-4 py-2 bg-surface-100 text-surface-700 font-bold text-xs rounded-xl hover:bg-surface-200 transition-colors shrink-0">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Jadwal
+        </a>
+    </div>
 <x-card>
     <form method="GET" action="{{ route('guru.presensi.create', $jadwal->id) }}" class="mb-6 flex flex-wrap items-end gap-4 bg-surface-50 p-4 rounded-xl border border-surface-200">
         <div>
@@ -98,4 +102,5 @@
         @endif
     </form>
 </x-card>
+</div>
 @endsection

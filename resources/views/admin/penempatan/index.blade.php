@@ -96,7 +96,7 @@
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-surface-400">
                                     <i data-lucide="search" class="w-4 h-4"></i>
                                 </div>
-                                <input type="text" id="live-search-santri" placeholder="Cari nama santri, NIUP, NISN..." class="w-full pl-9 pr-8 py-2 text-xs rounded-xl border border-surface-300 bg-white text-surface-900 shadow-sm focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all">
+                                <input type="text" id="live-search-santri" placeholder="Cari nama santri, NIUP, NISN..." class="w-full pr-8 py-2.5 text-xs rounded-xl border border-surface-300 bg-white text-surface-900 shadow-sm focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all" style="padding-left: 2.75rem !important;">
                                 <button type="button" id="btn-clear-search" class="hidden absolute inset-y-0 right-0 pr-2.5 flex items-center text-surface-400 hover:text-surface-700">
                                     <i data-lucide="x-circle" class="w-4 h-4"></i>
                                 </button>

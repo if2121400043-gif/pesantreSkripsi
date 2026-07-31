@@ -58,14 +58,15 @@ class RombelController extends Controller
             'gender_target' => 'required|in:CAMPUR,PUTRA,PUTRI',
         ]);
 
-        // Check if combination already exists
+        // Check if combination of (lembaga, tahun_pelajaran, nama, gender_target) already exists
         $exists = Rombel::where('lembaga_id', $validated['lembaga_id'])
                         ->where('tahun_pelajaran_id', $validated['tahun_pelajaran_id'])
                         ->where('nama', $validated['nama'])
+                        ->where('gender_target', $validated['gender_target'])
                         ->exists();
         
         if ($exists) {
-            return back()->withInput()->with('error', 'Rombongan belajar (kelas) ini sudah terdaftar pada lembaga dan tahun pelajaran yang sama.');
+            return back()->withInput()->with('error', 'Rombongan belajar (kelas) dengan nama dan peruntukan gender yang sama sudah terdaftar pada lembaga ini.');
         }
 
         Rombel::create($validated);
@@ -99,6 +100,17 @@ class RombelController extends Controller
             'kapasitas' => 'required|integer|min:1',
             'gender_target' => 'required|in:CAMPUR,PUTRA,PUTRI',
         ]);
+
+        $exists = Rombel::where('lembaga_id', $validated['lembaga_id'])
+                        ->where('tahun_pelajaran_id', $validated['tahun_pelajaran_id'])
+                        ->where('nama', $validated['nama'])
+                        ->where('gender_target', $validated['gender_target'])
+                        ->where('id', '!=', $rombel->id)
+                        ->exists();
+        
+        if ($exists) {
+            return back()->withInput()->with('error', 'Rombongan belajar (kelas) dengan nama dan peruntukan gender yang sama sudah terdaftar pada lembaga ini.');
+        }
 
         $rombel->update($validated);
 

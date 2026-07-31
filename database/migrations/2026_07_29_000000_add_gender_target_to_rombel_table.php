@@ -10,12 +10,16 @@ return new class extends Migration
     {
         Schema::table('rombel', function (Blueprint $table) {
             $table->enum('gender_target', ['CAMPUR', 'PUTRA', 'PUTRI'])->default('CAMPUR')->after('kapasitas');
+            $table->dropUnique('rombel_unique');
+            $table->unique(['lembaga_id', 'tahun_pelajaran_id', 'nama', 'gender_target'], 'rombel_unique');
         });
     }
 
     public function down(): void
     {
         Schema::table('rombel', function (Blueprint $table) {
+            $table->dropUnique('rombel_unique');
+            $table->unique(['lembaga_id', 'tahun_pelajaran_id', 'nama'], 'rombel_unique');
             $table->dropColumn('gender_target');
         });
     }

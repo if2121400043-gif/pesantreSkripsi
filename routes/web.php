@@ -101,7 +101,9 @@ Route::middleware('auth')->group(function () {
         Route::get('penilaian', [\App\Http\Controllers\Admin\PenilaianController::class, 'index'])->name('penilaian.index');
         Route::post('penilaian', [\App\Http\Controllers\Admin\PenilaianController::class, 'store'])->name('penilaian.store');
         
-        Route::resource('jadwal-pelajaran', \App\Http\Controllers\Admin\JadwalPelajaranController::class)->except(['show', 'edit']);
+        Route::resource('jadwal-pelajaran', \App\Http\Controllers\Admin\JadwalPelajaranController::class)
+            ->parameters(['jadwal-pelajaran' => 'jadwal'])
+            ->except(['show', 'edit']);
         
         Route::get('presensi', [\App\Http\Controllers\Admin\PresensiController::class, 'index'])->name('presensi.index');
         Route::post('presensi', [\App\Http\Controllers\Admin\PresensiController::class, 'store'])->name('presensi.store');

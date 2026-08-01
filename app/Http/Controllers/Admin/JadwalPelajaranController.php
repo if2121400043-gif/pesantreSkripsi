@@ -97,9 +97,15 @@ class JadwalPelajaranController extends Controller
         ])->with('success', 'Jadwal pelajaran berhasil ditambahkan.');
     }
 
-    public function destroy(JadwalPelajaran $jadwal)
+    public function destroy($id)
     {
-        $jadwal->delete();
-        return back()->with('success', 'Jadwal pelajaran berhasil dihapus.');
+        $jadwal = $id instanceof JadwalPelajaran ? $id : JadwalPelajaran::find($id);
+
+        if ($jadwal && $jadwal->exists) {
+            $jadwal->delete();
+            return back()->with('success', 'Jadwal pelajaran berhasil dihapus.');
+        }
+
+        return back()->with('error', 'Jadwal pelajaran tidak ditemukan.');
     }
 }

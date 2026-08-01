@@ -112,11 +112,23 @@
                         <i id="theme-toggle-dark-icon" data-lucide="moon" class="hidden w-4 h-4"></i>
                         <i id="theme-toggle-light-icon" data-lucide="sun" class="hidden w-4 h-4"></i>
                     </button>
+
                     <div class="h-6 w-px bg-surface-200 dark:bg-surface-800 mx-1"></div>
-                    <a href="/login" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-surface-700 dark:text-surface-300 hover:text-primary-600 dark:hover:text-primary-400 text-sm font-bold transition-all duration-300">
-                        <i data-lucide="log-in" class="w-4 h-4"></i>
-                        {{ __('Masuk') }}
-                    </a>
+
+                    @auth
+                        @php
+                            $userRedirect = auth()->user()->active_role->role->redirect_url ?? '/portal/beranda';
+                        @endphp
+                        <a href="{{ url($userRedirect) }}" class="inline-flex items-center gap-1.5 px-4 py-2.5 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-200 text-sm font-extrabold rounded-xl transition-all duration-300 shadow-sm">
+                            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                            <span>Dashboard Saya</span>
+                        </a>
+                    @else
+                        <a href="/login" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-surface-700 dark:text-surface-300 hover:text-primary-600 dark:hover:text-primary-400 text-sm font-bold transition-all duration-300">
+                            <i data-lucide="log-in" class="w-4 h-4"></i>
+                            {{ __('Masuk') }}
+                        </a>
+                    @endauth
 
                     <div class="h-6 w-px bg-surface-200 dark:bg-surface-800 mx-1"></div>
 
@@ -158,7 +170,14 @@
                 </div>
 
                 <div class="pt-4 flex flex-col gap-2">
-                    <a href="/login" class="block w-full text-center px-4 py-3 border border-surface-200 dark:border-surface-800 text-surface-700 dark:text-surface-300 font-bold rounded-xl">{{ __('Masuk') }}</a>
+                    @auth
+                        @php
+                            $userRedirect = auth()->user()->active_role->role->redirect_url ?? '/portal/beranda';
+                        @endphp
+                        <a href="{{ url($userRedirect) }}" class="block w-full text-center px-4 py-3 bg-emerald-600 text-white font-extrabold rounded-xl shadow-md">Dashboard Saya</a>
+                    @else
+                        <a href="/login" class="block w-full text-center px-4 py-3 border border-surface-200 dark:border-surface-800 text-surface-700 dark:text-surface-300 font-bold rounded-xl">{{ __('Masuk') }}</a>
+                    @endauth
                     <a href="/psb" class="block w-full text-center px-4 py-3.5 bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-bold rounded-xl shadow-lg shadow-primary-600/20">{{ __('Daftar PSB Sekarang') }}</a>
                 </div>
             </div>

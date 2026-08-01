@@ -13,9 +13,9 @@ class AuthController extends Controller
     {
         // CEK SESI: Memeriksa apakah pengguna sudah login sebelumnya.
         if (Auth::check()) {
-            // Jika sudah login, jangan tampilkan form login lagi. 
-            // Langsung arahkan (redirect) mereka ke halaman dashboard sesuai peran mereka.
-            return $this->redirectBasedOnRole(Auth::user());
+            $user = Auth::user();
+            $redirectUrl = $user->active_role->role->redirect_url ?? '/portal/beranda';
+            return redirect($redirectUrl);
         }
         
         // Jika belum login, tampilkan halaman (view) form login.

@@ -95,13 +95,16 @@ class PegawaiController extends Controller
 
         $hariOrder = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'AHAD'];
 
-        // Kelompokkan jadwal mengajar per hari
+        // Kelompokkan jadwal mengajar per hari & urutkan jam dari pagi ke malam
         $jadwalGrouped = $pegawai->jadwalMengajar
             ->sortBy(function($j) use ($hariOrder) {
                 $pos = array_search($j->hari, $hariOrder);
-                return ($pos !== false ? $pos : 99) . '_' . $j->jam_mulai;
+                return sprintf('%02d_%s', $pos !== false ? $pos : 99, $j->jam_mulai);
             })
-            ->groupBy('hari');
+            ->groupBy('hari')
+            ->map(function($group) {
+                return $group->sortBy('jam_mulai')->values();
+            });
 
         // Daftar Mata Pelajaran Unik yang diajar
         $mapelDiampu = $pegawai->jadwalMengajar

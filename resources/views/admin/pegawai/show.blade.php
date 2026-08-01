@@ -112,56 +112,67 @@
                 @endif
             </div>
 
-            {{-- Tabel Jadwal Mengajar Mingguan (membentang 100% penuh) --}}
+            {{-- Tabel Jadwal Mengajar Mingguan (Per Hari) --}}
             <div>
-                <h4 class="text-xs font-bold text-surface-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+                <h4 class="text-xs font-bold text-surface-500 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <i data-lucide="calendar" class="w-4 h-4 text-emerald-700"></i>
-                    Rincian Jadwal Mengajar Mingguan (Senin – Ahad)
+                    Rincian Jadwal Mengajar Mingguan (Terurut Pagi → Malam)
                 </h4>
 
                 @if(!$jadwalGrouped->isEmpty())
-                    <div class="overflow-x-auto rounded-2xl border border-surface-200">
-                        <table class="w-full text-xs" style="table-layout: fixed;">
-                            <thead>
-                                <tr class="bg-surface-100/80 text-surface-600 uppercase tracking-wider font-bold text-[0.68rem] border-b border-surface-200">
-                                    <th class="px-4 py-3 text-center" style="width: 6%;">No</th>
-                                    <th class="px-4 py-3 text-center" style="width: 14%;">Hari</th>
-                                    <th class="px-4 py-3 text-center" style="width: 22%;">Jam Pelajaran</th>
-                                    <th class="px-4 py-3 text-left" style="width: 38%;">Mata Pelajaran</th>
-                                    <th class="px-4 py-3 text-center" style="width: 20%;">Kelas / Rombel</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-surface-100 text-surface-800">
-                                @php $nomor = 1; @endphp
-                                @foreach($hariOrder as $hari)
-                                    @if(isset($jadwalGrouped[$hari]) && $jadwalGrouped[$hari]->count() > 0)
-                                        @foreach($jadwalGrouped[$hari] as $index => $jadwal)
-                                            <tr class="hover:bg-surface-50 transition-colors">
-                                                <td class="px-4 py-3 text-center font-bold text-surface-400">{{ $nomor++ }}</td>
-                                                @if($index === 0)
-                                                    <td class="px-4 py-3 text-center font-bold text-surface-800 bg-surface-50/70" rowspan="{{ $jadwalGrouped[$hari]->count() }}" style="vertical-align: middle;">
-                                                        <span class="inline-block px-3 py-1 rounded-xl text-white font-extrabold text-[0.7rem] shadow-2xs" style="color: #ffffff !important; background-color: #047857 !important;">{{ $hari }}</span>
-                                                    </td>
-                                                @endif
-                                                <td class="px-4 py-3 text-center font-mono font-bold text-emerald-800">
-                                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-xs">
-                                                        <i data-lucide="clock" class="w-3.5 h-3.5 text-emerald-600"></i>
-                                                        {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} – {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}
-                                                    </span>
-                                                </td>
-                                                <td class="px-4 py-3 font-extrabold text-surface-900 text-sm">{{ $jadwal->mataPelajaran->nama ?? '-' }}</td>
-                                                <td class="px-4 py-3 text-center font-bold text-info-700">
-                                                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-info-50 text-info-800 border border-info-200 text-xs">
-                                                        <i data-lucide="users" class="w-3.5 h-3.5"></i>
-                                                        {{ $jadwal->rombel->nama ?? '-' }}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <div class="space-y-5">
+                        @php $globalNomor = 1; @endphp
+                        @foreach($hariOrder as $hari)
+                            @if(isset($jadwalGrouped[$hari]) && $jadwalGrouped[$hari]->count() > 0)
+                                <div class="rounded-2xl border border-surface-200 overflow-hidden shadow-2xs">
+                                    {{-- Day Header Bar --}}
+                                    <div class="px-5 py-3 border-b border-surface-200 flex items-center justify-between" style="background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important;">
+                                        <div class="flex items-center gap-2.5">
+                                            <span class="inline-flex items-center justify-center px-3 py-1 rounded-xl text-xs font-black text-white shadow-xs" style="background-color: #047857 !important; color: #ffffff !important;">
+                                                {{ $hari }}
+                                            </span>
+                                            <span class="text-xs font-bold text-emerald-900">
+                                                {{ $jadwalGrouped[$hari]->count() }} Sesi Mengajar
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {{-- Day Schedule Table --}}
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-xs" style="table-layout: fixed;">
+                                            <thead>
+                                                <tr class="bg-surface-50 text-surface-500 uppercase tracking-wider font-bold text-[0.65rem] border-b border-surface-100">
+                                                    <th class="px-4 py-2.5 text-center" style="width: 8%;">No</th>
+                                                    <th class="px-4 py-2.5 text-center" style="width: 25%;">Jam Pelajaran (Pagi → Malam)</th>
+                                                    <th class="px-4 py-2.5 text-left" style="width: 45%;">Mata Pelajaran / Kitab</th>
+                                                    <th class="px-4 py-2.5 text-center" style="width: 22%;">Kelas / Rombel</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-surface-100 text-surface-800">
+                                                @foreach($jadwalGrouped[$hari] as $index => $jadwal)
+                                                    <tr class="hover:bg-surface-50/80 transition-colors">
+                                                        <td class="px-4 py-3 text-center font-bold text-surface-400">{{ $globalNomor++ }}</td>
+                                                        <td class="px-4 py-3 text-center font-mono font-bold">
+                                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs shadow-2xs">
+                                                                <i data-lucide="clock" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                                                {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} – {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}
+                                                            </span>
+                                                        </td>
+                                                        <td class="px-4 py-3 font-extrabold text-surface-900 text-sm">{{ $jadwal->mataPelajaran->nama ?? '-' }}</td>
+                                                        <td class="px-4 py-3 text-center font-bold text-info-700">
+                                                            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-info-50 text-info-800 border border-info-200 text-xs">
+                                                                <i data-lucide="users" class="w-3.5 h-3.5"></i>
+                                                                {{ $jadwal->rombel->nama ?? '-' }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
                     </div>
                 @else
                     <div class="p-8 text-center bg-surface-50 rounded-2xl border border-surface-200 border-dashed">

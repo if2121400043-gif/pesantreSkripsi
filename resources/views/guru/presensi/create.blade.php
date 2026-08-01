@@ -21,9 +21,13 @@
     </div>
 <x-card>
     <form method="GET" action="{{ route('guru.presensi.create', $jadwal->id) }}" class="mb-6 flex flex-wrap items-end gap-4 bg-surface-50 p-4 rounded-xl border border-surface-200">
-        <div>
-            <label class="block text-sm font-bold text-surface-700 mb-1">Tanggal Pertemuan</label>
-            <input type="date" name="tanggal" value="{{ $tanggal }}" class="rounded-lg border-surface-300 shadow-sm focus:border-primary-500 focus:ring focus:ring-primary-500/20" onchange="this.form.submit()">
+        <div class="w-full sm:w-auto">
+            <x-date-picker 
+                name="tanggal" 
+                label="Tanggal Pertemuan" 
+                :value="$tanggal" 
+                :autoSubmit="true" 
+            />
         </div>
         <div class="flex-1 text-right">
             <p class="text-sm text-surface-500">Pilih tanggal untuk melihat atau mengubah data absensi pada hari tersebut.</p>

@@ -69,13 +69,13 @@
 
             {{-- 2. Tanggal Presensi --}}
             <div>
-                <label for="tanggal" class="block text-xs font-bold text-surface-700 mb-1">
-                    2. Tanggal Presensi <span class="text-rose-500">*</span>
-                </label>
-                <input type="date" id="tanggal" name="tanggal" 
-                       class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 shadow-2xs" 
-                       value="{{ $tanggal }}" 
-                       onchange="this.form.submit()">
+                <x-date-picker 
+                    name="tanggal" 
+                    label="2. Tanggal Presensi" 
+                    :value="$tanggal" 
+                    :required="true"
+                    :autoSubmit="true" 
+                />
             </div>
 
             {{-- 3. Dynamic Filter (Per Rombel / Per Asrama) --}}

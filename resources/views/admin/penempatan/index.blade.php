@@ -4,19 +4,13 @@
 
 @section('content')
 <div class="space-y-6" x-data="{
-    selectedRombelId: '{{ old('rombel_id', request('rombel_id')) }}',
+    selectedRombelId: '{{ old('rombel_id', request('rombel_id', '')) }}',
     selectedRombelName: 'Belum Dipilih',
-    selectedCapacity: 0,
-    selectedFilled: 0,
-    selectedGender: 'CAMPUR',
-    selectRombel(id, name, filled, capacity, gender) {
-        this.selectedRombelId = id;
+    selectRombel(id, name) {
+        this.selectedRombelId = String(id);
         this.selectedRombelName = name;
-        this.selectedCapacity = capacity;
-        this.selectedFilled = filled;
-        this.selectedGender = gender;
-        let el = document.getElementById('hidden_rombel_id');
-        if(el) el.value = id;
+        let radio = document.getElementById('radio_rombel_' + id);
+        if(radio) radio.checked = true;
     }
 }">
 
@@ -92,20 +86,18 @@
         {{-- KARTU UTAMA TERPADU --}}
         <form action="{{ route('admin.penempatan.store') }}" method="POST" id="form-penempatan">
             @csrf
-            {{-- Hidden input with direct native value binding --}}
-            <input type="hidden" name="rombel_id" id="hidden_rombel_id" value="{{ old('rombel_id', request('rombel_id')) }}" required>
 
             <div class="bg-white rounded-3xl border border-surface-200 shadow-sm overflow-hidden space-y-6 p-6 md:p-8">
                 
-                {{-- SECTION 1: KELAS TUJUAN --}}
+                {{-- SECTION 1: KELAS TUJUAN (NATIVE RADIO BUTTONS IN CARDS) --}}
                 <div class="space-y-3 pb-6 border-b border-surface-100">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                         <div>
                             <h3 class="font-extrabold text-surface-900 text-base flex items-center gap-2">
                                 <span class="w-6 h-6 rounded-lg bg-emerald-700 text-white font-black text-xs flex items-center justify-center shrink-0" style="background-color: #047857 !important; color: #ffffff !important;">1</span>
-                                Pilih Kelas Tujuan (Klik Kartu Kelas)
+                                Pilih Kelas Tujuan (Klik Kartu / Lingkaran Radio)
                             </h3>
-                            <p class="text-xs text-surface-500 mt-0.5">Klik salah satu kelas di bawah ini untuk menentukan kelas target penempatan santri.</p>
+                            <p class="text-xs text-surface-500 mt-0.5">Pilih salah satu kelas di bawah ini sebagai kelas target penempatan santri.</p>
                         </div>
 
                         <div class="text-xs text-surface-600 font-bold bg-surface-50 px-3 py-1.5 rounded-xl border border-surface-200 shrink-0">
@@ -124,16 +116,24 @@
                                     $rName = ($rombel->tingkat ? 'Kelas ' . $rombel->tingkat . '-' : '') . $rombel->nama;
                                 @endphp
 
-                                <div @click="selectRombel('{{ $rombel->id }}', '{{ addslashes($rName) }}', {{ $rFilled }}, {{ $rombel->kapasitas }}, '{{ $rombel->gender_target }}'); document.getElementById('hidden_rombel_id').value = '{{ $rombel->id }}';"
-                                     :class="selectedRombelId == '{{ $rombel->id }}' ? 'border-2 border-emerald-600 bg-emerald-50 shadow-md ring-2 ring-emerald-500/20' : 'border border-surface-200 bg-white hover:border-emerald-300 hover:shadow-2xs'"
+                                <div @click="selectRombel('{{ $rombel->id }}', '{{ addslashes($rName) }}')"
+                                     :class="(selectedRombelId !== '' && String(selectedRombelId) === '{{ (string)$rombel->id }}') ? 'border-2 border-emerald-600 bg-emerald-50 shadow-md ring-2 ring-emerald-500/20' : 'border border-surface-200 bg-white hover:border-emerald-300 hover:shadow-2xs'"
                                      class="p-3.5 rounded-2xl cursor-pointer transition-all relative overflow-hidden group">
                                     
-                                    <div class="flex items-start justify-between gap-1 mb-1.5">
+                                    <div class="flex items-start justify-between gap-2 mb-1.5">
                                         <h4 class="font-extrabold text-surface-900 text-xs leading-snug group-hover:text-emerald-700 transition-colors">
                                             {{ $rName }}
                                         </h4>
-                                        <div x-show="selectedRombelId == '{{ $rombel->id }}'" transition class="px-2 py-0.5 rounded-full text-[0.6rem] font-black bg-emerald-700 text-white shrink-0" style="color: #ffffff !important; background-color: #047857 !important;">
-                                            ✓ TERPILIH
+                                        
+                                        {{-- Native HTML Radio Button --}}
+                                        <div class="flex items-center gap-1 shrink-0">
+                                            <input type="radio" 
+                                                   name="rombel_id" 
+                                                   id="radio_rombel_{{ $rombel->id }}" 
+                                                   value="{{ $rombel->id }}" 
+                                                   @change="selectRombel('{{ $rombel->id }}', '{{ addslashes($rName) }}')"
+                                                   :checked="selectedRombelId !== '' && String(selectedRombelId) === '{{ (string)$rombel->id }}'"
+                                                   class="w-4 h-4 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
                                         </div>
                                     </div>
 
@@ -414,21 +414,20 @@
     });
 
     function submitPenempatan() {
-        const hiddenEl = document.getElementById('hidden_rombel_id');
-        const selectedRombelId = hiddenEl ? hiddenEl.value : '';
-        const checkedCount = document.querySelectorAll('.peserta-checkbox:checked').length;
+        const selectedRadio = document.querySelector('input[name="rombel_id"]:checked');
+        const checkedSantri = document.querySelectorAll('.peserta-checkbox:checked').length;
 
-        if (!selectedRombelId || selectedRombelId === '') {
-            alert('⚠️ Harap klik dan pilih Kelas Tujuan terlebih dahulu pada Section 1!');
+        if (!selectedRadio || !selectedRadio.value) {
+            alert('⚠️ Harap pilih salah satu Kelas Tujuan terlebih dahulu pada Section 1!');
             return;
         }
 
-        if (checkedCount === 0) {
+        if (checkedSantri === 0) {
             alert('⚠️ Harap centang minimal 1 santri yang akan dimasukkan ke kelas!');
             return;
         }
 
-        if (confirm(`Konfirmasi: Masukkan ${checkedCount} santri ke kelas target terpilih?`)) {
+        if (confirm(`Konfirmasi: Masukkan ${checkedSantri} santri ke kelas target terpilih?`)) {
             document.getElementById('form-penempatan').submit();
         }
     }

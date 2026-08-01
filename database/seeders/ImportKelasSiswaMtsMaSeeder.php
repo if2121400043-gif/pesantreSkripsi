@@ -159,7 +159,7 @@ class ImportKelasSiswaMtsMaSeeder extends Seeder
                 ['orang_id' => $orang->id],
                 [
                     'nisn' => $s['nisn'] ?: null,
-                    'is_active' => true,
+                    'status' => 'AKTIF',
                 ]
             );
             if ($s['nisn'] && !$peserta->nisn) {
@@ -189,8 +189,9 @@ class ImportKelasSiswaMtsMaSeeder extends Seeder
                 RiwayatRombelPeserta::firstOrCreate([
                     'peserta_didik_id' => $peserta->id,
                     'rombel_id' => $rombelId,
+                    'tahun_pelajaran_id' => $tahunAktif->id,
                 ], [
-                    'is_active' => true,
+                    'status' => 'AKTIF',
                 ]);
                 $countPlotting++;
             }

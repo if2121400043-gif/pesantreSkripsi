@@ -51,6 +51,26 @@
                     </div>
                 </a>
 
+                {{-- Middle: Desktop Navigation Tabs --}}
+                <nav class="hidden md:flex items-center gap-1.5 p-1 rounded-2xl border border-white/20 text-xs font-bold" style="background-color: rgba(255, 255, 255, 0.15) !important;">
+                    <a href="{{ route('portal.beranda') }}" class="px-3.5 py-1.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 {{ request()->routeIs('portal.beranda') ? 'bg-white text-emerald-900 font-black shadow-md' : 'text-white hover:bg-white/15' }}" style="{{ request()->routeIs('portal.beranda') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
+                        <i data-lucide="home" class="w-4 h-4"></i>
+                        <span>Beranda</span>
+                    </a>
+                    <a href="{{ route('portal.tagihan') }}" class="px-3.5 py-1.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 {{ request()->routeIs('portal.tagihan*') ? 'bg-white text-emerald-900 font-black shadow-md' : 'text-white hover:bg-white/15' }}" style="{{ request()->routeIs('portal.tagihan*') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
+                        <i data-lucide="wallet" class="w-4 h-4"></i>
+                        <span>Tagihan & Bayar</span>
+                    </a>
+                    <a href="{{ route('portal.presensi') }}" class="px-3.5 py-1.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 {{ request()->routeIs('portal.presensi*') ? 'bg-white text-emerald-900 font-black shadow-md' : 'text-white hover:bg-white/15' }}" style="{{ request()->routeIs('portal.presensi*') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
+                        <i data-lucide="calendar-check" class="w-4 h-4"></i>
+                        <span>Presensi</span>
+                    </a>
+                    <a href="{{ route('portal.kedisiplinan') }}" class="px-3.5 py-1.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 {{ request()->routeIs('portal.kedisiplinan*') ? 'bg-white text-emerald-900 font-black shadow-md' : 'text-white hover:bg-white/15' }}" style="{{ request()->routeIs('portal.kedisiplinan*') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                        <span>Kedisiplinan</span>
+                    </a>
+                </nav>
+
                 {{-- Right: User Actions & Switch Role --}}
                 <div class="flex items-center gap-2">
                     <div class="flex items-center gap-2">

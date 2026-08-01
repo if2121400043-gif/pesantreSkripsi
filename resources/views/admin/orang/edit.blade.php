@@ -64,9 +64,13 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <x-form-input name="tempat_lahir" label="Tempat Lahir" value="{{ old('tempat_lahir', $orang->tempat_lahir) }}" />
-                        <x-form-input type="date" name="tanggal_lahir" label="Tanggal Lahir" value="{{ old('tanggal_lahir', $orang->tanggal_lahir?->format('Y-m-d')) }}" />
+                    <div class="space-y-4">
+                        <x-ttl-input 
+                            tempatName="tempat_lahir" 
+                            tanggalName="tanggal_lahir" 
+                            :tempatValue="old('tempat_lahir', $orang->tempat_lahir)" 
+                            :tanggalValue="old('tanggal_lahir', $orang->tanggal_lahir?->format('Y-m-d'))" 
+                        />
                         
                         <div>
                             <label class="block text-sm font-medium text-surface-700 mb-1">Golongan Darah</label>

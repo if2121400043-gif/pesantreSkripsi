@@ -91,16 +91,13 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-surface-700 mb-1">Tempat Lahir</label>
-                            <input type="text" name="tempat_lahir" value="{{ old('tempat_lahir') }}" placeholder="Kota/Kab Tempat Lahir" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-surface-700 mb-1">Tanggal Lahir</label>
-                            <input type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
-                        </div>
+                    <div class="space-y-4">
+                        <x-ttl-input 
+                            tempatName="tempat_lahir" 
+                            tanggalName="tanggal_lahir" 
+                            :tempatValue="old('tempat_lahir')" 
+                            :tanggalValue="old('tanggal_lahir')" 
+                        />
 
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">Golongan Darah</label>

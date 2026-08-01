@@ -180,7 +180,7 @@ class ImportKelasSiswaMtsMaSeeder extends Seeder
                     'keluarga_id' => $ortu->id,
                     'orang_id' => $orang->id,
                 ], [
-                    'hubungan' => 'ORANG_TUA',
+                    'hubungan' => 'WALI',
                     'is_wali_utama' => true,
                 ]);
             }

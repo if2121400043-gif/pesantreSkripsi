@@ -303,6 +303,41 @@
                 window.addEventListener('touchend', onEnd);
             }
         });
+
+        // Service Worker Auto-Registration & Instant PWA Cache Purge
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js?v=' + Date.now()).then(function(registration) {
+                    console.log('[PWA] ServiceWorker active with scope:', registration.scope);
+                    
+                    // Check for SW updates on server
+                    registration.update();
+
+                    registration.onupdatefound = function() {
+                        const installingWorker = registration.installing;
+                        if (installingWorker) {
+                            installingWorker.onstatechange = function() {
+                                if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    console.log('[PWA] New version detected on server! Purging old cache...');
+                                    installingWorker.postMessage('SKIP_WAITING');
+                                }
+                            };
+                        }
+                    };
+                }).catch(function(err) {
+                    console.warn('[PWA] SW Registration Error:', err);
+                });
+
+                let refreshing = false;
+                navigator.serviceWorker.addEventListener('controllerchange', function() {
+                    if (!refreshing) {
+                        refreshing = true;
+                        console.log('[PWA] Controller changed! Refreshing page to load latest code...');
+                        window.location.reload();
+                    }
+                });
+            });
+        }
     </script>
 </body>
 </html>

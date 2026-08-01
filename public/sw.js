@@ -1,106 +1,104 @@
 // ============================================================
 // Service Worker — PP Nurul Furqon
-// Version: v6 (network-first, no aggressive caching)
+// Version: v10-20260801-1507 (Strict Network-First & Auto-Bust PWA Cache)
 // ============================================================
 
-const CACHE_VERSION = 'v8';
+const CACHE_VERSION = 'v10-20260801-1507';
 const CACHE_NAME_STATIC = `pp-nurul-furqon-static-${CACHE_VERSION}`;
 const CACHE_NAME_DYNAMIC = `pp-nurul-furqon-dynamic-${CACHE_VERSION}`;
 
-// Core files to pre-cache for offline fallback
+// Core files to pre-cache ONLY for offline fallback
 const PRECACHE_ASSETS = [
     '/offline',
     '/manifest.json',
     '/favicon.ico',
     '/icons/icon-192x192.png',
     '/icons/icon-512x512.png',
-    '/icons/icon-192x192-maskable.png',
-    '/icons/icon-512x512-maskable.png',
-    '/icons/apple-touch-icon.png',
-    '/images/logo-pesantren.webp'
+    '/icons/apple-touch-icon.png'
 ];
 
-// ── Install: Pre-cache core offline assets ──
+// ── Install: Pre-cache core offline assets & force immediate activation ──
 self.addEventListener('install', event => {
+    console.log(`[SW ${CACHE_VERSION}] Installing new Service Worker...`);
     event.waitUntil(
         caches.open(CACHE_NAME_STATIC).then(cache => {
-            console.log('[SW] Pre-caching offline assets...');
             return Promise.all(
                 PRECACHE_ASSETS.map(asset =>
                     cache.add(asset).catch(err => {
-                        console.warn('[SW] Failed to cache:', asset, err);
+                        console.warn('[SW] Failed to pre-cache:', asset, err);
                     })
                 )
             );
-        }).then(() => self.skipWaiting()) // Immediately activate new SW
-    );
-});
-
-// ── Activate: Clean up ALL old caches ──
-self.addEventListener('activate', event => {
-    event.waitUntil(
-        caches.keys().then(cacheNames => {
-            return Promise.all(
-                cacheNames
-                    .filter(name => name !== CACHE_NAME_STATIC && name !== CACHE_NAME_DYNAMIC)
-                    .map(name => {
-                        console.log('[SW] Deleting old cache:', name);
-                        return caches.delete(name);
-                    })
-            );
         }).then(() => {
-            console.log('[SW] Activated and claimed all clients');
-            return self.clients.claim(); // Take control of all pages immediately
+            console.log(`[SW ${CACHE_VERSION}] Skip waiting and activate immediately.`);
+            return self.skipWaiting(); // Force active immediately
         })
     );
 });
 
-// ── Fetch: Smart caching strategies ──
+// ── Activate: Purge ALL old caches & claim all clients ──
+self.addEventListener('activate', event => {
+    console.log(`[SW ${CACHE_VERSION}] Activating & purging stale caches...`);
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(name => {
+                    if (name !== CACHE_NAME_STATIC && name !== CACHE_NAME_DYNAMIC) {
+                        console.log('[SW] Deleting obsolete cache:', name);
+                        return caches.delete(name);
+                    }
+                })
+            );
+        }).then(() => {
+            console.log(`[SW ${CACHE_VERSION}] Claiming all active clients immediately.`);
+            return self.clients.claim(); // Take control of all pages right now
+        })
+    );
+});
+
+// ── Fetch: Zero-Cache for HTML/Portal, Pure Network-First ──
 self.addEventListener('fetch', event => {
-    // Only handle GET requests
+    // Only intercept GET requests
     if (event.request.method !== 'GET') return;
 
     const url = new URL(event.request.url);
 
-    // Skip cross-origin requests (CDN, analytics, etc.) — let browser handle them
+    // Skip cross-origin requests
     if (url.origin !== self.location.origin) return;
 
     const isNavigationRequest = event.request.mode === 'navigate';
     const acceptsHtml = event.request.headers.get('accept')?.includes('text/html');
 
-    // Detect AJAX / Inertia / Livewire requests — these MUST ALWAYS go to network
-    const isInertia = event.request.headers.get('x-inertia');
-    const isLivewire = event.request.headers.get('x-livewire');
-    const isXHR = event.request.headers.get('x-requested-with') === 'XMLHttpRequest';
-
-    // ── Strategy 0: Skip auth routes — NEVER cache login/logout/register ──
-    if (url.pathname.startsWith('/login') || url.pathname.startsWith('/logout') || url.pathname.startsWith('/register') || url.pathname.startsWith('/psb/daftar')) {
-        return;
+    // ── Strategy 0: NEVER cache authentication & dynamic portal routes ──
+    if (
+        url.pathname.startsWith('/login') ||
+        url.pathname.startsWith('/logout') ||
+        url.pathname.startsWith('/register') ||
+        url.pathname.startsWith('/portal') ||
+        url.pathname.startsWith('/bendahara') ||
+        url.pathname.startsWith('/panitia-psb') ||
+        url.pathname.startsWith('/admin')
+    ) {
+        // ALWAYS fetch live from network; fall back to offline page if network is down
+        if (isNavigationRequest || acceptsHtml) {
+            event.respondWith(
+                fetch(event.request, { cache: 'no-store' })
+                    .catch(() => caches.match('/offline'))
+            );
+            return;
+        }
     }
 
-    // ── Strategy 1: Network-Only for API/AJAX/Inertia/Livewire ──
-    if (isInertia || isLivewire || isXHR || url.pathname.startsWith('/api/') || url.pathname.includes('/api/')) {
-        // Never cache API calls — always go to network
-        return;
-    }
-
-    // ── Strategy 2: Network-First for HTML navigation ──
-    // Always fetch from server; fall back to offline page if no network
+    // ── Strategy 1: Network-First for HTML navigation ──
     if (isNavigationRequest || acceptsHtml) {
         event.respondWith(
             fetch(event.request)
-                .then(response => {
-                    return response;
-                })
-                .catch(() => {
-                    return caches.match('/offline');
-                })
+                .catch(() => caches.match('/offline'))
         );
         return;
     }
 
-    // ── Strategy 3: Cache-First for Vite build assets (hashed filenames) ──
-    // Vite assets have content hashes in filenames, so they're safe to cache long-term
+    // ── Strategy 2: Cache-First for Vite build assets (hashed filenames only) ──
     if (url.pathname.startsWith('/build/assets/')) {
         event.respondWith(
             caches.match(event.request).then(cachedResponse => {
@@ -120,8 +118,7 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // ── Strategy 4: Network-First for images and other static assets ──
-    // Try network first, fall back to cache for images/icons
+    // ── Default: Network-First for images/assets ──
     const isStaticAsset =
         url.pathname.endsWith('.png') ||
         url.pathname.endsWith('.jpg') ||
@@ -143,18 +140,13 @@ self.addEventListener('fetch', event => {
                     }
                     return networkResponse;
                 })
-                .catch(() => {
-                    return caches.match(event.request);
-                })
+                .catch(() => caches.match(event.request))
         );
         return;
     }
-
-    // ── Default: Network-only for everything else ──
-    // Don't cache unknown requests — let browser handle normally
 });
 
-// ── Message handler: Allow pages to communicate with SW ──
+// ── Message Listener ──
 self.addEventListener('message', event => {
     if (event.data === 'SKIP_WAITING') {
         self.skipWaiting();

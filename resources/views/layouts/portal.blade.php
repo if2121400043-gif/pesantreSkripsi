@@ -94,36 +94,83 @@
             @endif
         </div>
 
-        {{-- Main Content Container (Centered max-w-screen-xl) --}}
-        <main class="flex-1 max-w-screen-xl w-full mx-auto px-4 sm:px-6 py-6" id="main-content">
+        {{-- Main Content Container (Centered max-w-screen-xl with bottom padding for mobile bar) --}}
+        <main class="flex-1 max-w-screen-xl w-full mx-auto px-4 sm:px-6 py-6 pb-20 md:pb-6" id="main-content">
             @yield('content')
         </main>
 
-        {{-- Floating Bottom Navigation Bar for Mobile Phones --}}
-        <div class="md:hidden fixed bottom-3 left-3 right-3 z-50 flex justify-center items-center pointer-events-none">
-            <nav class="pointer-events-auto bg-white/95 backdrop-blur-md border border-emerald-100 rounded-full px-2 py-1.5 shadow-2xl flex items-center justify-around w-full max-w-sm gap-1">
-                <a href="{{ route('portal.beranda') }}" class="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold transition-all duration-200 {{ request()->routeIs('portal.beranda') ? 'bg-emerald-700 text-white shadow-md' : 'text-surface-600 hover:text-emerald-700' }}">
-                    <i data-lucide="home" class="w-4 h-4"></i>
-                    <span>Beranda</span>
-                </a>
-                <a href="{{ route('portal.tagihan') }}" class="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold transition-all duration-200 {{ request()->routeIs('portal.tagihan*') ? 'bg-emerald-700 text-white shadow-md' : 'text-surface-600 hover:text-emerald-700' }}">
-                    <i data-lucide="wallet" class="w-4 h-4"></i>
-                    <span>Tagihan</span>
-                </a>
-                <a href="{{ route('portal.presensi') }}" class="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold transition-all duration-200 {{ request()->routeIs('portal.presensi*') ? 'bg-emerald-700 text-white shadow-md' : 'text-surface-600 hover:text-emerald-700' }}">
-                    <i data-lucide="calendar-check" class="w-4 h-4"></i>
-                    <span>Presensi</span>
-                </a>
-                <a href="{{ route('portal.kedisiplinan') }}" class="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold transition-all duration-200 {{ request()->routeIs('portal.kedisiplinan*') ? 'bg-emerald-700 text-white shadow-md' : 'text-surface-600 hover:text-emerald-700' }}">
-                    <i data-lucide="shield-check" class="w-4 h-4"></i>
-                    <span>Poin</span>
-                </a>
-            </nav>
-        </div>
+        {{-- Fixed Bottom Navigation Bar for Mobile Phones with Floating Active Icon Animation --}}
+        <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-t border-emerald-100/60 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-4 py-2 flex justify-around items-center">
+            
+            {{-- Tab 1: Beranda --}}
+            <a href="{{ route('portal.beranda') }}" class="group relative flex flex-col items-center justify-center py-1 transition-all duration-300">
+                @if(request()->routeIs('portal.beranda'))
+                    <div class="-translate-y-3.5 bg-gradient-to-tr from-emerald-700 to-teal-600 text-white p-2.5 rounded-full shadow-lg border-2 border-white ring-4 ring-emerald-500/10 transition-all duration-300">
+                        <i data-lucide="home" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-[0.68rem] font-black text-emerald-800 -mt-2 tracking-tight">Beranda</span>
+                    <span class="w-1.5 h-1.5 bg-emerald-600 rounded-full mt-0.5 animate-pulse"></span>
+                @else
+                    <div class="text-surface-400 group-hover:text-emerald-600 transition-colors p-1">
+                        <i data-lucide="home" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-[0.68rem] font-bold text-surface-500 group-hover:text-surface-800">Beranda</span>
+                @endif
+            </a>
 
-        {{-- Floating WhatsApp Help Button (FAB) --}}
-        <a href="https://wa.me/6281234567890?text=Halo%20Admin%20Pesantren%20Nurul%20Furqon,%20saya%20Wali%20Santri%20ingin%20bertanya" target="_blank" rel="noopener noreferrer" title="Bantuan WA Admin" class="fixed bottom-16 right-4 sm:bottom-6 sm:right-6 z-40 bg-emerald-600 hover:bg-emerald-700 text-white p-3.5 rounded-full shadow-2xl hover:scale-110 transition-all duration-300 flex items-center justify-center border-2 border-white">
-            <i data-lucide="message-circle" class="w-6 h-6"></i>
+            {{-- Tab 2: Tagihan --}}
+            <a href="{{ route('portal.tagihan') }}" class="group relative flex flex-col items-center justify-center py-1 transition-all duration-300">
+                @if(request()->routeIs('portal.tagihan*'))
+                    <div class="-translate-y-3.5 bg-gradient-to-tr from-emerald-700 to-teal-600 text-white p-2.5 rounded-full shadow-lg border-2 border-white ring-4 ring-emerald-500/10 transition-all duration-300">
+                        <i data-lucide="wallet" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-[0.68rem] font-black text-emerald-800 -mt-2 tracking-tight">Tagihan</span>
+                    <span class="w-1.5 h-1.5 bg-emerald-600 rounded-full mt-0.5 animate-pulse"></span>
+                @else
+                    <div class="text-surface-400 group-hover:text-emerald-600 transition-colors p-1">
+                        <i data-lucide="wallet" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-[0.68rem] font-bold text-surface-500 group-hover:text-surface-800">Tagihan</span>
+                @endif
+            </a>
+
+            {{-- Tab 3: Presensi --}}
+            <a href="{{ route('portal.presensi') }}" class="group relative flex flex-col items-center justify-center py-1 transition-all duration-300">
+                @if(request()->routeIs('portal.presensi*'))
+                    <div class="-translate-y-3.5 bg-gradient-to-tr from-emerald-700 to-teal-600 text-white p-2.5 rounded-full shadow-lg border-2 border-white ring-4 ring-emerald-500/10 transition-all duration-300">
+                        <i data-lucide="calendar-check" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-[0.68rem] font-black text-emerald-800 -mt-2 tracking-tight">Presensi</span>
+                    <span class="w-1.5 h-1.5 bg-emerald-600 rounded-full mt-0.5 animate-pulse"></span>
+                @else
+                    <div class="text-surface-400 group-hover:text-emerald-600 transition-colors p-1">
+                        <i data-lucide="calendar-check" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-[0.68rem] font-bold text-surface-500 group-hover:text-surface-800">Presensi</span>
+                @endif
+            </a>
+
+            {{-- Tab 4: Kedisiplinan --}}
+            <a href="{{ route('portal.kedisiplinan') }}" class="group relative flex flex-col items-center justify-center py-1 transition-all duration-300">
+                @if(request()->routeIs('portal.kedisiplinan*'))
+                    <div class="-translate-y-3.5 bg-gradient-to-tr from-emerald-700 to-teal-600 text-white p-2.5 rounded-full shadow-lg border-2 border-white ring-4 ring-emerald-500/10 transition-all duration-300">
+                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-[0.68rem] font-black text-emerald-800 -mt-2 tracking-tight">Poin</span>
+                    <span class="w-1.5 h-1.5 bg-emerald-600 rounded-full mt-0.5 animate-pulse"></span>
+                @else
+                    <div class="text-surface-400 group-hover:text-emerald-600 transition-colors p-1">
+                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-[0.68rem] font-bold text-surface-500 group-hover:text-surface-800">Poin</span>
+                @endif
+            </a>
+
+        </nav>
+
+        {{-- Floating WhatsApp Help Button (FAB - Positioned neatly above bottom bar) --}}
+        <a href="https://wa.me/6281234567890?text=Halo%20Admin%20Pesantren%20Nurul%20Furqon,%20saya%20Wali%20Santri%20ingin%20bertanya" target="_blank" rel="noopener noreferrer" title="Bantuan WA Admin" class="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-40 bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-full shadow-2xl hover:scale-110 transition-all duration-300 flex items-center justify-center border-2 border-white">
+            <i data-lucide="message-circle" class="w-5 h-5 sm:w-6 sm:h-6"></i>
         </a>
 
         {{-- Footer (Desktop) --}}

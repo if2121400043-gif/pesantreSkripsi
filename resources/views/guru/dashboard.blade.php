@@ -35,7 +35,7 @@
     </div>
 
     {{-- Stats Bar --}}
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="bg-white p-4 rounded-2xl border border-surface-200 shadow-sm flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center shrink-0">
                 <i data-lucide="calendar-clock" class="w-5 h-5"></i>
@@ -56,7 +56,7 @@
             </div>
         </div>
 
-        <div class="col-span-2 md:col-span-1 bg-white p-4 rounded-2xl border border-surface-200 shadow-sm flex items-center gap-3">
+        <div class="bg-white p-4 rounded-2xl border border-surface-200 shadow-sm flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-success-50 text-success-600 flex items-center justify-center shrink-0">
                 <i data-lucide="award" class="w-5 h-5"></i>
             </div>
@@ -76,7 +76,7 @@
             Menu Utama Guru & Pengajar
         </h2>
         
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             
             {{-- Card 1: Input Presensi --}}
             <a href="{{ route('guru.presensi.index') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-primary-400 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
@@ -152,40 +152,52 @@
                 <i data-lucide="clock" class="w-5 h-5 text-primary-600"></i>
                 Jadwal Mengajar Hari Ini ({{ $hariIni }})
             </h3>
-            <span class="text-xs text-surface-500 font-medium">{{ $jadwalHariIni->count() }} Kelas Ditemukan</span>
+            <span class="text-xs text-surface-500 font-medium">{{ $jadwalHariIni->count() }} Kelas</span>
         </div>
 
         @if($jadwalHariIni->count() > 0)
-            <div class="divide-y divide-surface-100">
-                @foreach($jadwalHariIni as $jadwal)
-                    <div class="py-4 first:pt-0 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-surface-50 p-3 rounded-2xl transition-colors">
-                        <div class="flex items-center gap-3.5">
-                            <div class="w-12 h-12 rounded-2xl bg-primary-50 text-primary-700 font-bold flex flex-col items-center justify-center text-xs shrink-0 border border-primary-100">
-                                <span class="text-[0.6rem] text-primary-500 font-medium">Jam</span>
-                                {{ $jadwal->jam_mulai }}
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-surface-900 text-sm">{{ $jadwal->mataPelajaran->nama ?? '-' }}</h4>
-                                <div class="flex items-center gap-2 mt-1 text-xs text-surface-500">
-                                    <span class="inline-flex items-center gap-1 font-semibold text-primary-700 bg-primary-50 px-2 py-0.5 rounded-md border border-primary-100">
-                                        <i data-lucide="users" class="w-3 h-3"></i> {{ $jadwal->rombel->nama ?? '-' }}
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-surface-50 text-surface-500 text-xs uppercase tracking-wider">
+                            <th class="px-4 py-3 text-center font-semibold w-14">No</th>
+                            <th class="px-4 py-3 text-left font-semibold">Jam</th>
+                            <th class="px-4 py-3 text-left font-semibold">Mata Pelajaran</th>
+                            <th class="px-4 py-3 text-left font-semibold">Kelas</th>
+                            <th class="px-4 py-3 text-center font-semibold">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-surface-100">
+                        @foreach($jadwalHariIni as $index => $jadwal)
+                            <tr class="hover:bg-surface-50 transition-colors">
+                                <td class="px-4 py-3 text-center font-bold text-surface-400">{{ $index + 1 }}</td>
+                                <td class="px-4 py-3">
+                                    <span class="inline-flex items-center gap-1.5 font-bold text-primary-700 bg-primary-50 px-2.5 py-1 rounded-lg border border-primary-100 text-xs">
+                                        <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                                        {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} – {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}
                                     </span>
-                                    <span>•</span>
-                                    <span>Selesai {{ $jadwal->jam_selesai }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-center gap-2 self-end sm:self-auto">
-                            <a href="{{ route('guru.presensi.create', $jadwal->id) }}" class="btn-primary text-xs py-1.5 px-3 rounded-xl flex items-center gap-1">
-                                <i data-lucide="check-square" class="w-3.5 h-3.5"></i> Absen
-                            </a>
-                            <a href="{{ route('guru.penilaian.create', $jadwal->id) }}" class="btn-secondary text-xs py-1.5 px-3 rounded-xl flex items-center gap-1">
-                                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Nilai
-                            </a>
-                        </div>
-                    </div>
-                @endforeach
+                                </td>
+                                <td class="px-4 py-3 font-semibold text-surface-900">{{ $jadwal->mataPelajaran->nama ?? '-' }}</td>
+                                <td class="px-4 py-3">
+                                    <span class="inline-flex items-center gap-1 text-xs font-semibold text-info-700 bg-info-50 px-2.5 py-1 rounded-lg border border-info-100">
+                                        <i data-lucide="users" class="w-3 h-3"></i>
+                                        {{ $jadwal->rombel->nama ?? '-' }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3 text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <a href="{{ route('guru.presensi.create', $jadwal->id) }}" class="btn-primary text-xs py-1.5 px-3 rounded-xl flex items-center gap-1">
+                                            <i data-lucide="check-square" class="w-3.5 h-3.5"></i> Absen
+                                        </a>
+                                        <a href="{{ route('guru.penilaian.create', $jadwal->id) }}" class="btn-secondary text-xs py-1.5 px-3 rounded-xl flex items-center gap-1">
+                                            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Nilai
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         @else
             <div class="py-10 text-center border-2 border-dashed border-surface-200 rounded-2xl bg-surface-50">

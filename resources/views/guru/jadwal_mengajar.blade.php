@@ -22,10 +22,16 @@
                 </p>
             </div>
             
-            <a href="{{ route('guru.jadwal-mengajar.cetak') }}" target="_blank" class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-white text-indigo-900 font-bold text-sm shadow-lg hover:bg-indigo-50 hover:shadow-xl transition-all duration-300">
-                <i data-lucide="printer" class="w-5 h-5"></i>
-                Cetak Jadwal
-            </a>
+            <div class="flex items-center gap-3 shrink-0">
+                <a href="{{ route('guru.dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl font-bold text-sm shadow-lg transition-all duration-300 border border-white/30 hover:bg-white/20" style="background: rgba(255,255,255,0.1) !important; color: #ffffff !important;">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    Kembali
+                </a>
+                <a href="{{ route('guru.jadwal-mengajar.cetak') }}" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl font-bold text-sm shadow-lg transition-all duration-300" style="background: #fbbf24 !important; color: #1e1b4b !important;">
+                    <i data-lucide="printer" class="w-4 h-4"></i>
+                    Cetak Jadwal
+                </a>
+            </div>
         </div>
     </div>
 
@@ -40,61 +46,68 @@
         </div>
     </div>
 
-    {{-- Jadwal Per Hari --}}
-    @php $nomor = 1; @endphp
-    @foreach($hariOrder as $hari)
-        @if(isset($semuaJadwal[$hari]) && $semuaJadwal[$hari]->count() > 0)
-            <div class="bg-white rounded-3xl border border-surface-200 shadow-sm overflow-hidden">
-                {{-- Header Hari --}}
-                <div class="px-5 py-3.5 border-b border-surface-200 flex items-center gap-3" style="background: linear-gradient(135deg, #eef2ff, #e0e7ff) !important;">
-                    <div class="w-9 h-9 rounded-xl bg-primary-600 text-white flex items-center justify-center font-bold text-xs shrink-0">
-                        {{ substr($hari, 0, 2) }}
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-surface-900 text-sm">{{ $hari }}</h3>
-                        <p class="text-xs text-surface-500 font-medium">{{ $semuaJadwal[$hari]->count() }} Sesi Mengajar</p>
-                    </div>
+    {{-- Jadwal Per Hari (Tabel Gabungan) --}}
+    @if(!$semuaJadwal->isEmpty())
+        <div class="bg-white rounded-3xl border border-surface-200 shadow-sm overflow-hidden">
+            <div class="px-5 py-4 border-b border-surface-200 flex items-center gap-3" style="background: linear-gradient(135deg, #eef2ff, #e0e7ff) !important;">
+                <div class="w-9 h-9 rounded-xl bg-primary-600 text-white flex items-center justify-center font-bold text-xs shrink-0">
+                    <i data-lucide="table" class="w-5 h-5"></i>
                 </div>
-
-                {{-- Tabel Jadwal --}}
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
-                        <thead>
-                            <tr class="bg-surface-50 text-surface-500 text-xs uppercase tracking-wider">
-                                <th class="px-5 py-3 text-center font-semibold w-14">No</th>
-                                <th class="px-5 py-3 text-left font-semibold">Jam Pelajaran</th>
-                                <th class="px-5 py-3 text-left font-semibold">Mata Pelajaran</th>
-                                <th class="px-5 py-3 text-left font-semibold">Kelas / Rombel</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-surface-100">
-                            @foreach($semuaJadwal[$hari] as $jadwal)
-                                <tr class="hover:bg-surface-50 transition-colors">
-                                    <td class="px-5 py-3.5 text-center font-bold text-surface-400">{{ $nomor++ }}</td>
-                                    <td class="px-5 py-3.5">
-                                        <span class="inline-flex items-center gap-1.5 font-bold text-primary-700 bg-primary-50 px-2.5 py-1 rounded-lg border border-primary-100 text-xs">
-                                            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
-                                            {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} – {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}
-                                        </span>
-                                    </td>
-                                    <td class="px-5 py-3.5 font-semibold text-surface-900">{{ $jadwal->mataPelajaran->nama ?? '-' }}</td>
-                                    <td class="px-5 py-3.5">
-                                        <span class="inline-flex items-center gap-1 text-xs font-semibold text-info-700 bg-info-50 px-2.5 py-1 rounded-lg border border-info-100">
-                                            <i data-lucide="users" class="w-3 h-3"></i>
-                                            {{ $jadwal->rombel->nama ?? '-' }}
-                                        </span>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div>
+                    <h3 class="font-bold text-surface-900 text-sm">Jadwal Lengkap Mingguan</h3>
+                    <p class="text-xs text-surface-500 font-medium">Senin – Ahad</p>
                 </div>
             </div>
-        @endif
-    @endforeach
 
-    {{-- Empty State --}}
-    @if($semuaJadwal->isEmpty())
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-surface-50 text-surface-500 text-xs uppercase tracking-wider">
+                            <th class="px-4 py-3 text-center font-semibold" style="width: 50px;">No</th>
+                            <th class="px-4 py-3 text-center font-semibold" style="width: 100px;">Hari</th>
+                            <th class="px-4 py-3 text-center font-semibold" style="width: 150px;">Jam Pelajaran</th>
+                            <th class="px-4 py-3 text-left font-semibold">Mata Pelajaran</th>
+                            <th class="px-4 py-3 text-center font-semibold" style="width: 140px;">Kelas / Rombel</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-surface-100">
+                        @php $nomor = 1; @endphp
+                        @foreach($hariOrder as $hari)
+                            @if(isset($semuaJadwal[$hari]) && $semuaJadwal[$hari]->count() > 0)
+                                @foreach($semuaJadwal[$hari] as $index => $jadwal)
+                                    <tr class="hover:bg-surface-50 transition-colors">
+                                        <td class="px-4 py-3 text-center font-bold text-surface-400">{{ $nomor++ }}</td>
+                                        @if($index === 0)
+                                            <td class="px-4 py-3 text-center font-bold text-surface-700" rowspan="{{ $semuaJadwal[$hari]->count() }}" style="background-color: #f8fafc; vertical-align: middle;">
+                                                <div class="inline-flex flex-col items-center gap-1">
+                                                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-xs font-extrabold text-white" style="background-color: #312e81;">{{ substr($hari, 0, 2) }}</span>
+                                                    <span class="text-[0.65rem] font-bold text-surface-600">{{ $hari }}</span>
+                                                </div>
+                                            </td>
+                                        @endif
+                                        <td class="px-4 py-3 text-center">
+                                            <span class="inline-flex items-center gap-1.5 font-bold text-primary-700 bg-primary-50 px-2.5 py-1 rounded-lg border border-primary-100 text-xs">
+                                                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                                                {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} – {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-3 font-semibold text-surface-900">{{ $jadwal->mataPelajaran->nama ?? '-' }}</td>
+                                        <td class="px-4 py-3 text-center">
+                                            <span class="inline-flex items-center gap-1 text-xs font-semibold text-info-700 bg-info-50 px-2.5 py-1 rounded-lg border border-info-100">
+                                                <i data-lucide="users" class="w-3 h-3"></i>
+                                                {{ $jadwal->rombel->nama ?? '-' }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @else
+        {{-- Empty State --}}
         <div class="bg-white rounded-3xl border-2 border-dashed border-surface-200 p-12 text-center">
             <div class="w-16 h-16 bg-primary-100 text-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <i data-lucide="calendar-x" class="w-8 h-8"></i>

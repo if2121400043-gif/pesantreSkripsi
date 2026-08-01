@@ -99,25 +99,32 @@
             @yield('content')
         </main>
 
-        {{-- Bottom Navigation Bar for Mobile Phones --}}
-        <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-surface-200 z-40 px-2 py-1.5 shadow-lg flex justify-around items-center">
-            <a href="{{ route('portal.beranda') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.beranda') ? 'text-emerald-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
-                <i data-lucide="home" class="w-5 h-5"></i>
-                <span>Beranda</span>
-            </a>
-            <a href="{{ route('portal.tagihan') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.tagihan*') ? 'text-emerald-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
-                <i data-lucide="wallet" class="w-5 h-5"></i>
-                <span>Tagihan</span>
-            </a>
-            <a href="{{ route('portal.presensi') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.presensi*') ? 'text-emerald-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
-                <i data-lucide="calendar-check" class="w-5 h-5"></i>
-                <span>Presensi</span>
-            </a>
-            <a href="{{ route('portal.kedisiplinan') }}" class="flex flex-col items-center gap-0.5 p-1.5 text-[0.65rem] font-bold transition-colors {{ request()->routeIs('portal.kedisiplinan*') ? 'text-emerald-700 font-extrabold' : 'text-surface-500 hover:text-surface-900' }}">
-                <i data-lucide="shield-check" class="w-5 h-5"></i>
-                <span>Kedisiplinan</span>
-            </a>
-        </nav>
+        {{-- Floating Bottom Navigation Bar for Mobile Phones --}}
+        <div class="md:hidden fixed bottom-3 left-3 right-3 z-50 flex justify-center items-center pointer-events-none">
+            <nav class="pointer-events-auto bg-white/95 backdrop-blur-md border border-emerald-100 rounded-full px-2 py-1.5 shadow-2xl flex items-center justify-around w-full max-w-sm gap-1">
+                <a href="{{ route('portal.beranda') }}" class="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold transition-all duration-200 {{ request()->routeIs('portal.beranda') ? 'bg-emerald-700 text-white shadow-md' : 'text-surface-600 hover:text-emerald-700' }}">
+                    <i data-lucide="home" class="w-4 h-4"></i>
+                    <span>Beranda</span>
+                </a>
+                <a href="{{ route('portal.tagihan') }}" class="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold transition-all duration-200 {{ request()->routeIs('portal.tagihan*') ? 'bg-emerald-700 text-white shadow-md' : 'text-surface-600 hover:text-emerald-700' }}">
+                    <i data-lucide="wallet" class="w-4 h-4"></i>
+                    <span>Tagihan</span>
+                </a>
+                <a href="{{ route('portal.presensi') }}" class="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold transition-all duration-200 {{ request()->routeIs('portal.presensi*') ? 'bg-emerald-700 text-white shadow-md' : 'text-surface-600 hover:text-emerald-700' }}">
+                    <i data-lucide="calendar-check" class="w-4 h-4"></i>
+                    <span>Presensi</span>
+                </a>
+                <a href="{{ route('portal.kedisiplinan') }}" class="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold transition-all duration-200 {{ request()->routeIs('portal.kedisiplinan*') ? 'bg-emerald-700 text-white shadow-md' : 'text-surface-600 hover:text-emerald-700' }}">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    <span>Poin</span>
+                </a>
+            </nav>
+        </div>
+
+        {{-- Floating WhatsApp Help Button (FAB) --}}
+        <a href="https://wa.me/6281234567890?text=Halo%20Admin%20Pesantren%20Nurul%20Furqon,%20saya%20Wali%20Santri%20ingin%20bertanya" target="_blank" rel="noopener noreferrer" title="Bantuan WA Admin" class="fixed bottom-16 right-4 sm:bottom-6 sm:right-6 z-40 bg-emerald-600 hover:bg-emerald-700 text-white p-3.5 rounded-full shadow-2xl hover:scale-110 transition-all duration-300 flex items-center justify-center border-2 border-white">
+            <i data-lucide="message-circle" class="w-6 h-6"></i>
+        </a>
 
         {{-- Footer (Desktop) --}}
         <footer class="hidden md:block bg-white border-t border-surface-200 py-6 mt-auto">

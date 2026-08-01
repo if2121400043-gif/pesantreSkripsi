@@ -44,7 +44,7 @@ class PortalController extends Controller
         return $anakList;
     }
 
-    public function beranda(Request $request)
+    private function getActiveChild()
     {
         $anakList = $this->getAnakIds();
         $activeAnakId = session('active_anak_id') ?? ($anakList->first()->id ?? null);
@@ -55,6 +55,12 @@ class PortalController extends Controller
             $activeAnak = PesertaDidik::with(['orang', 'lembaga', 'rombelAktif', 'kamarAktif.asrama'])->where('status', 'AKTIF')->first();
         }
 
+        return [$anakList, $activeAnak];
+    }
+
+    public function beranda(Request $request)
+    {
+        list($anakList, $activeAnak) = $this->getActiveChild();
         $activeTahun = TahunPelajaran::where('is_active', true)->first();
 
         // Kehadiran Stats
@@ -104,19 +110,19 @@ class PortalController extends Controller
 
         // Status Kedisiplinan
         if ($totalPoinPelanggaran === 0) {
-            $statusKedisiplinan = 'Disiplin';
+            $statusKedisiplinan = 'Sangat Baik';
         } elseif ($totalPoinPelanggaran <= 15) {
-            $statusKedisiplinan = 'Peringatan Ringan';
+            $statusKedisiplinan = 'Baik';
         } elseif ($totalPoinPelanggaran <= 50) {
-            $statusKedisiplinan = 'Peringatan Sedang';
+            $statusKedisiplinan = 'Perlu Perhatian';
         } else {
-            $statusKedisiplinan = 'Waspada / Berat';
+            $statusKedisiplinan = 'SP / Panggilan';
         }
 
         // Keuangan Stats
+        $sppStatus = 'Lunas';
+        $tagihanTerakhirMsg = 'Belum Ada Transaksi';
         $totalTagihanBelumLunas = 0;
-        $sppStatus = 'Tidak Ada Tagihan';
-        $tagihanTerakhirMsg = 'Belum ada transaksi pembayaran';
         $riwayatTagihan = collect();
 
         if ($activeAnak && $activeTahun) {
@@ -177,7 +183,6 @@ class PortalController extends Controller
                 ->get();
         }
 
-        // Default tab from query param
         $activeTab = $request->get('tab', 'nilai');
 
         return view('portal.beranda', compact(
@@ -189,18 +194,105 @@ class PortalController extends Controller
         ));
     }
 
-    public function tagihan()
+    public function tagihan(Request $request)
     {
-        return redirect()->route('portal.beranda', ['tab' => 'tagihan']);
+        list($anakList, $activeAnak) = $this->getActiveChild();
+        $activeTahun = TahunPelajaran::where('is_active', true)->first();
+
+        $tagihans = collect();
+        $totalTagihanBelumLunas = 0;
+
+        if ($activeAnak && $activeTahun) {
+            $tagihans = Tagihan::with(['komponenBiaya', 'pembayaran', 'pesertaDidik.orang', 'tahunPelajaran'])
+                ->where('peserta_didik_id', $activeAnak->id)
+                ->orderBy('created_at', 'desc')
+                ->paginate(15);
+
+            foreach ($tagihans as $tagihan) {
+                $tagihan->refreshPaymentStatus();
+                $dibayar = $tagihan->pembayaran->sum('jumlah');
+                $sisa = max(0, (float) $tagihan->total - (float) $dibayar);
+                if ($sisa > 0) {
+                    $totalTagihanBelumLunas += $sisa;
+                }
+            }
+        }
+
+        return view('portal.tagihan', compact('anakList', 'activeAnak', 'activeTahun', 'tagihans', 'totalTagihanBelumLunas'));
     }
 
-    public function presensi()
+    public function presensi(Request $request)
     {
-        return redirect()->route('portal.beranda', ['tab' => 'absensi']);
+        list($anakList, $activeAnak) = $this->getActiveChild();
+        $activeTahun = TahunPelajaran::where('is_active', true)->first();
+
+        $presensis = collect();
+        $kehadiranStats = ['HADIR' => 0, 'SAKIT' => 0, 'IZIN' => 0, 'ALPHA' => 0];
+        $kehadiranPersen = 100;
+
+        if ($activeAnak && $activeTahun) {
+            $presensis = PresensiKelas::with('rombel')
+                ->where('peserta_didik_id', $activeAnak->id)
+                ->orderBy('tanggal', 'desc')
+                ->paginate(20);
+
+            $totalPresensi = $presensis->total();
+            if ($totalPresensi > 0) {
+                $allPresensi = PresensiKelas::where('peserta_didik_id', $activeAnak->id)->get();
+                foreach ($allPresensi as $p) {
+                    $statusUpper = strtoupper($p->status);
+                    if (array_key_exists($statusUpper, $kehadiranStats)) {
+                        $kehadiranStats[$statusUpper]++;
+                    }
+                }
+                $kehadiranPersen = round(($kehadiranStats['HADIR'] / max(1, $allPresensi->count())) * 100);
+            }
+        }
+
+        return view('portal.presensi', compact('anakList', 'activeAnak', 'activeTahun', 'presensis', 'kehadiranStats', 'kehadiranPersen'));
     }
 
-    public function kedisiplinan()
+    public function kedisiplinan(Request $request)
     {
-        return redirect()->route('portal.beranda', ['tab' => 'kedisiplinan']);
+        list($anakList, $activeAnak) = $this->getActiveChild();
+        $activeTahun = TahunPelajaran::where('is_active', true)->first();
+
+        $pelanggarans = collect();
+        $prestasis = collect();
+        $totalPoinPelanggaran = 0;
+
+        if ($activeAnak && $activeTahun) {
+            $pelanggarans = CatatanPelanggaran::with('jenisPelanggaran')
+                ->where('peserta_didik_id', $activeAnak->id)
+                ->orderBy('tanggal', 'desc')
+                ->paginate(15);
+            
+            $allPelanggarans = CatatanPelanggaran::with('jenisPelanggaran')
+                ->where('peserta_didik_id', $activeAnak->id)
+                ->get();
+
+            $totalPoinPelanggaran = $allPelanggarans->sum(function($p) {
+                return $p->jenisPelanggaran->poin ?? 0;
+            });
+
+            $prestasis = CatatanPrestasi::where('peserta_didik_id', $activeAnak->id)
+                ->orderBy('tanggal', 'desc')
+                ->get();
+        }
+
+        if ($totalPoinPelanggaran === 0) {
+            $statusKedisiplinan = 'Sangat Baik';
+        } elseif ($totalPoinPelanggaran <= 15) {
+            $statusKedisiplinan = 'Baik';
+        } elseif ($totalPoinPelanggaran <= 50) {
+            $statusKedisiplinan = 'Perlu Perhatian';
+        } else {
+            $statusKedisiplinan = 'SP / Panggilan';
+        }
+
+        return view('portal.kedisiplinan', compact(
+            'anakList', 'activeAnak', 'activeTahun', 
+            'pelanggarans', 'prestasis', 'totalPoinPelanggaran', 'statusKedisiplinan'
+        ));
     }
 }

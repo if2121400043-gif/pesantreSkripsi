@@ -5,28 +5,34 @@
 @section('content')
 <div class="space-y-6">
 
-    {{-- Merged Single Unified Hero Banner for Wali Santri --}}
-    <div class="rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #065f46, #022c22) !important; color: #ffffff !important;">
+    {{-- Merged Single Unified Hero Banner for Wali Santri (100% Mobile Responsive) --}}
+    <div class="rounded-3xl p-5 sm:p-7 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #065f46, #022c22) !important; color: #ffffff !important;">
         <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
         <div class="relative z-10 space-y-4">
             
-            {{-- Top Row: Greeting & Child Selector --}}
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/15 pb-4">
+            {{-- Top Row: Greeting, Badge & Child Selector --}}
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-white/15 pb-4">
                 <div>
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-xs font-semibold backdrop-blur-sm border border-white/20 mb-2" style="color: #ffffff !important;">
-                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-warning-400"></i>
-                        Portal Wali Santri
+                    <div class="flex items-center gap-2 flex-wrap mb-2">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/15 text-[0.7rem] font-bold backdrop-blur-sm border border-white/20" style="color: #ffffff !important;">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-warning-400"></i>
+                            Portal Wali Santri
+                        </span>
+                        <span class="px-2.5 py-0.5 bg-white/20 text-white text-[0.68rem] font-extrabold rounded-full border border-white/20 shrink-0">
+                            Santri Aktif
+                        </span>
                     </div>
-                    <h1 class="text-2xl md:text-3xl font-extrabold font-heading" style="color: #ffffff !important;">
+
+                    <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold font-heading leading-tight" style="color: #ffffff !important;">
                         Assalamu'alaikum, {{ auth()->user()->orang->nama_lengkap ?? auth()->user()->username }}
                     </h1>
                 </div>
 
                 {{-- Switch Child Selector --}}
                 @if($anakList->count() > 1)
-                    <div class="flex items-center gap-2 p-2.5 rounded-2xl border border-white/20" style="background-color: rgba(255, 255, 255, 0.15) !important;">
+                    <div class="w-full sm:w-auto flex items-center gap-2 p-2.5 rounded-2xl border border-white/20 shrink-0" style="background-color: rgba(255, 255, 255, 0.15) !important;">
                         <label for="anak_id" class="text-xs font-bold whitespace-nowrap" style="color: #d1fae5 !important;">Pantau Ananda:</label>
-                        <select name="anak_id" id="anak_id" onchange="window.location.href='{{ route('portal.beranda') }}?anak_id=' + this.value" class="bg-white/20 text-white text-xs font-bold rounded-xl border border-white/20 focus:ring-0 p-1.5 cursor-pointer" style="color: #ffffff !important; background-color: rgba(255, 255, 255, 0.2) !important;">
+                        <select name="anak_id" id="anak_id" onchange="window.location.href='{{ route('portal.beranda') }}?anak_id=' + this.value" class="w-full sm:w-auto bg-white/20 text-white text-xs font-bold rounded-xl border border-white/20 focus:ring-0 p-1.5 cursor-pointer" style="color: #ffffff !important; background-color: rgba(255, 255, 255, 0.2) !important;">
                             @foreach($anakList as $anak)
                                 <option value="{{ $anak->id }}" class="text-surface-900 bg-white" {{ $activeAnak && $activeAnak->id == $anak->id ? 'selected' : '' }}>
                                     {{ $anak->orang->nama_lengkap }}
@@ -37,27 +43,49 @@
                 @endif
             </div>
 
-            {{-- Bottom Row: Selected Child Academic Summary --}}
+            {{-- Bottom Row: Selected Child Academic & Dormitory Details --}}
             @if($activeAnak)
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-1">
-                    <div>
-                        <div class="text-xs text-emerald-200 uppercase tracking-wider font-extrabold flex items-center gap-1.5">
-                            <i data-lucide="user-check" class="w-4 h-4 text-emerald-300"></i>
-                            MEMANTAU SANTRI: <strong class="text-white font-extrabold text-sm ml-1">{{ $activeAnak->orang->nama_lengkap }}</strong> 
-                            <span class="font-mono text-emerald-200 text-xs">({{ $activeAnak->orang->niup ?? '-' }})</span>
-                        </div>
-                        <div class="text-xs text-emerald-100 mt-1 flex flex-wrap gap-x-4 gap-y-1">
-                            <span>Lembaga: <strong class="text-white font-semibold">{{ $activeAnak->lembaga->nama ?? '-' }}</strong></span>
-                            <span>•</span>
-                            <span>Kelas: <strong class="text-white font-semibold">{{ $activeAnak->rombelAktif->nama ?? '-' }}</strong></span>
-                            <span>•</span>
-                            <span>Asrama: <strong class="text-white font-semibold">{{ $activeAnak->kamarAktif->asrama->nama ?? '-' }} ({{ $activeAnak->kamarAktif->nama ?? '-' }})</strong></span>
-                        </div>
+                <div class="space-y-2 pt-1">
+                    <div class="text-[0.7rem] sm:text-xs text-emerald-200 uppercase tracking-wider font-extrabold flex items-center gap-1.5">
+                        <i data-lucide="user-check" class="w-4 h-4 text-emerald-300 shrink-0"></i>
+                        <span>MEMANTAU SANTRI:</span>
                     </div>
 
-                    <span class="px-3 py-1 bg-white/20 text-white text-xs font-extrabold rounded-full border border-white/20 shrink-0">
-                        Santri Aktif
-                    </span>
+                    <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
+                        <h2 class="text-lg sm:text-xl font-black text-white leading-snug">
+                            {{ $activeAnak->orang->nama_lengkap }}
+                        </h2>
+                        <span class="text-xs font-mono font-bold text-emerald-200">
+                            (NIUP: {{ $activeAnak->orang->niup ?? '-' }})
+                        </span>
+                    </div>
+
+                    {{-- Academic Grid Pills (Stacked on Mobile, Horizontal on Desktop) --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 text-xs pt-1">
+                        <div class="bg-white/10 rounded-xl px-3 py-2 border border-white/15 flex items-center gap-2">
+                            <i data-lucide="building" class="w-4 h-4 text-emerald-300 shrink-0"></i>
+                            <div class="truncate">
+                                <span class="text-[0.65rem] text-emerald-200 block">Lembaga</span>
+                                <strong class="text-white font-bold text-xs truncate block">{{ $activeAnak->lembaga->nama ?? '-' }}</strong>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/10 rounded-xl px-3 py-2 border border-white/15 flex items-center gap-2">
+                            <i data-lucide="book-open" class="w-4 h-4 text-emerald-300 shrink-0"></i>
+                            <div class="truncate">
+                                <span class="text-[0.65rem] text-emerald-200 block">Kelas / Rombel</span>
+                                <strong class="text-white font-bold text-xs truncate block">{{ $activeAnak->rombelAktif->nama ?? '-' }}</strong>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/10 rounded-xl px-3 py-2 border border-white/15 flex items-center gap-2">
+                            <i data-lucide="home" class="w-4 h-4 text-emerald-300 shrink-0"></i>
+                            <div class="truncate">
+                                <span class="text-[0.65rem] text-emerald-200 block">Kamar & Asrama</span>
+                                <strong class="text-white font-bold text-xs truncate block">{{ $activeAnak->kamarAktif->asrama->nama ?? '-' }} ({{ $activeAnak->kamarAktif->nama ?? '-' }})</strong>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             @endif
 
@@ -157,82 +185,6 @@
                 </a>
                 @endif
             </div>
-        </div>
-    </div>
-
-    {{-- MENU UTAMA WALI SANTRI (Aksi Cepat Grid) --}}
-    <div>
-        <h2 class="text-base font-bold text-surface-900 mb-3 flex items-center gap-2">
-            <i data-lucide="grid" class="w-5 h-5 text-emerald-700"></i>
-            Menu Utama Wali Santri
-        </h2>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            
-            {{-- Card 1: Tagihan & Pembayaran SPP --}}
-            <a href="{{ route('portal.tagihan') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-emerald-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
-                <div class="absolute -right-8 -top-8 w-28 h-28 bg-emerald-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
-                <div class="relative z-10">
-                    <div class="w-14 h-14 rounded-2xl text-white flex items-center justify-center shadow-md mb-4 group-hover:rotate-6 transition-transform" style="background: linear-gradient(135deg, #059669, #047857) !important;">
-                        <i data-lucide="wallet" class="w-7 h-7" style="color: #ffffff !important;"></i>
-                    </div>
-                    <h3 class="text-base font-extrabold text-surface-900 group-hover:text-emerald-700 transition-colors">Tagihan & Bayar SPP</h3>
-                    <p class="text-xs text-surface-500 mt-1 leading-relaxed">Cek rincian tagihan syahriah, bayar online, dan unduh kuitansi resmi.</p>
-                </div>
-                <div class="mt-6 pt-3 border-t border-surface-100 flex items-center justify-between text-xs font-bold text-emerald-700">
-                    <span>Keuangan Santri</span>
-                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
-                </div>
-            </a>
-
-            {{-- Card 2: Presensi & Kehadiran --}}
-            <a href="{{ route('portal.presensi') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-teal-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
-                <div class="absolute -right-8 -top-8 w-28 h-28 bg-teal-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
-                <div class="relative z-10">
-                    <div class="w-14 h-14 rounded-2xl text-white flex items-center justify-center shadow-md mb-4 group-hover:rotate-6 transition-transform" style="background: linear-gradient(135deg, #0f766e, #0f524c) !important;">
-                        <i data-lucide="calendar-check" class="w-7 h-7" style="color: #ffffff !important;"></i>
-                    </div>
-                    <h3 class="text-base font-extrabold text-surface-900 group-hover:text-teal-700 transition-colors">Presensi & Kehadiran</h3>
-                    <p class="text-xs text-surface-500 mt-1 leading-relaxed">Pantau kehadiran harian santri, jumlah sakit, izin, dan alpa.</p>
-                </div>
-                <div class="mt-6 pt-3 border-t border-surface-100 flex items-center justify-between text-xs font-bold text-teal-700">
-                    <span>Absensi Santri</span>
-                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
-                </div>
-            </a>
-
-            {{-- Card 3: Kedisiplinan & Pelanggaran --}}
-            <a href="{{ route('portal.kedisiplinan') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-amber-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
-                <div class="absolute -right-8 -top-8 w-28 h-28 bg-amber-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
-                <div class="relative z-10">
-                    <div class="w-14 h-14 rounded-2xl text-white flex items-center justify-center shadow-md mb-4 group-hover:rotate-6 transition-transform" style="background: linear-gradient(135deg, #d97706, #b45309) !important;">
-                        <i data-lucide="shield-alert" class="w-7 h-7" style="color: #ffffff !important;"></i>
-                    </div>
-                    <h3 class="text-base font-extrabold text-surface-900 group-hover:text-amber-700 transition-colors">Kedisiplinan & Poin</h3>
-                    <p class="text-xs text-surface-500 mt-1 leading-relaxed">Lihat catatan pelanggaran, ketertiban, dan poin apresiasi prestasi.</p>
-                </div>
-                <div class="mt-6 pt-3 border-t border-surface-100 flex items-center justify-between text-xs font-bold text-amber-700">
-                    <span>Catatan Kedisiplinan</span>
-                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
-                </div>
-            </a>
-
-            {{-- Card 4: Nilai & Rapor Akademik --}}
-            <button type="button" onclick="switchTab('nilai'); document.getElementById('tab-btn-nilai').scrollIntoView({behavior: 'smooth'});" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-indigo-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between text-left cursor-pointer">
-                <div class="absolute -right-8 -top-8 w-28 h-28 bg-indigo-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
-                <div class="relative z-10">
-                    <div class="w-14 h-14 rounded-2xl text-white flex items-center justify-center shadow-md mb-4 group-hover:rotate-6 transition-transform" style="background: linear-gradient(135deg, #4f46e5, #3730a3) !important;">
-                        <i data-lucide="graduation-cap" class="w-7 h-7" style="color: #ffffff !important;"></i>
-                    </div>
-                    <h3 class="text-base font-extrabold text-surface-900 group-hover:text-indigo-700 transition-colors">Rapor & Nilai Ujian</h3>
-                    <p class="text-xs text-surface-500 mt-1 leading-relaxed">Lihat hasil nilai ujian semester, capaian mapel, dan rapor santri.</p>
-                </div>
-                <div class="mt-6 pt-3 border-t border-surface-100 flex items-center justify-between text-xs font-bold text-indigo-700">
-                    <span>Hasil Akademik</span>
-                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
-                </div>
-            </button>
-
         </div>
     </div>
 

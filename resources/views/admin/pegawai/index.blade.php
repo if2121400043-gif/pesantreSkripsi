@@ -3,7 +3,7 @@
 @section('title', 'Manajemen SDM & Pegawai — PP Nurul Furqon')
 
 @section('content')
-<div class="space-y-6" x-data="{ viewMode: 'grid' }">
+<div class="space-y-6">
 
     {{-- Hero Header Banner Premium --}}
     <div class="rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #047857, #065f46) !important; color: #ffffff !important;">
@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    {{-- Interactive Filter Stat Cards (Menggantikan Card Tab Kedua yang Redundan) --}}
+    {{-- Interactive Filter Stat Cards --}}
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {{-- Card 1: Pegawai Aktif --}}
         @php $isTabAktif = ($tab === 'aktif' && !request('jenis_pegawai')); @endphp
@@ -84,7 +84,7 @@
         </a>
     </div>
 
-    {{-- Search & Dual View Controls Container --}}
+    {{-- Search Form Container --}}
     <div class="bg-white p-4 rounded-3xl border border-surface-200 shadow-sm">
         <form action="{{ route('admin.pegawai.index') }}" method="GET" class="flex flex-col sm:flex-row items-center justify-between gap-3">
             <input type="hidden" name="tab" value="{{ $tab }}">
@@ -100,7 +100,7 @@
             </div>
 
             {{-- Filter Jenis SDM --}}
-            <div class="sm:w-52 w-full">
+            <div class="sm:w-56 w-full">
                 <select name="jenis_pegawai" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-800 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500" onchange="this.form.submit()">
                     <option value="">Semua Jenis SDM</option>
                     <option value="GURU" {{ request('jenis_pegawai') === 'GURU' ? 'selected' : '' }}>Guru / Ustadz</option>
@@ -116,23 +116,11 @@
                     <span>Reset</span>
                 </a>
             @endif
-
-            {{-- Dual View Switcher --}}
-            <div class="flex items-center gap-1 bg-surface-100 p-1 rounded-2xl shrink-0 self-end sm:self-auto">
-                <button type="button" @click="viewMode = 'grid'" :class="viewMode === 'grid' ? 'bg-white text-emerald-800 shadow-sm font-bold' : 'text-surface-500 font-medium'" class="px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition-all">
-                    <i data-lucide="layout-grid" class="w-4 h-4"></i>
-                    <span>Kartu Grid</span>
-                </button>
-                <button type="button" @click="viewMode = 'table'" :class="viewMode === 'table' ? 'bg-white text-emerald-800 shadow-sm font-bold' : 'text-surface-500 font-medium'" class="px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition-all">
-                    <i data-lucide="list" class="w-4 h-4"></i>
-                    <span>Tabel</span>
-                </button>
-            </div>
         </form>
     </div>
 
-    {{-- VIEW 1: GRID CARDS VIEW --}}
-    <div x-show="viewMode === 'grid'" transition>
+    {{-- GRID CARDS VIEW --}}
+    <div>
         @if($pegawais->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 @foreach($pegawais as $pegawai)
@@ -234,97 +222,6 @@
                 <p class="text-xs text-surface-500">Silakan daftarkan pegawai baru atau sesuaikan kata kunci pencarian Anda.</p>
             </div>
         @endif
-    </div>
-
-    {{-- VIEW 2: TABLE VIEW --}}
-    <div x-show="viewMode === 'table'" transition class="bg-white rounded-3xl border border-surface-200 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs whitespace-nowrap">
-                <thead class="bg-surface-100/70 text-surface-600 border-b border-surface-200 uppercase tracking-wider text-[0.68rem] font-bold">
-                    <tr>
-                        <th class="px-6 py-3.5">Identitas Pegawai</th>
-                        <th class="px-6 py-4 font-semibold">Tugas Pokok & Mapel</th>
-                        <th class="px-6 py-4 font-semibold">NIP / NUPTK</th>
-                        <th class="px-6 py-4 font-semibold">Status Pegawai</th>
-                        <th class="px-6 py-4 font-semibold text-right">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-surface-100 text-surface-700">
-                    @forelse($pegawais as $pegawai)
-                    <tr class="hover:bg-primary-50/30 transition-colors">
-                        <td class="px-6 py-3.5">
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-xl font-bold text-xs flex items-center justify-center shrink-0 border" style="background-color: #ecfdf5; color: #047857; border-color: #a7f3d0;">
-                                    {{ substr($pegawai->orang->nama_lengkap ?? 'P', 0, 1) }}
-                                </div>
-                                <div>
-                                    <div class="font-extrabold text-surface-900 text-sm leading-tight">{{ $pegawai->orang->nama_lengkap }}</div>
-                                    <div class="text-[0.68rem] text-primary-700 font-mono font-bold mt-0.5">NIUP: {{ $pegawai->orang->niup }}</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-3.5">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[0.65rem] font-extrabold bg-blue-100 text-blue-700 uppercase">
-                                {{ str_replace('_', ' ', $pegawai->jenis_pegawai) }}
-                            </span>
-                            @if(in_array($pegawai->jenis_pegawai, ['GURU', 'USTADZ', 'PENGASUH']))
-                                @php
-                                    $mapelList = $pegawai->jadwalMengajar->pluck('mataPelajaran.nama')->filter()->unique();
-                                    $totalSesi = $pegawai->jadwalMengajar->count();
-                                @endphp
-                                @if($mapelList->count() > 0)
-                                    <div class="text-[0.68rem] text-emerald-700 font-bold mt-0.5 truncate max-w-xs" title="{{ $mapelList->implode(', ') }}">
-                                        📚 {{ $mapelList->take(2)->implode(', ') }}{{ $mapelList->count() > 2 ? ' +'.$mapelList->count()-2 : '' }}
-                                        <span class="text-surface-500 font-normal">({{ $totalSesi }} Sesi/Mg)</span>
-                                    </div>
-                                @else
-                                    <div class="text-[0.65rem] text-surface-400 italic mt-0.5">Belum ada jadwal mengajar</div>
-                                @endif
-                            @else
-                                <div class="text-[0.68rem] text-surface-700 font-semibold mt-0.5">💼 {{ $pegawai->jabatan ?? 'Staf Operasional' }}</div>
-                            @endif
-                        </td>
-                        <td class="px-6 py-3.5">
-                            <div class="font-bold text-surface-900">{{ $pegawai->nip ?? '-' }}</div>
-                            <div class="text-[0.65rem] text-surface-450 mt-0.5">{{ $pegawai->nuptk ?? 'Tanpa NUPTK' }}</div>
-                        </td>
-                        <td class="px-6 py-3.5">
-                            <div class="font-semibold text-surface-800">{{ $pegawai->status_kepegawaian }}</div>
-                            <div class="text-[0.65rem] mt-0.5">
-                                @if($pegawai->is_active)
-                                    <span class="text-emerald-700 font-extrabold">● Aktif Bekerja</span>
-                                @else
-                                    <span class="text-rose-600 font-extrabold">● Nonaktif</span>
-                                @endif
-                            </div>
-                        </td>
-                        <td class="px-6 py-3.5 text-right">
-                            <div class="inline-flex items-center justify-end gap-1.5">
-                                <a href="{{ route('admin.pegawai.show', $pegawai) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white border border-emerald-200 text-xs font-bold transition-all shadow-2xs">
-                                    <i data-lucide="eye" class="w-3.5 h-3.5"></i>
-                                    <span>Detail</span>
-                                </a>
-                                <a href="{{ route('admin.pegawai.edit', $pegawai) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white border border-blue-200 text-xs font-bold transition-all shadow-2xs">
-                                    <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
-                                    <span>Edit</span>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="px-6 py-12 text-center text-surface-500">
-                            <div class="flex flex-col items-center justify-center">
-                                <i data-lucide="briefcase" class="w-12 h-12 text-surface-300 mb-3"></i>
-                                <p class="font-bold text-surface-900 mb-1">Belum Ada Pegawai</p>
-                                <p class="text-xs text-surface-450">Tidak ada data pegawai yang terdaftar atau ditemukan.</p>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
     </div>
 
     {{-- Pagination --}}

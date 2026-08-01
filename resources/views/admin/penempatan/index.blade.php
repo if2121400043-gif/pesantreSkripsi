@@ -89,14 +89,14 @@
     </div>
 
     @if($lembagaId && $tahunId)
-        {{-- KARTU UTAMA TERPADU (Satu Halaman Terintegrasi) --}}
+        {{-- KARTU UTAMA TERPADU --}}
         <form action="{{ route('admin.penempatan.store') }}" method="POST" id="form-penempatan">
             @csrf
             <input type="hidden" name="rombel_id" id="hidden_rombel_id" :value="selectedRombelId" required>
 
             <div class="bg-white rounded-3xl border border-surface-200 shadow-sm overflow-hidden space-y-6 p-6 md:p-8">
                 
-                {{-- SECTION 1: KELAS TUJUAN (Grid Cards Ringkas Dalam 1 Kartu) --}}
+                {{-- SECTION 1: KELAS TUJUAN --}}
                 <div class="space-y-3 pb-6 border-b border-surface-100">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                         <div>
@@ -162,7 +162,7 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                         <h3 class="font-extrabold text-surface-900 text-base flex items-center gap-2">
                             <span class="w-6 h-6 rounded-lg bg-blue-700 text-white font-black text-xs flex items-center justify-center shrink-0">2</span>
-                            Pilih Santri Belum Dapat Kelas
+                            Pilih Santri Belum Dapat Kelas (Maks. 10 Per Halaman)
                         </h3>
 
                         {{-- Gender Filter Buttons --}}
@@ -182,7 +182,7 @@
                         </div>
                     </div>
 
-                    {{-- Search Box (Rapi, Ikon Teratur) --}}
+                    {{-- Search Box --}}
                     <div class="relative w-full">
                         <div class="absolute top-1/2 -translate-y-1/2 left-3.5 text-surface-400 pointer-events-none flex items-center justify-center">
                             <i data-lucide="search" class="w-4 h-4"></i>
@@ -192,11 +192,11 @@
                                style="padding-left: 2.75rem !important;">
                     </div>
 
-                    {{-- SECTION 3: TABEL DAFTAR SANTRI (Max-Height Ramping 320px) --}}
+                    {{-- TABEL SANTRI DENGAN PAGINASI --}}
                     <div class="rounded-2xl border border-surface-200 overflow-hidden">
-                        <div class="overflow-x-auto max-h-[320px] overflow-y-auto">
+                        <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs whitespace-nowrap" id="table-santri-plotting">
-                                <thead class="bg-surface-100/80 text-surface-600 sticky top-0 border-b border-surface-200 z-10 font-bold uppercase text-[0.65rem]">
+                                <thead class="bg-surface-100/80 text-surface-600 border-b border-surface-200 font-bold uppercase text-[0.65rem]">
                                     <tr>
                                         <th class="px-4 py-3 text-center w-12">
                                             <input type="checkbox" id="check-all" class="rounded border-surface-300 text-emerald-600 focus:ring-emerald-500 w-4 h-4 cursor-pointer">
@@ -238,13 +238,30 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        {{-- Pagination Bar --}}
+                        <div class="p-3 bg-surface-50 border-t border-surface-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                            <div class="text-surface-600 font-medium" id="page-info-display">
+                                Menampilkan Halaman <strong id="current-page-num" class="text-surface-900">1</strong> dari <strong id="total-page-num" class="text-surface-900">1</strong>
+                                (<span id="total-filtered-count">0</span> Santri Belum Terplot)
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <button type="button" id="btn-prev-page" class="px-3.5 py-1.5 rounded-xl bg-white border border-surface-300 font-bold text-surface-700 hover:bg-emerald-50 hover:text-emerald-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-2xs">
+                                    ← Previous
+                                </button>
+                                <button type="button" id="btn-next-page" class="px-3.5 py-1.5 rounded-xl bg-white border border-surface-300 font-bold text-surface-700 hover:bg-emerald-50 hover:text-emerald-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-2xs">
+                                    Next →
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                {{-- SECTION 4: TOMBOL AKSI SUBMIT TERPADU --}}
+                {{-- SECTION 4: SUBMIT ACTION BAR --}}
                 <div class="pt-4 border-t border-surface-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div class="text-xs text-surface-600">
-                        Santri Belum Terplot: <strong class="text-surface-900">{{ count($pesertaBelumDitempatkan) }} Orang</strong>
+                    <div class="text-xs text-surface-600 font-medium">
+                        Total Santri Belum Terplot: <strong class="text-surface-900">{{ count($pesertaBelumDitempatkan) }} Orang</strong>
                     </div>
 
                     <button type="button" onclick="submitPenempatan()" class="w-full sm:w-auto px-7 py-3 rounded-2xl font-black text-xs shadow-xl transition-all flex items-center justify-center gap-2 hover:scale-105" style="background-color: #fbbf24 !important; color: #1e1b4b !important;">
@@ -272,24 +289,31 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const checkAll = document.getElementById('check-all');
-        const rows = document.querySelectorAll('.row-clickable');
+        const rows = Array.from(document.querySelectorAll('.santri-row'));
         const searchInput = document.getElementById('live-search-santri');
         const genderBtns = document.querySelectorAll('.gender-filter-btn');
+        const btnPrev = document.getElementById('btn-prev-page');
+        const btnNext = document.getElementById('btn-next-page');
+        const currentPageEl = document.getElementById('current-page-num');
+        const totalPageEl = document.getElementById('total-page-num');
+        const totalFilteredEl = document.getElementById('total-filtered-count');
         
+        const pageSize = 10;
+        let currentPage = 1;
         let currentGenderFilter = 'ALL';
+        let matchingRows = [];
 
+        // Check All handler for currently visible rows across page
         if(checkAll) {
             checkAll.addEventListener('change', function() {
-                document.querySelectorAll('.santri-row').forEach(row => {
-                    if (row.style.display !== 'none') {
-                        const cb = row.querySelector('.peserta-checkbox');
-                        if (cb) cb.checked = checkAll.checked;
-                    }
+                matchingRows.forEach(row => {
+                    const cb = row.querySelector('.peserta-checkbox');
+                    if (cb) cb.checked = checkAll.checked;
                 });
             });
         }
 
-        // Click row to check
+        // Click row to toggle check
         rows.forEach(row => {
             row.addEventListener('click', function(e) {
                 if(e.target.tagName !== 'INPUT') {
@@ -301,11 +325,12 @@
             });
         });
 
-        // Instant Filter Function
-        function filterSantri() {
+        // Filter and Paginate function
+        function applyFilterAndPagination() {
             const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
-
-            document.querySelectorAll('.santri-row').forEach(row => {
+            
+            // 1. Filter matching rows
+            matchingRows = rows.filter(row => {
                 const name = row.getAttribute('data-name') || '';
                 const niup = row.getAttribute('data-niup') || '';
                 const nis = row.getAttribute('data-nis') || '';
@@ -315,15 +340,43 @@
                 const matchesSearch = !query || name.includes(query) || niup.includes(query) || nis.includes(query) || nisn.includes(query);
                 const matchesGender = (currentGenderFilter === 'ALL') || (gender === currentGenderFilter);
 
-                if (matchesSearch && matchesGender) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+                return matchesSearch && matchesGender;
             });
+
+            // 2. Calculate total pages
+            const totalMatching = matchingRows.length;
+            const totalPages = Math.max(1, Math.ceil(totalMatching / pageSize));
+            
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            // 3. Render row visibility based on current page
+            rows.forEach(row => {
+                row.style.display = 'none';
+            });
+
+            const startIdx = (currentPage - 1) * pageSize;
+            const endIdx = startIdx + pageSize;
+
+            matchingRows.slice(startIdx, endIdx).forEach(row => {
+                row.style.display = '';
+            });
+
+            // 4. Update UI Displays
+            if (currentPageEl) currentPageEl.innerText = currentPage;
+            if (totalPageEl) totalPageEl.innerText = totalPages;
+            if (totalFilteredEl) totalFilteredEl.innerText = totalMatching;
+
+            if (btnPrev) btnPrev.disabled = (currentPage <= 1);
+            if (btnNext) btnNext.disabled = (currentPage >= totalPages || totalMatching === 0);
         }
 
-        if(searchInput) searchInput.addEventListener('input', filterSantri);
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                currentPage = 1;
+                applyFilterAndPagination();
+            });
+        }
 
         genderBtns.forEach(btn => {
             btn.addEventListener('click', function() {
@@ -334,9 +387,29 @@
                 this.classList.add('bg-white', 'text-emerald-800', 'shadow-2xs', 'font-bold');
                 this.classList.remove('text-surface-600', 'font-semibold');
                 currentGenderFilter = this.getAttribute('data-gender');
-                filterSantri();
+                currentPage = 1;
+                applyFilterAndPagination();
             });
         });
+
+        if (btnPrev) {
+            btnPrev.addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    applyFilterAndPagination();
+                }
+            });
+        }
+
+        if (btnNext) {
+            btnNext.addEventListener('click', function() {
+                currentPage++;
+                applyFilterAndPagination();
+            });
+        }
+
+        // Initial call
+        applyFilterAndPagination();
     });
 
     function submitPenempatan() {

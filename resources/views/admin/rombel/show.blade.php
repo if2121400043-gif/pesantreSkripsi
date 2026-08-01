@@ -11,7 +11,7 @@
             <span class="text-surface-900 font-medium">Detail Kelas</span>
         </div>
         <h1 class="text-2xl font-bold text-surface-900 font-heading">
-            Kelas {{ $rombel->tingkat ? $rombel->tingkat . ' - ' : '' }}{{ $rombel->nama }}
+            {{ str_starts_with(strtolower($rombel->nama), 'kelas') ? $rombel->nama : (str_contains(strtoupper($rombel->nama), strtoupper($rombel->tingkat ?? '')) ? 'Kelas ' . $rombel->nama : 'Kelas ' . ($rombel->tingkat ? $rombel->tingkat . ' - ' : '') . $rombel->nama) }}
         </h1>
     </div>
     <div class="flex gap-3">

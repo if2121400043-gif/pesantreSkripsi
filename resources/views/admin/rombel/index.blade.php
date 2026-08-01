@@ -62,7 +62,9 @@
                                     <x-badge variant="neutral" size="sm">Campur</x-badge>
                                 @endif
                             </div>
-                            <h3 class="font-bold text-lg text-surface-900 leading-tight">Kelas {{ $rombel->tingkat ? $rombel->tingkat . ' - ' : '' }}{{ $rombel->nama }}</h3>
+                            <h3 class="font-bold text-lg text-surface-900 leading-tight">
+                                {{ str_starts_with(strtolower($rombel->nama), 'kelas') ? $rombel->nama : (str_contains(strtoupper($rombel->nama), strtoupper($rombel->tingkat ?? '')) ? 'Kelas ' . $rombel->nama : 'Kelas ' . ($rombel->tingkat ? $rombel->tingkat . ' - ' : '') . $rombel->nama) }}
+                            </h3>
                         </div>
                     </div>
                     <div class="p-4 flex-1 flex flex-col justify-center">

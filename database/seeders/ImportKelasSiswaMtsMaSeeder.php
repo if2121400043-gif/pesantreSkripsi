@@ -172,10 +172,14 @@ class ImportKelasSiswaMtsMaSeeder extends Seeder
             // 3. Tambahkan Orang Tua jika ada
             if ($s['ortu']) {
                 $ortuNama = trim($s['ortu']);
-                $ortu = Orang::firstOrCreate(
-                    ['nama_lengkap' => $ortuNama],
-                    ['is_active' => true]
-                );
+                $ortu = Orang::where('nama_lengkap', 'like', "%{$ortuNama}%")->first();
+                if (!$ortu) {
+                    $ortu = Orang::create([
+                        'nama_lengkap' => $ortuNama,
+                        'niup' => 'WLI-' . date('Y') . '-' . str_pad(rand(100000, 999999), 6, '0', STR_PAD_LEFT),
+                        'is_active' => true,
+                    ]);
+                }
                 HubunganKeluarga::firstOrCreate([
                     'keluarga_id' => $ortu->id,
                     'orang_id' => $orang->id,

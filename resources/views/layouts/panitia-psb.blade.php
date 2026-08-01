@@ -38,7 +38,7 @@
     <div class="min-h-screen flex flex-col" id="app-panitia-psb-layout">
         {{-- Top Bar (Panitia PSB Brand & User Profile) --}}
         <header class="sticky top-0 z-30 shadow-md border-b border-purple-900" style="background-color: #4c1d95 !important; color: #ffffff !important;">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <div class="max-w-screen-xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
                 
                 {{-- Left: Brand Logo & Title --}}
                 <a href="{{ route('panitia-psb.dashboard') }}" class="flex items-center gap-3 group">
@@ -77,7 +77,7 @@
         </header>
 
         {{-- Flash Messages --}}
-        <div class="max-w-6xl mx-auto w-full px-4 sm:px-6 mt-4">
+        <div class="max-w-screen-xl mx-auto w-full px-4 sm:px-6 mt-4">
             @if(session('success'))
                 <div class="p-4 mb-4 rounded-2xl bg-success-50 border border-success-200 text-success-800 flex items-center justify-between text-xs font-medium shadow-sm">
                     <div class="flex items-center gap-2">
@@ -99,14 +99,14 @@
             @endif
         </div>
 
-        {{-- Main Content Container (Centered max-w-6xl) --}}
-        <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6" id="main-content">
+        {{-- Main Content Container (Centered max-w-screen-xl) --}}
+        <main class="flex-1 max-w-screen-xl w-full mx-auto px-4 sm:px-6 py-6" id="main-content">
             @yield('content')
         </main>
 
         {{-- Footer --}}
         <footer class="bg-white border-t border-surface-200 py-6 mt-auto">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center text-xs text-surface-500">
+            <div class="max-w-screen-xl mx-auto px-4 sm:px-6 text-center text-xs text-surface-500">
                 &copy; {{ date('Y') }} PP Nurul Furqon — Portal Panitia Penerimaan Santri Baru (PSB).
             </div>
         </footer>

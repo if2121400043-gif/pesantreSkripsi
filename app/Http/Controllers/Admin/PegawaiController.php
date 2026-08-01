@@ -41,8 +41,10 @@ class PegawaiController extends Controller
         
         $countAktif = Pegawai::where('is_active', true)->count();
         $countNonAktif = Pegawai::where('is_active', false)->count();
+        $countGuru = Pegawai::whereIn('jenis_pegawai', ['GURU', 'USTADZ', 'PENGASUH'])->where('is_active', true)->count();
+        $countStaff = Pegawai::whereNotIn('jenis_pegawai', ['GURU', 'USTADZ', 'PENGASUH'])->where('is_active', true)->count();
 
-        return view('admin.pegawai.index', compact('pegawais', 'tab', 'countAktif', 'countNonAktif'));
+        return view('admin.pegawai.index', compact('pegawais', 'tab', 'countAktif', 'countNonAktif', 'countGuru', 'countStaff'));
     }
 
     public function create(Request $request)

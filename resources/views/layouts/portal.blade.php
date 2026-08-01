@@ -304,13 +304,14 @@
             }
         });
 
-        // Service Worker Auto-Registration & Instant PWA Cache Purge
+        // Service Worker Safe Registration & Anti-Loop Cache Protection
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js?v=' + Date.now()).then(function(registration) {
-                    console.log('[PWA] ServiceWorker active with scope:', registration.scope);
+                // Use fixed static version to prevent infinite reload loop
+                navigator.serviceWorker.register('/sw.js?v=10.0').then(function(registration) {
+                    console.log('[PWA] ServiceWorker registered with scope:', registration.scope);
                     
-                    // Check for SW updates on server
+                    // Periodically check for SW updates on server
                     registration.update();
 
                     registration.onupdatefound = function() {
@@ -318,7 +319,7 @@
                         if (installingWorker) {
                             installingWorker.onstatechange = function() {
                                 if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    console.log('[PWA] New version detected on server! Purging old cache...');
+                                    console.log('[PWA] New version detected! Posting SKIP_WAITING...');
                                     installingWorker.postMessage('SKIP_WAITING');
                                 }
                             };
@@ -332,8 +333,12 @@
                 navigator.serviceWorker.addEventListener('controllerchange', function() {
                     if (!refreshing) {
                         refreshing = true;
-                        console.log('[PWA] Controller changed! Refreshing page to load latest code...');
-                        window.location.reload();
+                        // Anti-loop protection: Only reload once per session update
+                        if (!sessionStorage.getItem('pwa_sw_reloaded')) {
+                            sessionStorage.setItem('pwa_sw_reloaded', '1');
+                            console.log('[PWA] Controller changed! Reloading page once for fresh code...');
+                            window.location.reload();
+                        }
                     }
                 });
             });

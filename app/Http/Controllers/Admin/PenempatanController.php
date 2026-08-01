@@ -38,7 +38,7 @@ class PenempatanController extends Controller
             $rombels = $queryRombel->orderBy('tingkat')->orderBy('nama')->get();
 
             // Get students who are NOT in any active rombel FOR THIS SPECIFIC LEMBAGA in this tahun_pelajaran AND are AKTIF
-            $pesertaBelumDitempatkanQuery = PesertaDidik::with('orang')
+            $pesertaBelumDitempatkanQuery = PesertaDidik::with(['orang', 'riwayatRombel.rombel'])
                 ->where('status', 'AKTIF')
                 ->whereDoesntHave('riwayatRombel', function ($q) use ($tahunId, $lembagaId) {
                     $q->where('tahun_pelajaran_id', $tahunId)

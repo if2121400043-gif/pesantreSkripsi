@@ -89,7 +89,7 @@
 
             <div class="bg-white rounded-3xl border border-surface-200 shadow-sm overflow-hidden space-y-6 p-6 md:p-8">
                 
-                {{-- SECTION 1: KELAS TUJUAN (NATIVE RADIO BUTTONS IN CARDS) --}}
+                {{-- SECTION 1: KELAS TUJUAN --}}
                 <div class="space-y-3 pb-6 border-b border-surface-100">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                         <div>
@@ -193,43 +193,67 @@
                                style="padding-left: 2.75rem !important;">
                     </div>
 
-                    {{-- TABEL SANTRI DENGAN PAGINASI --}}
+                    {{-- TABEL SANTRI BERKOLOM LENGKAP & PROPORSI RAPI --}}
                     <div class="rounded-2xl border border-surface-200 overflow-hidden">
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs whitespace-nowrap" id="table-santri-plotting">
+                            <table class="w-full text-left text-xs whitespace-nowrap" id="table-santri-plotting" style="table-layout: fixed;">
                                 <thead class="bg-surface-100/80 text-surface-600 border-b border-surface-200 font-bold uppercase text-[0.65rem]">
                                     <tr>
-                                        <th class="px-4 py-3 text-center w-12">
+                                        <th class="px-4 py-3 text-center" style="width: 5%;">
                                             <input type="checkbox" id="check-all" class="rounded border-surface-300 text-emerald-600 focus:ring-emerald-500 w-4 h-4 cursor-pointer">
                                         </th>
-                                        <th class="px-4 py-3">Nama Santri</th>
-                                        <th class="px-4 py-3">NIUP / NISN</th>
-                                        <th class="px-4 py-3 text-center w-20">Gender</th>
+                                        <th class="px-4 py-3" style="width: 35%;">Identitas Santri</th>
+                                        <th class="px-4 py-3" style="width: 20%;">NIS / NISN</th>
+                                        <th class="px-4 py-3" style="width: 25%;">Riwayat / Kelas Asal</th>
+                                        <th class="px-4 py-3 text-center" style="width: 15%;">Gender</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-surface-100 text-surface-800" id="tbody-santri-plotting">
                                     @forelse($pesertaBelumDitempatkan as $peserta)
+                                        @php
+                                            $lastRombel = $peserta->riwayatRombel->first()?->rombel;
+                                        @endphp
                                         <tr class="hover:bg-emerald-50/50 transition-colors cursor-pointer row-clickable santri-row" data-name="{{ strtolower($peserta->orang->nama_lengkap) }}" data-niup="{{ strtolower($peserta->orang->niup) }}" data-nis="{{ strtolower($peserta->nis ?? '') }}" data-nisn="{{ strtolower($peserta->nisn ?? '') }}" data-gender="{{ $peserta->orang->jenis_kelamin }}">
                                             <td class="px-4 py-3 text-center">
                                                 <input type="checkbox" name="peserta_ids[]" value="{{ $peserta->id }}" class="peserta-checkbox rounded border-surface-300 text-emerald-600 focus:ring-emerald-500 w-4 h-4 cursor-pointer">
                                             </td>
                                             <td class="px-4 py-3">
-                                                <div class="font-extrabold text-surface-900 text-xs">{{ $peserta->orang->nama_lengkap }}</div>
-                                                <div class="text-[0.68rem] text-surface-500 font-mono">NIUP: {{ $peserta->orang->niup }}</div>
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-8 h-8 rounded-xl font-bold text-xs flex items-center justify-center shrink-0 border" style="background-color: #ecfdf5; color: #047857; border-color: #a7f3d0;">
+                                                        {{ substr($peserta->orang->nama_lengkap, 0, 1) }}
+                                                    </div>
+                                                    <div>
+                                                        <div class="font-extrabold text-surface-900 text-xs">{{ $peserta->orang->nama_lengkap }}</div>
+                                                        <div class="text-[0.68rem] text-emerald-700 font-mono">NIUP: {{ $peserta->orang->niup }}</div>
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td class="px-4 py-3 font-mono">
-                                                <div>{{ $peserta->nis ?? '-' }}</div>
+                                                <div class="font-bold text-surface-900">{{ $peserta->nis ?? '-' }}</div>
                                                 <div class="text-[0.65rem] text-surface-450">{{ $peserta->nisn ?? 'Tanpa NISN' }}</div>
                                             </td>
+                                            <td class="px-4 py-3">
+                                                @if($lastRombel)
+                                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-100 text-surface-700 border border-surface-200 text-[0.68rem] font-bold">
+                                                        <i data-lucide="history" class="w-3 h-3 text-surface-500"></i>
+                                                        Ex: {{ $lastRombel->nama }}
+                                                    </span>
+                                                @else
+                                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-[0.68rem] font-bold">
+                                                        <i data-lucide="sparkles" class="w-3 h-3 text-emerald-600"></i>
+                                                        Santri Baru
+                                                    </span>
+                                                @endif
+                                            </td>
                                             <td class="px-4 py-3 text-center">
-                                                <span class="inline-flex w-6 h-6 items-center justify-center rounded-full font-bold text-xs {{ $peserta->orang->jenis_kelamin == 'L' ? 'bg-blue-100 text-blue-800' : 'bg-pink-100 text-pink-800' }}">
+                                                <span class="inline-flex w-7 h-7 items-center justify-center rounded-full font-extrabold text-xs {{ $peserta->orang->jenis_kelamin == 'L' ? 'bg-blue-100 text-blue-800' : 'bg-pink-100 text-pink-800' }}">
                                                     {{ $peserta->orang->jenis_kelamin }}
                                                 </span>
                                             </td>
                                         </tr>
                                     @empty
                                         <tr id="empty-db-row">
-                                            <td colspan="4" class="px-4 py-10 text-center text-surface-500">
+                                            <td colspan="5" class="px-4 py-10 text-center text-surface-500">
                                                 <i data-lucide="check-circle" class="w-10 h-10 text-emerald-500 mx-auto mb-2"></i>
                                                 <p class="font-bold text-surface-900 text-sm mb-0.5">Semua Santri Sudah Memiliki Kelas!</p>
                                                 <p class="text-xs text-surface-450">Tidak ada daftar santri aktif yang belum ditempatkan.</p>

@@ -164,6 +164,82 @@
         </div>
     </div>
 
+    {{-- MENU UTAMA WALI SANTRI (Aksi Cepat Grid) --}}
+    <div>
+        <h2 class="text-base font-bold text-surface-900 mb-3 flex items-center gap-2">
+            <i data-lucide="grid" class="w-5 h-5 text-emerald-700"></i>
+            Menu Utama Wali Santri
+        </h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            {{-- Card 1: Tagihan & Pembayaran SPP --}}
+            <a href="{{ route('portal.tagihan') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-emerald-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute -right-8 -top-8 w-28 h-28 bg-emerald-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 rounded-2xl text-white flex items-center justify-center shadow-md mb-4 group-hover:rotate-6 transition-transform" style="background: linear-gradient(135deg, #059669, #047857) !important;">
+                        <i data-lucide="wallet" class="w-7 h-7" style="color: #ffffff !important;"></i>
+                    </div>
+                    <h3 class="text-base font-extrabold text-surface-900 group-hover:text-emerald-700 transition-colors">Tagihan & Bayar SPP</h3>
+                    <p class="text-xs text-surface-500 mt-1 leading-relaxed">Cek rincian tagihan syahriah, bayar online, dan unduh kuitansi resmi.</p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-surface-100 flex items-center justify-between text-xs font-bold text-emerald-700">
+                    <span>Keuangan Santri</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+            {{-- Card 2: Presensi & Kehadiran --}}
+            <a href="{{ route('portal.presensi') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-teal-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute -right-8 -top-8 w-28 h-28 bg-teal-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 rounded-2xl text-white flex items-center justify-center shadow-md mb-4 group-hover:rotate-6 transition-transform" style="background: linear-gradient(135deg, #0f766e, #0f524c) !important;">
+                        <i data-lucide="calendar-check" class="w-7 h-7" style="color: #ffffff !important;"></i>
+                    </div>
+                    <h3 class="text-base font-extrabold text-surface-900 group-hover:text-teal-700 transition-colors">Presensi & Kehadiran</h3>
+                    <p class="text-xs text-surface-500 mt-1 leading-relaxed">Pantau kehadiran harian santri, jumlah sakit, izin, dan alpa.</p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-surface-100 flex items-center justify-between text-xs font-bold text-teal-700">
+                    <span>Absensi Santri</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+            {{-- Card 3: Kedisiplinan & Pelanggaran --}}
+            <a href="{{ route('portal.kedisiplinan') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-amber-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute -right-8 -top-8 w-28 h-28 bg-amber-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 rounded-2xl text-white flex items-center justify-center shadow-md mb-4 group-hover:rotate-6 transition-transform" style="background: linear-gradient(135deg, #d97706, #b45309) !important;">
+                        <i data-lucide="shield-alert" class="w-7 h-7" style="color: #ffffff !important;"></i>
+                    </div>
+                    <h3 class="text-base font-extrabold text-surface-900 group-hover:text-amber-700 transition-colors">Kedisiplinan & Poin</h3>
+                    <p class="text-xs text-surface-500 mt-1 leading-relaxed">Lihat catatan pelanggaran, ketertiban, dan poin apresiasi prestasi.</p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-surface-100 flex items-center justify-between text-xs font-bold text-amber-700">
+                    <span>Catatan Kedisiplinan</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+            {{-- Card 4: Nilai & Rapor Akademik --}}
+            <button type="button" onclick="switchTab('nilai'); document.getElementById('tab-btn-nilai').scrollIntoView({behavior: 'smooth'});" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-indigo-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between text-left cursor-pointer">
+                <div class="absolute -right-8 -top-8 w-28 h-28 bg-indigo-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 rounded-2xl text-white flex items-center justify-center shadow-md mb-4 group-hover:rotate-6 transition-transform" style="background: linear-gradient(135deg, #4f46e5, #3730a3) !important;">
+                        <i data-lucide="graduation-cap" class="w-7 h-7" style="color: #ffffff !important;"></i>
+                    </div>
+                    <h3 class="text-base font-extrabold text-surface-900 group-hover:text-indigo-700 transition-colors">Rapor & Nilai Ujian</h3>
+                    <p class="text-xs text-surface-500 mt-1 leading-relaxed">Lihat hasil nilai ujian semester, capaian mapel, dan rapor santri.</p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-surface-100 flex items-center justify-between text-xs font-bold text-indigo-700">
+                    <span>Hasil Akademik</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </button>
+
+        </div>
+    </div>
+
     {{-- Tabs Section (Folder Style) --}}
     <div>
         {{-- Tab Folder Row --}}

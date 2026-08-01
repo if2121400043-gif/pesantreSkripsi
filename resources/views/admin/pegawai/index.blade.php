@@ -29,96 +29,68 @@
         </div>
     </div>
 
-    {{-- Stats Bar --}}
+    {{-- Interactive Filter Stat Cards (Menggantikan Card Tab Kedua yang Redundan) --}}
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white p-4 rounded-2xl border border-surface-200 shadow-sm flex items-center gap-3">
-            <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-100">
+        {{-- Card 1: Pegawai Aktif --}}
+        @php $isTabAktif = ($tab === 'aktif' && !request('jenis_pegawai')); @endphp
+        <a href="{{ route('admin.pegawai.index', ['tab' => 'aktif', 'search' => request('search')]) }}" 
+           class="p-4 rounded-2xl border transition-all duration-200 flex items-center gap-3 group {{ $isTabAktif ? 'bg-emerald-50/90 border-emerald-500 shadow-md ring-2 ring-emerald-500/20 scale-[1.02]' : 'bg-white border-surface-200 shadow-sm hover:border-emerald-300 hover:shadow-md' }}">
+            <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200 group-hover:scale-110 transition-transform">
                 <i data-lucide="user-check" class="w-5 h-5"></i>
             </div>
             <div>
-                <div class="text-xs text-surface-500 font-medium">Pegawai Aktif</div>
-                <div class="text-xl font-extrabold text-surface-900">{{ $countAktif }} Orang</div>
+                <div class="text-xs text-surface-500 font-bold group-hover:text-emerald-800">Pegawai Aktif</div>
+                <div class="text-xl font-black text-surface-900">{{ $countAktif }} Orang</div>
             </div>
-        </div>
+        </a>
 
-        <div class="bg-white p-4 rounded-2xl border border-surface-200 shadow-sm flex items-center gap-3">
-            <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center shrink-0 border border-blue-100">
+        {{-- Card 2: Guru & Ustadz --}}
+        @php $isTabGuru = (request('jenis_pegawai') === 'GURU'); @endphp
+        <a href="{{ route('admin.pegawai.index', ['tab' => 'aktif', 'jenis_pegawai' => 'GURU', 'search' => request('search')]) }}" 
+           class="p-4 rounded-2xl border transition-all duration-200 flex items-center gap-3 group {{ $isTabGuru ? 'bg-blue-50/90 border-blue-500 shadow-md ring-2 ring-blue-500/20 scale-[1.02]' : 'bg-white border-surface-200 shadow-sm hover:border-blue-300 hover:shadow-md' }}">
+            <div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 border border-blue-200 group-hover:scale-110 transition-transform">
                 <i data-lucide="graduation-cap" class="w-5 h-5"></i>
             </div>
             <div>
-                <div class="text-xs text-surface-500 font-medium">Guru & Ustadz</div>
-                <div class="text-xl font-extrabold text-surface-900">{{ $countGuru }} Pengajar</div>
+                <div class="text-xs text-surface-500 font-bold group-hover:text-blue-800">Guru & Ustadz</div>
+                <div class="text-xl font-black text-surface-900">{{ $countGuru }} Pengajar</div>
             </div>
-        </div>
+        </a>
 
-        <div class="bg-white p-4 rounded-2xl border border-surface-200 shadow-sm flex items-center gap-3">
-            <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center shrink-0 border border-indigo-100">
+        {{-- Card 3: Staf & Operasional --}}
+        @php $isTabStaff = (request('jenis_pegawai') === 'STAFF_ADMIN'); @endphp
+        <a href="{{ route('admin.pegawai.index', ['tab' => 'aktif', 'jenis_pegawai' => 'STAFF_ADMIN', 'search' => request('search')]) }}" 
+           class="p-4 rounded-2xl border transition-all duration-200 flex items-center gap-3 group {{ $isTabStaff ? 'bg-indigo-50/90 border-indigo-500 shadow-md ring-2 ring-indigo-500/20 scale-[1.02]' : 'bg-white border-surface-200 shadow-sm hover:border-indigo-300 hover:shadow-md' }}">
+            <div class="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0 border border-indigo-200 group-hover:scale-110 transition-transform">
                 <i data-lucide="briefcase" class="w-5 h-5"></i>
             </div>
             <div>
-                <div class="text-xs text-surface-500 font-medium">Staf & Operasional</div>
-                <div class="text-xl font-extrabold text-surface-900">{{ $countStaff }} Pegawai</div>
+                <div class="text-xs text-surface-500 font-bold group-hover:text-indigo-800">Staf & Operasional</div>
+                <div class="text-xl font-black text-surface-900">{{ $countStaff }} Pegawai</div>
             </div>
-        </div>
+        </a>
 
-        <div class="bg-white p-4 rounded-2xl border border-surface-200 shadow-sm flex items-center gap-3">
-            <div class="w-11 h-11 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center shrink-0 border border-rose-100">
+        {{-- Card 4: Nonaktif / Arsip --}}
+        @php $isTabNonaktif = ($tab === 'nonaktif'); @endphp
+        <a href="{{ route('admin.pegawai.index', ['tab' => 'nonaktif', 'search' => request('search')]) }}" 
+           class="p-4 rounded-2xl border transition-all duration-200 flex items-center gap-3 group {{ $isTabNonaktif ? 'bg-rose-50/90 border-rose-500 shadow-md ring-2 ring-rose-500/20 scale-[1.02]' : 'bg-white border-surface-200 shadow-sm hover:border-rose-300 hover:shadow-md' }}">
+            <div class="w-11 h-11 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0 border border-rose-200 group-hover:scale-110 transition-transform">
                 <i data-lucide="user-x" class="w-5 h-5"></i>
             </div>
             <div>
-                <div class="text-xs text-surface-500 font-medium">Nonaktif / Arsip</div>
-                <div class="text-xl font-extrabold text-surface-900">{{ $countNonAktif }} Orang</div>
+                <div class="text-xs text-surface-500 font-bold group-hover:text-rose-800">Nonaktif / Arsip</div>
+                <div class="text-xl font-black text-surface-900">{{ $countNonAktif }} Orang</div>
             </div>
-        </div>
+        </a>
     </div>
 
-    {{-- Filter & Control Bar --}}
-    <div class="bg-white p-4 rounded-3xl border border-surface-200 shadow-sm space-y-4">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            
-            {{-- Tabs --}}
-            <div class="flex gap-2 overflow-x-auto pb-1 max-w-full">
-                @php
-                    $tabs = [
-                        'aktif' => ['label' => 'Pegawai Aktif', 'count' => $countAktif, 'icon' => 'user-check'],
-                        'nonaktif' => ['label' => 'Nonaktif (Arsip)', 'count' => $countNonAktif, 'icon' => 'user-x'],
-                        'semua' => ['label' => 'Semua SDM', 'count' => null, 'icon' => 'users'],
-                    ];
-                @endphp
-                @foreach($tabs as $key => $t)
-                    @php $isActive = ($tab === $key); @endphp
-                    <a href="{{ route('admin.pegawai.index', ['tab' => $key, 'search' => request('search'), 'jenis_pegawai' => request('jenis_pegawai')]) }}" 
-                       class="px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-2 {{ $isActive ? 'bg-primary-700 text-white border-primary-700 shadow-md shadow-primary-700/20 scale-105' : 'bg-surface-50 text-surface-600 border-surface-200 hover:bg-surface-100 hover:text-surface-900' }}"
-                       style="{{ $isActive ? 'color: #ffffff !important; background-color: #047857 !important;' : '' }}">
-                        <i data-lucide="{{ $t['icon'] }}" class="w-3.5 h-3.5 {{ $isActive ? 'text-warning-300' : 'text-surface-400' }}"></i>
-                        <span style="{{ $isActive ? 'color: #ffffff !important;' : '' }}">{{ $t['label'] }}</span>
-                        @if($t['count'] !== null)
-                            <span class="px-2 py-0.5 rounded-full text-[0.65rem] font-extrabold {{ $isActive ? 'bg-white/20 text-white' : 'bg-surface-200 text-surface-600' }}">
-                                {{ $t['count'] }}
-                            </span>
-                        @endif
-                    </a>
-                @endforeach
-            </div>
-
-            {{-- Dual View Switcher --}}
-            <div class="flex items-center gap-1 bg-surface-100 p-1 rounded-2xl shrink-0 self-end md:self-auto">
-                <button type="button" @click="viewMode = 'grid'" :class="viewMode === 'grid' ? 'bg-white text-emerald-800 shadow-sm font-bold' : 'text-surface-500 font-medium'" class="px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition-all">
-                    <i data-lucide="layout-grid" class="w-4 h-4"></i>
-                    <span>Kartu Grid</span>
-                </button>
-                <button type="button" @click="viewMode = 'table'" :class="viewMode === 'table' ? 'bg-white text-emerald-800 shadow-sm font-bold' : 'text-surface-500 font-medium'" class="px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition-all">
-                    <i data-lucide="list" class="w-4 h-4"></i>
-                    <span>Tabel</span>
-                </button>
-            </div>
-        </div>
-
-        {{-- Search Form --}}
-        <form action="{{ route('admin.pegawai.index') }}" method="GET" class="flex flex-col sm:flex-row gap-3 pt-2 border-t border-surface-100">
+    {{-- Search & Dual View Controls Container --}}
+    <div class="bg-white p-4 rounded-3xl border border-surface-200 shadow-sm">
+        <form action="{{ route('admin.pegawai.index') }}" method="GET" class="flex flex-col sm:flex-row items-center justify-between gap-3">
             <input type="hidden" name="tab" value="{{ $tab }}">
             
-            <div class="flex-1 relative">
+            {{-- Search Box --}}
+            <div class="flex-1 relative w-full">
                 <div class="absolute top-1/2 -translate-y-1/2 text-surface-400 pointer-events-none flex items-center justify-center" style="left: 1.25rem !important;">
                     <i data-lucide="search" class="w-4 h-4"></i>
                 </div>
@@ -127,7 +99,8 @@
                        style="padding-left: 3.25rem !important;">
             </div>
 
-            <div class="sm:w-56">
+            {{-- Filter Jenis SDM --}}
+            <div class="sm:w-52 w-full">
                 <select name="jenis_pegawai" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-800 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500" onchange="this.form.submit()">
                     <option value="">Semua Jenis SDM</option>
                     <option value="GURU" {{ request('jenis_pegawai') === 'GURU' ? 'selected' : '' }}>Guru / Ustadz</option>
@@ -143,21 +116,33 @@
                     <span>Reset</span>
                 </a>
             @endif
+
+            {{-- Dual View Switcher --}}
+            <div class="flex items-center gap-1 bg-surface-100 p-1 rounded-2xl shrink-0 self-end sm:self-auto">
+                <button type="button" @click="viewMode = 'grid'" :class="viewMode === 'grid' ? 'bg-white text-emerald-800 shadow-sm font-bold' : 'text-surface-500 font-medium'" class="px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition-all">
+                    <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                    <span>Kartu Grid</span>
+                </button>
+                <button type="button" @click="viewMode = 'table'" :class="viewMode === 'table' ? 'bg-white text-emerald-800 shadow-sm font-bold' : 'text-surface-500 font-medium'" class="px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition-all">
+                    <i data-lucide="list" class="w-4 h-4"></i>
+                    <span>Tabel</span>
+                </button>
+            </div>
         </form>
     </div>
 
     {{-- VIEW 1: GRID CARDS VIEW --}}
     <div x-show="viewMode === 'grid'" transition>
         @if($pegawais->count() > 0)
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 @foreach($pegawais as $pegawai)
-                    <div class="bg-white rounded-3xl border border-surface-200 shadow-sm hover:shadow-xl hover:border-emerald-400 transition-all duration-300 p-5 flex flex-col justify-between relative overflow-hidden group">
+                    <div class="bg-white rounded-3xl border border-surface-200 shadow-sm hover:shadow-xl hover:border-emerald-400 transition-all duration-300 p-6 md:p-7 flex flex-col justify-between relative overflow-hidden group">
                         
                         {{-- Top Section: Avatar & Status --}}
                         <div>
                             <div class="flex items-start justify-between gap-3 mb-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-14 h-14 rounded-2xl font-extrabold text-lg flex items-center justify-center shrink-0 shadow-md shadow-emerald-700/10 border" style="background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important; color: #047857 !important; border-color: #a7f3d0 !important;">
+                                    <div class="w-14 h-14 rounded-2xl font-extrabold text-lg flex items-center justify-center shrink-0 shadow-md border" style="background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important; color: #047857 !important; border-color: #a7f3d0 !important;">
                                         {{ substr($pegawai->orang->nama_lengkap ?? 'P', 0, 1) }}
                                     </div>
                                     <div>
@@ -230,7 +215,7 @@
 
                         {{-- Footer Actions --}}
                         <div class="mt-5 pt-3 border-t border-surface-100 flex items-center justify-between gap-2">
-                            <a href="{{ route('admin.pegawai.show', $pegawai) }}" class="flex-1 py-2 px-3 rounded-xl bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition-all text-center shadow-md shadow-emerald-700/20 flex items-center justify-center gap-1.5" style="color: #ffffff !important; background-color: #047857 !important;">
+                            <a href="{{ route('admin.pegawai.show', $pegawai) }}" class="flex-1 py-2 px-3 rounded-xl text-white font-bold text-xs transition-all text-center shadow-md flex items-center justify-center gap-1.5 hover:scale-102" style="color: #ffffff !important; background-color: #047857 !important;">
                                 <i data-lucide="eye" class="w-3.5 h-3.5"></i>
                                 <span>Detail & Beban Tugas</span>
                             </a>

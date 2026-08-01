@@ -92,7 +92,8 @@
         {{-- KARTU UTAMA TERPADU --}}
         <form action="{{ route('admin.penempatan.store') }}" method="POST" id="form-penempatan">
             @csrf
-            <input type="hidden" name="rombel_id" id="hidden_rombel_id" :value="selectedRombelId" required>
+            {{-- Hidden input with direct native value binding --}}
+            <input type="hidden" name="rombel_id" id="hidden_rombel_id" value="{{ old('rombel_id', request('rombel_id')) }}" required>
 
             <div class="bg-white rounded-3xl border border-surface-200 shadow-sm overflow-hidden space-y-6 p-6 md:p-8">
                 
@@ -123,7 +124,7 @@
                                     $rName = ($rombel->tingkat ? 'Kelas ' . $rombel->tingkat . '-' : '') . $rombel->nama;
                                 @endphp
 
-                                <div @click="selectRombel('{{ $rombel->id }}', '{{ addslashes($rName) }}', {{ $rFilled }}, {{ $rombel->kapasitas }}, '{{ $rombel->gender_target }}')"
+                                <div @click="selectRombel('{{ $rombel->id }}', '{{ addslashes($rName) }}', {{ $rFilled }}, {{ $rombel->kapasitas }}, '{{ $rombel->gender_target }}'); document.getElementById('hidden_rombel_id').value = '{{ $rombel->id }}';"
                                      :class="selectedRombelId == '{{ $rombel->id }}' ? 'border-2 border-emerald-600 bg-emerald-50 shadow-md ring-2 ring-emerald-500/20' : 'border border-surface-200 bg-white hover:border-emerald-300 hover:shadow-2xs'"
                                      class="p-3.5 rounded-2xl cursor-pointer transition-all relative overflow-hidden group">
                                     
@@ -413,10 +414,11 @@
     });
 
     function submitPenempatan() {
-        const selectedRombelId = document.getElementById('hidden_rombel_id').value;
+        const hiddenEl = document.getElementById('hidden_rombel_id');
+        const selectedRombelId = hiddenEl ? hiddenEl.value : '';
         const checkedCount = document.querySelectorAll('.peserta-checkbox:checked').length;
 
-        if (!selectedRombelId) {
+        if (!selectedRombelId || selectedRombelId === '') {
             alert('⚠️ Harap klik dan pilih Kelas Tujuan terlebih dahulu pada Section 1!');
             return;
         }

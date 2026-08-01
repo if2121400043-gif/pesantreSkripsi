@@ -49,6 +49,12 @@ class PortalController extends Controller
         $anakList = $this->getAnakIds();
         $activeAnakId = session('active_anak_id') ?? ($anakList->first()->id ?? null);
         $activeAnak = $anakList->firstWhere('id', $activeAnakId);
+        
+        // Fallback for admin/testing user if no linked child found
+        if (!$activeAnak) {
+            $activeAnak = PesertaDidik::with(['orang', 'lembaga', 'rombelAktif', 'kamarAktif.asrama'])->where('status', 'AKTIF')->first();
+        }
+
         $activeTahun = TahunPelajaran::where('is_active', true)->first();
 
         // Kehadiran Stats

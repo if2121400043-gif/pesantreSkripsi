@@ -39,16 +39,13 @@
     </div>
 
 @if(!$activeAnak)
-<div class="bg-white rounded-2xl shadow-sm border border-surface-200 p-8 sm:p-12 text-center">
-    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary-50 text-primary-500 mb-6">
-        <i data-lucide="users" class="w-10 h-10"></i>
+<div class="bg-amber-50 rounded-2xl p-4 border border-amber-200 text-amber-900 flex items-center justify-between text-xs font-semibold shadow-2xs">
+    <div class="flex items-center gap-2">
+        <i data-lucide="info" class="w-4 h-4 text-amber-600"></i>
+        <span>Akun Anda belum ditautkan dengan data santri tertentu. Tampilan di bawah menggunakan data santri percontohan.</span>
     </div>
-    <h3 class="text-xl font-bold text-surface-900 mb-2">Belum Ada Data Santri</h3>
-    <p class="text-surface-500 max-w-md mx-auto">
-        Akun Anda belum ditautkan dengan data santri manapun. Jika anak Anda sudah mendaftar dan berstatus DITERIMA, silakan hubungi admin pesantren untuk proses penautan data.
-    </p>
 </div>
-@else
+@endif
 
 <div class="space-y-6 animate-fade-in-up">
     {{-- Card Identitas Anak --}}
@@ -549,7 +546,6 @@
         </div>
     </div>
 </div>
-@endif
 </div>
 @endsection
 

@@ -114,7 +114,22 @@
                             <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[0.65rem] font-extrabold bg-blue-100 text-blue-700 uppercase">
                                 {{ str_replace('_', ' ', $pegawai->jenis_pegawai) }}
                             </span>
-                            <div class="text-[0.65rem] text-surface-500 font-medium mt-0.5">{{ $pegawai->jabatan ?? '-' }}</div>
+                            @if(in_array($pegawai->jenis_pegawai, ['GURU', 'USTADZ', 'PENGASUH']))
+                                @php
+                                    $mapelList = $pegawai->jadwalMengajar->pluck('mataPelajaran.nama')->filter()->unique();
+                                    $totalSesi = $pegawai->jadwalMengajar->count();
+                                @endphp
+                                @if($mapelList->count() > 0)
+                                    <div class="text-[0.68rem] text-emerald-700 font-bold mt-0.5 truncate max-w-xs" title="{{ $mapelList->implode(', ') }}">
+                                        📚 {{ $mapelList->take(2)->implode(', ') }}{{ $mapelList->count() > 2 ? ' +'.$mapelList->count()-2 : '' }}
+                                        <span class="text-surface-500 font-normal">({{ $totalSesi }} Sesi/Mg)</span>
+                                    </div>
+                                @else
+                                    <div class="text-[0.65rem] text-surface-400 italic mt-0.5">Belum ada jadwal mengajar</div>
+                                @endif
+                            @else
+                                <div class="text-[0.68rem] text-surface-700 font-semibold mt-0.5">💼 {{ $pegawai->jabatan ?? 'Staf Operasional' }}</div>
+                            @endif
                         </td>
                         <td class="px-6 py-3.5">
                             <div class="font-bold text-surface-900">{{ $pegawai->nip ?? '-' }}</div>

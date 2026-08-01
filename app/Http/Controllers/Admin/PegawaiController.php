@@ -12,7 +12,7 @@ class PegawaiController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Pegawai::with('orang');
+        $query = Pegawai::with(['orang', 'jadwalMengajar.mataPelajaran', 'waliKelas']);
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -87,8 +87,30 @@ class PegawaiController extends Controller
             'riwayatJabatan' => fn($q) => $q->orderBy('tanggal_mulai', 'desc'),
             'waliKelas.lembaga',
             'waliKelas.tahunPelajaran',
+            'jadwalMengajar.mataPelajaran',
+            'jadwalMengajar.rombel',
         ]);
-        return view('admin.pegawai.show', compact('pegawai'));
+
+        $hariOrder = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'AHAD'];
+
+        // Kelompokkan jadwal mengajar per hari
+        $jadwalGrouped = $pegawai->jadwalMengajar
+            ->sortBy(function($j) use ($hariOrder) {
+                $pos = array_search($j->hari, $hariOrder);
+                return ($pos !== false ? $pos : 99) . '_' . $j->jam_mulai;
+            })
+            ->groupBy('hari');
+
+        // Daftar Mata Pelajaran Unik yang diajar
+        $mapelDiampu = $pegawai->jadwalMengajar
+            ->pluck('mataPelajaran.nama')
+            ->filter()
+            ->unique()
+            ->values();
+
+        $totalSesiMingguan = $pegawai->jadwalMengajar->count();
+
+        return view('admin.pegawai.show', compact('pegawai', 'jadwalGrouped', 'mapelDiampu', 'hariOrder', 'totalSesiMingguan'));
     }
 
     public function edit(Pegawai $pegawai)

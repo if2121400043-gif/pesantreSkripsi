@@ -51,24 +51,9 @@
                     </div>
                 </a>
 
-                {{-- Right: Quick Navigation Tabs (Desktop) & Role --}}
+                {{-- Right: User Actions & Switch Role --}}
                 <div class="flex items-center gap-2">
-                    <nav class="hidden md:flex items-center gap-1 p-1 rounded-2xl border border-white/20 text-xs font-semibold" style="background-color: rgba(255, 255, 255, 0.15) !important;">
-                        <a href="{{ route('portal.beranda') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.beranda') ? 'bg-white text-emerald-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}" style="{{ request()->routeIs('portal.beranda') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
-                            Beranda
-                        </a>
-                        <a href="{{ route('portal.tagihan') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.tagihan*') ? 'bg-white text-emerald-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}" style="{{ request()->routeIs('portal.tagihan*') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
-                            Tagihan & Bayar
-                        </a>
-                        <a href="{{ route('portal.presensi') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.presensi*') ? 'bg-white text-emerald-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}" style="{{ request()->routeIs('portal.presensi*') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
-                            Presensi
-                        </a>
-                        <a href="{{ route('portal.kedisiplinan') }}" class="px-3 py-1.5 rounded-xl transition-colors {{ request()->routeIs('portal.kedisiplinan*') ? 'bg-white text-emerald-900 font-extrabold shadow-sm' : 'text-white hover:bg-white/10' }}" style="{{ request()->routeIs('portal.kedisiplinan*') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
-                            Kedisiplinan
-                        </a>
-                    </nav>
-
-                    <div class="flex items-center gap-2 pl-2 border-l border-white/20">
+                    <div class="flex items-center gap-2">
                         <a href="{{ route('akun.ganti-peran') }}" title="Ganti Peran / Switch Role" class="px-3 py-1.5 rounded-xl text-xs font-extrabold transition-colors border border-amber-300 shadow-sm flex items-center gap-1" style="color: #064e3b !important; background-color: #fbbf24 !important;">
                             <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
                             <span class="hidden lg:inline">Ganti Peran</span>

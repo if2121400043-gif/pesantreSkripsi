@@ -5,67 +5,66 @@
 @section('content')
 <div class="space-y-6">
 
-    {{-- Welcome Banner Header for Wali Santri --}}
+    {{-- Merged Single Unified Hero Banner for Wali Santri --}}
     <div class="rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #065f46, #022c22) !important; color: #ffffff !important;">
         <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
-        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-xs font-semibold backdrop-blur-sm border border-white/20 mb-3" style="color: #ffffff !important;">
-                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-warning-400"></i>
-                    Portal Wali Santri
+        <div class="relative z-10 space-y-4">
+            
+            {{-- Top Row: Greeting & Child Selector --}}
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/15 pb-4">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-xs font-semibold backdrop-blur-sm border border-white/20 mb-2" style="color: #ffffff !important;">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-warning-400"></i>
+                        Portal Wali Santri
+                    </div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold font-heading" style="color: #ffffff !important;">
+                        Assalamu'alaikum, {{ auth()->user()->orang->nama_lengkap ?? auth()->user()->username }}
+                    </h1>
                 </div>
-                <h1 class="text-2xl md:text-3xl font-extrabold font-heading" style="color: #ffffff !important;">
-                    Assalamu'alaikum, {{ auth()->user()->orang->nama_lengkap ?? auth()->user()->username }}
-                </h1>
-                <p class="text-xs md:text-sm mt-1 max-w-xl" style="color: #d1fae5 !important;">
-                    Pantau perkembangan akademik, presensi harian, catatan kedisiplinan, dan pembayaran tagihan putra-putri Anda.
-                </p>
+
+                {{-- Switch Child Selector --}}
+                @if($anakList->count() > 1)
+                    <div class="flex items-center gap-2 p-2.5 rounded-2xl border border-white/20" style="background-color: rgba(255, 255, 255, 0.15) !important;">
+                        <label for="anak_id" class="text-xs font-bold whitespace-nowrap" style="color: #d1fae5 !important;">Pantau Ananda:</label>
+                        <select name="anak_id" id="anak_id" onchange="window.location.href='{{ route('portal.beranda') }}?anak_id=' + this.value" class="bg-white/20 text-white text-xs font-bold rounded-xl border border-white/20 focus:ring-0 p-1.5 cursor-pointer" style="color: #ffffff !important; background-color: rgba(255, 255, 255, 0.2) !important;">
+                            @foreach($anakList as $anak)
+                                <option value="{{ $anak->id }}" class="text-surface-900 bg-white" {{ $activeAnak && $activeAnak->id == $anak->id ? 'selected' : '' }}>
+                                    {{ $anak->orang->nama_lengkap }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
             </div>
 
-            {{-- Switch Child Selector --}}
-            @if($anakList->count() > 1)
-            <div class="flex items-center gap-2 p-3 rounded-2xl border border-white/20" style="background-color: rgba(255, 255, 255, 0.15) !important;">
-                <label for="anak_id" class="text-xs font-bold whitespace-nowrap" style="color: #d1fae5 !important;">Pantau Ananda:</label>
-                <select name="anak_id" id="anak_id" onchange="window.location.href='{{ route('portal.beranda') }}?anak_id=' + this.value" class="bg-white/20 text-white text-xs font-bold rounded-xl border border-white/20 focus:ring-0 p-1.5 cursor-pointer" style="color: #ffffff !important; background-color: rgba(255, 255, 255, 0.2) !important;">
-                    @foreach($anakList as $anak)
-                        <option value="{{ $anak->id }}" class="text-surface-900 bg-white" {{ $activeAnak && $activeAnak->id == $anak->id ? 'selected' : '' }}>
-                            {{ $anak->orang->nama_lengkap }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+            {{-- Bottom Row: Selected Child Academic Summary --}}
+            @if($activeAnak)
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-1">
+                    <div>
+                        <div class="text-xs text-emerald-200 uppercase tracking-wider font-extrabold flex items-center gap-1.5">
+                            <i data-lucide="user-check" class="w-4 h-4 text-emerald-300"></i>
+                            MEMANTAU SANTRI: <strong class="text-white font-extrabold text-sm ml-1">{{ $activeAnak->orang->nama_lengkap }}</strong> 
+                            <span class="font-mono text-emerald-200 text-xs">({{ $activeAnak->orang->niup ?? '-' }})</span>
+                        </div>
+                        <div class="text-xs text-emerald-100 mt-1 flex flex-wrap gap-x-4 gap-y-1">
+                            <span>Lembaga: <strong class="text-white font-semibold">{{ $activeAnak->lembaga->nama ?? '-' }}</strong></span>
+                            <span>•</span>
+                            <span>Kelas: <strong class="text-white font-semibold">{{ $activeAnak->rombelAktif->nama ?? '-' }}</strong></span>
+                            <span>•</span>
+                            <span>Asrama: <strong class="text-white font-semibold">{{ $activeAnak->kamarAktif->asrama->nama ?? '-' }} ({{ $activeAnak->kamarAktif->nama ?? '-' }})</strong></span>
+                        </div>
+                    </div>
+
+                    <span class="px-3 py-1 bg-white/20 text-white text-xs font-extrabold rounded-full border border-white/20 shrink-0">
+                        Santri Aktif
+                    </span>
+                </div>
             @endif
+
         </div>
     </div>
-
-@if(!$activeAnak)
-<div class="bg-amber-50 rounded-2xl p-4 border border-amber-200 text-amber-900 flex items-center justify-between text-xs font-semibold shadow-2xs">
-    <div class="flex items-center gap-2">
-        <i data-lucide="info" class="w-4 h-4 text-amber-600"></i>
-        <span>Akun Anda belum ditautkan dengan data santri tertentu. Tampilan di bawah menggunakan data santri percontohan.</span>
-    </div>
-</div>
-@endif
 
 <div class="space-y-6 animate-fade-in-up">
-    {{-- Card Identitas Anak --}}
-    <div class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl shadow-sm p-6 text-white">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-                <h2 class="text-xl font-bold font-heading">
-                    Ringkasan Akademik & Keuangan: {{ $activeAnak->orang->nama_lengkap }} (ID: {{ $activeAnak->orang->niup ?? '-' }})
-                </h2>
-                <p class="text-xs text-emerald-100 mt-1.5 flex flex-wrap gap-x-4 gap-y-1">
-                    <span>Lembaga: <span class="font-semibold text-white">{{ $activeAnak->lembaga->nama ?? '-' }}</span></span>
-                    <span>Kelas/Rombel: <span class="font-semibold text-white">{{ $activeAnak->rombelAktif->nama ?? '-' }}</span></span>
-                    <span>Asrama: <span class="font-semibold text-white">{{ $activeAnak->kamarAktif->asrama->nama ?? '-' }} ({{ $activeAnak->kamarAktif->nama ?? '-' }})</span></span>
-                </p>
-            </div>
-            <span class="px-3 py-1 bg-white/20 text-white text-xs font-semibold rounded-full border border-white/10 hidden sm:inline-block">
-                Santri Aktif
-            </span>
-        </div>
-    </div>
 
     {{-- Three Summary Cards --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

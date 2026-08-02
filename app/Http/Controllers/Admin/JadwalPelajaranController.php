@@ -28,30 +28,50 @@ class JadwalPelajaranController extends Controller
             ->orderBy('nama')
             ->get();
 
-        $rombelId = $request->get('rombel_id');
-        $jadwals = [];
-        $mapels = [];
-        $gurus = [];
+        $gurus = Pegawai::with('orang')
+            ->where('is_active', true)
+            ->whereIn('jenis_pegawai', ['GURU', 'USTADZ', 'PENGASUH'])
+            ->get();
 
-        if ($rombelId) {
-            $rombel = Rombel::find($rombelId);
-            if ($rombel) {
-                // Get jadwals for this rombel
-                $jadwalsQuery = JadwalPelajaran::with(['mataPelajaran', 'guru.orang'])
-                    ->where('rombel_id', $rombelId)
-                    ->orderBy('hari')
-                    ->orderBy('jam_mulai')
-                    ->get();
-                    
-                // Group by hari
-                $jadwals = $jadwalsQuery->groupBy('hari');
-                
-                $mapels = MataPelajaran::where('lembaga_id', $rombel->lembaga_id)->where('is_active', true)->orderBy('nama')->get();
-                $gurus = Pegawai::with('orang')->where('is_active', true)->whereIn('jenis_pegawai', ['GURU', 'USTADZ', 'PENGASUH'])->get();
-            }
+        $daftarHari = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'AHAD'];
+
+        $hari = $request->get('hari');
+        $rombelId = $request->get('rombel_id');
+        $pegawaiId = $request->get('pegawai_id');
+
+        // Query Jadwal Pelajaran based on 3 filters (Hari, Kelas, Guru)
+        $query = JadwalPelajaran::with(['mataPelajaran', 'rombel.lembaga', 'guru.orang'])
+            ->whereHas('rombel', function($q) use ($tahunId) {
+                if ($tahunId) $q->where('tahun_pelajaran_id', $tahunId);
+            });
+
+        if ($hari) {
+            $query->where('hari', $hari);
         }
 
-        return view('admin.jadwal_pelajaran.index', compact('rombels', 'jadwals', 'mapels', 'gurus', 'rombelId', 'tahuns', 'tahunId'));
+        if ($rombelId) {
+            $query->where('rombel_id', $rombelId);
+        }
+
+        if ($pegawaiId) {
+            $query->where('pegawai_id', $pegawaiId);
+        }
+
+        $jadwals = $query->orderBy('hari')
+            ->orderBy('jam_mulai')
+            ->get();
+
+        return view('admin.jadwal_pelajaran.index', compact(
+            'rombels', 
+            'gurus', 
+            'daftarHari', 
+            'jadwals', 
+            'tahuns', 
+            'tahunId', 
+            'hari', 
+            'rombelId', 
+            'pegawaiId'
+        ));
     }
 
     public function create(Request $request)
@@ -107,5 +127,134 @@ class JadwalPelajaranController extends Controller
         }
 
         return back()->with('error', 'Jadwal pelajaran tidak ditemukan.');
+    }
+
+    public function exportCsv(Request $request)
+    {
+        $tahunId = $request->get('tahun_pelajaran_id');
+        $rombelId = $request->get('rombel_id');
+
+        if (!$tahunId) {
+            $tahunAktif = TahunPelajaran::where('is_active', true)->first();
+            $tahunId = $tahunAktif?->id;
+        }
+
+        $rombels = Rombel::with(['lembaga', 'tahunPelajaran'])
+            ->when($tahunId, fn($q) => $q->where('tahun_pelajaran_id', $tahunId))
+            ->when($rombelId, fn($q) => $q->where('id', $rombelId))
+            ->orderBy('nama')
+            ->get();
+
+        $filename = 'Roster_Jadwal_Pelajaran_' . date('Ymd_His') . '.csv';
+        $days = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'SABTU', 'AHAD'];
+        $daysHeader = ['Jam', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Sabtu', 'Ahad'];
+
+        return response()->streamDownload(function() use ($rombels, $days, $daysHeader) {
+            $file = fopen('php://output', 'w');
+            
+            // Output UTF-8 BOM for Excel compatibility
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+
+            // Main Roster Header
+            fputcsv($file, ['ROSTER BELAJAR SANTRI PONDOK NURUL FURQON']);
+            fputcsv($file, []);
+
+            foreach ($rombels as $rombel) {
+                // Fetch schedule entries for this rombel
+                $jadwals = JadwalPelajaran::with(['mataPelajaran', 'guru.orang'])
+                    ->where('rombel_id', $rombel->id)
+                    ->orderBy('jam_mulai')
+                    ->get();
+
+                // Group unique Mapel & Guru legend for right side
+                $legendItems = $jadwals->filter(fn($j) => $j->mataPelajaran && $j->guru?->orang)
+                    ->unique(fn($j) => $j->mata_pelajaran_id . '-' . $j->pegawai_id)
+                    ->values();
+
+                // Standard Time Slots for Pesantren
+                $timeSlots = [
+                    '07.15 - 07.30',
+                    '07.30 - 08.15',
+                    '08.15 - 09.00',
+                    '09.00 - 09.15',
+                    '09.15 - 10.00',
+                    '10.00 - 10.45',
+                    '10.45 - 11.45',
+                ];
+
+                // Table Column Header (Matching Roster Excel Layout)
+                $classTitle = str_starts_with(strtoupper($rombel->nama ?? ''), 'KELAS') ? strtoupper($rombel->nama) : 'KELAS ' . strtoupper($rombel->nama);
+                $headerRow = array_merge($daysHeader, ['', $classTitle, 'Mapel', 'Nama Guru']);
+                fputcsv($file, $headerRow);
+
+                $legendIndex = 0;
+
+                foreach ($timeSlots as $slotIdx => $slot) {
+                    $row = [$slot];
+
+                    // Check fixed time slots (Upacara / Apel / Istirahat)
+                    if ($slotIdx === 0) {
+                        // 07.15 - 07.30 (Upacara / Apel)
+                        $row = array_merge($row, ['Upacara', 'Apel', 'Apel', 'Apel', 'Apel', 'Apel']);
+                    } elseif ($slotIdx === 3) {
+                        // 09.00 - 09.15 (Istirahat)
+                        $row = array_merge($row, array_fill(0, 6, 'Istirahat'));
+                    } else {
+                        // Regular lesson slots
+                        foreach ($days as $day) {
+                            $dayJadwals = $jadwals->where('hari', $day)->values();
+                            // Match by time or sequential order
+                            $matched = $dayJadwals->first(function($j) use ($slot) {
+                                $timeStr = date('H.i', strtotime($j->jam_mulai)) . ' - ' . date('H.i', strtotime($j->jam_selesai));
+                                return $timeStr === $slot;
+                            });
+
+                            if (!$matched && $dayJadwals->isNotEmpty()) {
+                                // Fallback by slot index
+                                $idxInDay = $slotIdx > 3 ? $slotIdx - 2 : $slotIdx - 1;
+                                $matched = $dayJadwals->get($idxInDay) ?? $dayJadwals->first();
+                            }
+
+                            $row[] = $matched->mataPelajaran->nama ?? '-';
+                        }
+                    }
+
+                    // Append legend item on right side
+                    $row[] = ''; // spacer column
+                    if (isset($legendItems[$legendIndex])) {
+                        $item = $legendItems[$legendIndex];
+                        $row[] = '';
+                        $row[] = $item->mataPelajaran->nama ?? '-';
+                        $row[] = $item->guru->orang->nama_lengkap ?? '-';
+                        $legendIndex++;
+                    } else {
+                        $row[] = '';
+                        $row[] = '';
+                        $row[] = '';
+                    }
+
+                    fputcsv($file, $row);
+                }
+
+                // Append remaining legend items if any
+                while (isset($legendItems[$legendIndex])) {
+                    $item = $legendItems[$legendIndex];
+                    $row = array_fill(0, 7, '');
+                    $row[] = '';
+                    $row[] = '';
+                    $row[] = $item->mataPelajaran->nama ?? '-';
+                    $row[] = $item->guru->orang->nama_lengkap ?? '-';
+                    fputcsv($file, $row);
+                    $legendIndex++;
+                }
+
+                fputcsv($file, []); // Empty separator row between classes
+            }
+
+            fclose($file);
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
     }
 }

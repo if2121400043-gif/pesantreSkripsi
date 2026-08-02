@@ -69,6 +69,12 @@ Route::middleware('auth')->group(function () {
         // Wilayah Pesantren (Zona / Daerah Internal)
         Route::resource('wilayah', \App\Http\Controllers\Admin\WilayahController::class)->except(['create', 'show', 'edit']);
 
+        // API Wilayah Indonesia (Cascading Dropdown: Provinsi -> Kabupaten -> Kecamatan -> Desa)
+        Route::get('api/provinsi', [\App\Http\Controllers\Admin\WilayahApiController::class, 'getProvinsi'])->name('api.provinsi');
+        Route::get('api/provinsi/{provinsi_id}/kabupaten', [\App\Http\Controllers\Admin\WilayahApiController::class, 'getKabupaten'])->name('api.kabupaten');
+        Route::get('api/kabupaten/{kabupaten_id}/kecamatan', [\App\Http\Controllers\Admin\WilayahApiController::class, 'getKecamatan'])->name('api.kecamatan');
+        Route::get('api/kecamatan/{kecamatan_id}/desa', [\App\Http\Controllers\Admin\WilayahApiController::class, 'getDesa'])->name('api.desa');
+
         // Master Data
         Route::resource('lembaga', \App\Http\Controllers\Admin\LembagaController::class)->except(['create', 'show', 'edit']);
         Route::resource('tahun-pelajaran', \App\Http\Controllers\Admin\TahunPelajaranController::class)->except(['create', 'show', 'edit']);

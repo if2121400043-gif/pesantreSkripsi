@@ -107,18 +107,37 @@
                         </div>
                     </div>
 
-                    {{-- Data Wilayah Terpilih (Readonly for simplicity in edit view, full cascade requires pre-loading) --}}
-                    <div class="bg-surface-50 p-4 rounded-xl border border-surface-100">
-                        <p class="text-sm text-surface-500 mb-2">Wilayah Tercatat (Ubah hanya jika pindah domisili besar)</p>
-                        <div class="font-medium text-surface-900">
-                            @if($orang->desa)
-                                Desa {{ $orang->desa->nama }}, Kec. {{ $orang->desa->kecamatan->nama }}, 
-                                Kab. {{ $orang->desa->kecamatan->kabupaten->nama }}, Prov. {{ $orang->desa->kecamatan->kabupaten->provinsi->nama }}
-                            @else
-                                <span class="text-warning-600">Wilayah belum diatur.</span>
-                            @endif
+                    {{-- Cascading Dropdowns for Wilayah --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-surface-50 p-4 rounded-xl border border-surface-200">
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Provinsi</label>
+                            <select id="provinsi_id" class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500" onchange="loadKabupaten(this.value)">
+                                <option value="">Pilih Provinsi...</option>
+                                @foreach($provinsis as $prov)
+                                    <option value="{{ $prov->id }}" {{ old('provinsi_id', $orang->desa?->kecamatan?->kabupaten?->provinsi_id) == $prov->id ? 'selected' : '' }}>
+                                        {{ $prov->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
-                        <input type="hidden" name="desa_id" value="{{ old('desa_id', $orang->desa_id) }}">
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Kabupaten/Kota</label>
+                            <select id="kabupaten_id" class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500" onchange="loadKecamatan(this.value)">
+                                <option value="">Pilih Kabupaten...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Kecamatan</label>
+                            <select id="kecamatan_id" class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500" onchange="loadDesa(this.value)">
+                                <option value="">Pilih Kecamatan...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1">Desa/Kelurahan</label>
+                            <select name="desa_id" id="desa_id" class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                                <option value="">Pilih Desa...</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -166,4 +185,79 @@
     @csrf
     @method('DELETE')
 </form>
+
+@push('scripts')
+<script>
+    async function fetchRegionData(url, targetSelectId, defaultOptionText, selectedId = null) {
+        const targetSelect = document.getElementById(targetSelectId);
+        targetSelect.innerHTML = `<option value="">Memuat...</option>`;
+        targetSelect.disabled = true;
+        
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            targetSelect.innerHTML = `<option value="">${defaultOptionText}</option>`;
+            data.forEach(item => {
+                const isSelected = selectedId && item.id == selectedId ? 'selected' : '';
+                targetSelect.innerHTML += `<option value="${item.id}" ${isSelected}>${item.nama}</option>`;
+            });
+            
+            targetSelect.disabled = false;
+        } catch (error) {
+            console.error('Error fetching region data:', error);
+            targetSelect.innerHTML = `<option value="">Gagal memuat data</option>`;
+        }
+    }
+
+    function loadKabupaten(provinsiId, selectedKabId = null) {
+        document.getElementById('kecamatan_id').innerHTML = '<option value="">Pilih Kecamatan...</option>';
+        document.getElementById('desa_id').innerHTML = '<option value="">Pilih Desa...</option>';
+
+        if (!provinsiId) {
+            document.getElementById('kabupaten_id').innerHTML = '<option value="">Pilih Kabupaten...</option>';
+            return;
+        }
+
+        fetchRegionData(`/admin/api/provinsi/${provinsiId}/kabupaten`, 'kabupaten_id', 'Pilih Kabupaten...', selectedKabId);
+    }
+
+    function loadKecamatan(kabupatenId, selectedKecId = null) {
+        document.getElementById('desa_id').innerHTML = '<option value="">Pilih Desa...</option>';
+
+        if (!kabupatenId) {
+            document.getElementById('kecamatan_id').innerHTML = '<option value="">Pilih Kecamatan...</option>';
+            return;
+        }
+
+        fetchRegionData(`/admin/api/kabupaten/${kabupatenId}/kecamatan`, 'kecamatan_id', 'Pilih Kecamatan...', selectedKecId);
+    }
+
+    function loadDesa(kecamatanId, selectedDesaId = null) {
+        if (!kecamatanId) {
+            document.getElementById('desa_id').innerHTML = '<option value="">Pilih Desa...</option>';
+            return;
+        }
+
+        fetchRegionData(`/admin/api/kecamatan/${kecamatanId}/desa`, 'desa_id', 'Pilih Desa/Kelurahan...', selectedDesaId);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedProvId = "{{ old('provinsi_id', $orang->desa?->kecamatan?->kabupaten?->provinsi_id) }}";
+        const savedKabId = "{{ old('kabupaten_id', $orang->desa?->kecamatan?->kabupaten_id) }}";
+        const savedKecId = "{{ old('kecamatan_id', $orang->desa?->kecamatan_id) }}";
+        const savedDesaId = "{{ old('desa_id', $orang->desa_id) }}";
+
+        if (savedProvId) {
+            loadKabupaten(savedProvId, savedKabId);
+        }
+        if (savedKabId) {
+            loadKecamatan(savedKabId, savedKecId);
+        }
+        if (savedKecId) {
+            loadDesa(savedKecId, savedDesaId);
+        }
+    });
+</script>
+@endpush
 @endsection

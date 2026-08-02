@@ -1,13 +1,22 @@
-{{-- PWA Install Banner --}}
-<div id="pwa-install-banner" style="display:none; position:fixed; bottom:0; left:0; right:0; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:#fff; padding:12px 20px; z-index:9999; box-shadow:0 -2px 10px rgba(0,0,0,0.2);">
-    <div style="display:flex; align-items:center; justify-content:space-between; max-width:600px; margin:0 auto;">
-        <div style="display:flex; align-items:center; gap:12px;">
-            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l0 12m0 0l-4-4m4 4l4-4M4 18h16"/></svg>
-            <span style="font-size:14px; font-weight:500;">Pasang aplikasi untuk akses lebih cepat</span>
+{{-- PWA Install Banner (Emerald Theme & Mobile Android Friendly) --}}
+<div id="pwa-install-banner" class="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-md z-[9999] transition-all duration-300 transform translate-y-0 opacity-100" style="display: none;">
+    <div class="bg-surface-900/95 backdrop-blur-md text-white p-4 rounded-2xl shadow-2xl border border-emerald-500/30 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-md">
+                <i data-lucide="download" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <p class="text-xs font-extrabold text-white font-heading">Aplikasi PP Nurul Furqon</p>
+                <p class="text-[0.7rem] text-surface-300 leading-tight">Pasang aplikasi di Android/iOS untuk akses instan.</p>
+            </div>
         </div>
-        <div style="display:flex; gap:8px;">
-            <button onclick="installPWA()" style="background:#fff; color:#667eea; border:none; padding:6px 16px; border-radius:6px; font-weight:600; cursor:pointer; font-size:13px;">Pasang</button>
-            <button onclick="dismissPWA()" style="background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.4); padding:6px 12px; border-radius:6px; cursor:pointer; font-size:13px;">Nanti</button>
+        <div class="flex items-center gap-1.5 shrink-0">
+            <button onclick="installPWA()" class="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold transition-all shadow-md active:scale-95">
+                Pasang
+            </button>
+            <button onclick="dismissPWA()" class="p-2 rounded-xl text-surface-400 hover:text-white transition-colors" title="Tutup">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
         </div>
     </div>
 </div>
@@ -17,21 +26,29 @@ let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    if (!localStorage.getItem('pwa-dismissed')) {
-        document.getElementById('pwa-install-banner').style.display = 'block';
+    const banner = document.getElementById('pwa-install-banner');
+    if (banner && !sessionStorage.getItem('pwa-banner-closed')) {
+        banner.style.display = 'block';
     }
 });
 
 function installPWA() {
+    const banner = document.getElementById('pwa-install-banner');
     if (deferredPrompt) {
         deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('[PWA] User accepted the install prompt');
+            }
+            deferredPrompt = null;
+        });
     }
-    document.getElementById('pwa-install-banner').style.display = 'none';
+    if (banner) banner.style.display = 'none';
 }
 
 function dismissPWA() {
-    document.getElementById('pwa-install-banner').style.display = 'none';
-    localStorage.setItem('pwa-dismissed', '1');
+    const banner = document.getElementById('pwa-install-banner');
+    if (banner) banner.style.display = 'none';
+    sessionStorage.setItem('pwa-banner-closed', '1');
 }
 </script>

@@ -264,47 +264,22 @@
         });
     </script>
     
-    {{-- PWA Service Worker Registration with Update Detection --}}
+    {{-- PWA Service Worker Android & Mobile Compliant Registration --}}
     <script>
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' })
-                    .then(registration => {
-                        console.log('[PWA] Service Worker registered', registration.scope);
-
-                        // Check for SW updates periodically (every 60 seconds)
-                        setInterval(() => {
-                            registration.update().catch(() => {});
-                        }, 60000);
-
-                        // Listen for new SW waiting to activate
-                        registration.addEventListener('updatefound', () => {
-                            const newWorker = registration.installing;
-                            if (!newWorker) return;
-
-                            newWorker.addEventListener('statechange', () => {
-                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    // New SW is ready — tell it to activate immediately
-                                    console.log('[PWA] New Service Worker ready, activating...');
-                                    newWorker.postMessage('SKIP_WAITING');
-                                }
-                            });
-                        });
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js?v=11.0')
+                    .then(function(reg) {
+                        console.log('[PWA] ServiceWorker registered:', reg.scope);
                     })
-                    .catch(err => console.error('[PWA] SW registration failed', err));
-
-                // Reload page when new SW takes control (ensures fresh content)
-                let refreshing = false;
-                navigator.serviceWorker.addEventListener('controllerchange', () => {
-                    if (!refreshing) {
-                        refreshing = true;
-                        console.log('[PWA] New Service Worker active, reloading for fresh content...');
-                        window.location.reload();
-                    }
-                });
+                    .catch(function(err) {
+                        console.warn('[PWA] SW Registration Error:', err);
+                    });
             });
         }
-
+    </script>
+    
+    <script>
         // Global UX Improvement: Auto Disable Submit Buttons & Show Spinner on Form Submit
         document.addEventListener('submit', (e) => {
             const form = e.target;

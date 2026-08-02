@@ -1,9 +1,9 @@
 // ============================================================
 // Service Worker — PP Nurul Furqon
-// Version: v10-20260801-1507 (Strict Network-First & Auto-Bust PWA Cache)
+// Version: v11-20260802-0845 (Android Chrome & iOS Safari Compliant)
 // ============================================================
 
-const CACHE_VERSION = 'v10-20260801-1507';
+const CACHE_VERSION = 'v11-20260802-0845';
 const CACHE_NAME_STATIC = `pp-nurul-furqon-static-${CACHE_VERSION}`;
 const CACHE_NAME_DYNAMIC = `pp-nurul-furqon-dynamic-${CACHE_VERSION}`;
 
@@ -19,19 +19,19 @@ const PRECACHE_ASSETS = [
 
 // ── Install: Pre-cache core offline assets & force immediate activation ──
 self.addEventListener('install', event => {
-    console.log(`[SW ${CACHE_VERSION}] Installing new Service Worker...`);
+    console.log(`[SW ${CACHE_VERSION}] Installing Service Worker...`);
     event.waitUntil(
         caches.open(CACHE_NAME_STATIC).then(cache => {
             return Promise.all(
                 PRECACHE_ASSETS.map(asset =>
                     cache.add(asset).catch(err => {
-                        console.warn('[SW] Failed to pre-cache:', asset, err);
+                        console.warn('[SW] Pre-cache skip:', asset, err);
                     })
                 )
             );
         }).then(() => {
-            console.log(`[SW ${CACHE_VERSION}] Skip waiting and activate immediately.`);
-            return self.skipWaiting(); // Force active immediately
+            console.log(`[SW ${CACHE_VERSION}] Skip waiting triggered.`);
+            return self.skipWaiting();
         })
     );
 });
@@ -50,13 +50,13 @@ self.addEventListener('activate', event => {
                 })
             );
         }).then(() => {
-            console.log(`[SW ${CACHE_VERSION}] Claiming all active clients immediately.`);
-            return self.clients.claim(); // Take control of all pages right now
+            console.log(`[SW ${CACHE_VERSION}] Claiming active clients.`);
+            return self.clients.claim();
         })
     );
 });
 
-// ── Fetch: Zero-Cache for HTML/Portal, Pure Network-First ──
+// ── Fetch: Clean Network-First for Navigation & Android Chrome Safe ──
 self.addEventListener('fetch', event => {
     // Only intercept GET requests
     if (event.request.method !== 'GET') return;
@@ -69,27 +69,7 @@ self.addEventListener('fetch', event => {
     const isNavigationRequest = event.request.mode === 'navigate';
     const acceptsHtml = event.request.headers.get('accept')?.includes('text/html');
 
-    // ── Strategy 0: NEVER cache authentication & dynamic portal routes ──
-    if (
-        url.pathname.startsWith('/login') ||
-        url.pathname.startsWith('/logout') ||
-        url.pathname.startsWith('/register') ||
-        url.pathname.startsWith('/portal') ||
-        url.pathname.startsWith('/bendahara') ||
-        url.pathname.startsWith('/panitia-psb') ||
-        url.pathname.startsWith('/admin')
-    ) {
-        // ALWAYS fetch live from network; fall back to offline page if network is down
-        if (isNavigationRequest || acceptsHtml) {
-            event.respondWith(
-                fetch(event.request, { cache: 'no-store' })
-                    .catch(() => caches.match('/offline'))
-            );
-            return;
-        }
-    }
-
-    // ── Strategy 1: Network-First for HTML navigation ──
+    // ── Strategy 1: Network-First for HTML navigation (No custom RequestInit options to prevent Android Chrome TypeError) ──
     if (isNavigationRequest || acceptsHtml) {
         event.respondWith(
             fetch(event.request)
@@ -98,7 +78,7 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // ── Strategy 2: Cache-First for Vite build assets (hashed filenames only) ──
+    // ── Strategy 2: Cache-First for Vite build assets (hashed filenames) ──
     if (url.pathname.startsWith('/build/assets/')) {
         event.respondWith(
             caches.match(event.request).then(cachedResponse => {
@@ -118,7 +98,7 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // ── Default: Network-First for images/assets ──
+    // ── Strategy 3: Network-First for images & static assets with offline fallback ──
     const isStaticAsset =
         url.pathname.endsWith('.png') ||
         url.pathname.endsWith('.jpg') ||

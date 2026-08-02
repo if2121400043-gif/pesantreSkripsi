@@ -304,43 +304,16 @@
             }
         });
 
-        // Service Worker Safe Registration & Anti-Loop Cache Protection
+        // Service Worker Android & Mobile Compliant Registration
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                // Use fixed static version to prevent infinite reload loop
-                navigator.serviceWorker.register('/sw.js?v=10.0').then(function(registration) {
-                    console.log('[PWA] ServiceWorker registered with scope:', registration.scope);
-                    
-                    // Periodically check for SW updates on server
-                    registration.update();
-
-                    registration.onupdatefound = function() {
-                        const installingWorker = registration.installing;
-                        if (installingWorker) {
-                            installingWorker.onstatechange = function() {
-                                if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    console.log('[PWA] New version detected! Posting SKIP_WAITING...');
-                                    installingWorker.postMessage('SKIP_WAITING');
-                                }
-                            };
-                        }
-                    };
-                }).catch(function(err) {
-                    console.warn('[PWA] SW Registration Error:', err);
-                });
-
-                let refreshing = false;
-                navigator.serviceWorker.addEventListener('controllerchange', function() {
-                    if (!refreshing) {
-                        refreshing = true;
-                        // Anti-loop protection: Only reload once per session update
-                        if (!sessionStorage.getItem('pwa_sw_reloaded')) {
-                            sessionStorage.setItem('pwa_sw_reloaded', '1');
-                            console.log('[PWA] Controller changed! Reloading page once for fresh code...');
-                            window.location.reload();
-                        }
-                    }
-                });
+                navigator.serviceWorker.register('/sw.js?v=11.0')
+                    .then(function(reg) {
+                        console.log('[PWA] ServiceWorker registered:', reg.scope);
+                    })
+                    .catch(function(err) {
+                        console.warn('[PWA] SW Registration Error:', err);
+                    });
             });
         }
     </script>

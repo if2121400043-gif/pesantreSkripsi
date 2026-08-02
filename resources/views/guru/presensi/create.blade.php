@@ -9,7 +9,7 @@
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-3xl border border-surface-200 shadow-sm">
         <div>
             <div class="flex items-center gap-2 text-xs font-semibold text-primary-600 mb-1">
-                <span class="px-2 py-0.5 rounded-md bg-primary-50 border border-primary-100">Kelas {{ $jadwal->rombel->nama }}</span>
+                <span class="px-2 py-0.5 rounded-md bg-primary-50 border border-primary-100">{{ str_starts_with(strtolower($jadwal->rombel->nama ?? ''), 'kelas') ? $jadwal->rombel->nama : 'Kelas ' . ($jadwal->rombel->nama ?? '-') }}</span>
                 <span>•</span>
                 <span>{{ $jadwal->mataPelajaran->nama }}</span>
             </div>

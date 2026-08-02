@@ -89,7 +89,7 @@ $labelHari = [
                             <div class="flex items-center gap-2 mt-2.5 flex-wrap">
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-100 text-surface-800 text-xs font-bold border border-surface-200">
                                     <i data-lucide="users" class="w-3.5 h-3.5 text-surface-500"></i>
-                                    Kelas {{ $jadwal->rombel->nama ?? '-' }}
+                                    {{ str_starts_with(strtolower($jadwal->rombel->nama ?? ''), 'kelas') ? $jadwal->rombel->nama : 'Kelas ' . ($jadwal->rombel->nama ?? '-') }}
                                 </span>
                                 @if(isset($jadwal->rombel->gender_target))
                                     <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[0.65rem] font-extrabold uppercase {{ $jadwal->rombel->gender_target == 'PUTRA' ? 'bg-blue-100 text-blue-700' : ($jadwal->rombel->gender_target == 'PUTRI' ? 'bg-pink-100 text-pink-700' : 'bg-surface-200 text-surface-700') }}">

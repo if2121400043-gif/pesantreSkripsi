@@ -106,39 +106,44 @@
             {{-- Kolom Kiri: Form Input Sesi Jadwal (7/12) --}}
             <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-7 border border-surface-200 shadow-sm space-y-5">
                 
-                {{-- Header Target Kelas --}}
-                <div class="flex items-center gap-3.5 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-bold shrink-0 shadow-sm" style="background-color: #047857 !important; color: #ffffff !important;">
-                        <i data-lucide="school" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <div class="text-[0.68rem] text-emerald-800 font-extrabold uppercase tracking-wider">Target Kelas & Rombel</div>
-                        <div class="text-sm font-extrabold text-emerald-950 font-heading">
-                            @if($rombel)
-                                {{ $rombel->lembaga->singkatan ?? $rombel->lembaga->nama }} — {{ str_starts_with(strtoupper($rombel->nama ?? ''), 'KELAS') ? strtoupper($rombel->nama) : 'KELAS ' . strtoupper($rombel->nama) }}
-                            @else
-                                Pilih Kelas Rombel
-                            @endif
+                {{-- Header Target Kelas dengan Tombol Ubah Kelas --}}
+                <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl">
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-4 sm:gap-5 min-w-0">
+                            <div class="w-11 h-11 rounded-2xl bg-emerald-700 text-white flex items-center justify-center font-bold shrink-0 shadow-sm mr-1" style="background-color: #047857 !important; color: #ffffff !important;">
+                                <i data-lucide="school" class="w-5 h-5"></i>
+                            </div>
+                            <div class="min-w-0 pl-1">
+                                <div class="text-[0.7rem] text-emerald-800 font-black uppercase tracking-wider mb-0.5">Target Kelas & Rombel</div>
+                                <div class="text-sm font-black text-emerald-950 font-heading truncate leading-tight" id="text_nama_kelas">
+                                    @if($rombel)
+                                        {{ $rombel->lembaga->singkatan ?? $rombel->lembaga->nama }} — {{ str_starts_with(strtoupper($rombel->nama ?? ''), 'KELAS') ? strtoupper($rombel->nama) : 'KELAS ' . strtoupper($rombel->nama) }}
+                                    @else
+                                        Silakan Pilih Kelas
+                                    @endif
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                {{-- Input Hidden atau Select Kelas --}}
-                @if($rombel)
-                    <input type="hidden" name="rombel_id" id="rombel_id" value="{{ $rombel->id }}">
-                @else
-                    <div>
-                        <label class="block text-xs font-bold text-surface-700 mb-1.5">Pilih Kelas / Rombel <span class="text-rose-500">*</span></label>
+                        <button type="button" id="btn_toggle_ubah_kelas" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-extrabold text-xs transition-all shadow-2xs shrink-0">
+                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-emerald-700"></i>
+                            <span>Ubah Kelas</span>
+                        </button>
+                    </div>
+
+                    {{-- Container Select Rombel (Hidden by default if $rombel is present, visible if toggled or no $rombel) --}}
+                    <div id="wrapper_select_rombel" class="mt-3.5 pt-3.5 border-t border-emerald-200/80 {{ $rombel ? 'hidden' : '' }}">
+                        <label class="block text-xs font-extrabold text-emerald-900 mb-1.5">Pilih Kelas / Rombel Baru <span class="text-rose-500">*</span></label>
                         <select name="rombel_id" id="rombel_id" required class="select2-search w-full">
-                            <option value="" disabled selected>Ketik nama kelas...</option>
+                            <option value="" disabled {{ !$rombelId ? 'selected' : '' }}>Ketik nama kelas...</option>
                             @foreach($rombels as $r)
-                                <option value="{{ $r->id }}" {{ old('rombel_id', $rombelId) == $r->id ? 'selected' : '' }}>
+                                <option value="{{ $r->id }}" {{ old('rombel_id', $rombelId) == $r->id ? 'selected' : '' }} data-nama="{{ $r->lembaga->singkatan ?? $r->lembaga->nama }} — {{ str_starts_with(strtoupper($r->nama ?? ''), 'KELAS') ? strtoupper($r->nama) : 'KELAS ' . strtoupper($r->nama) }}">
                                     {{ $r->lembaga->singkatan ?? $r->lembaga->nama }} | {{ str_starts_with(strtoupper($r->nama ?? ''), 'KELAS') ? strtoupper($r->nama) : 'KELAS ' . strtoupper($r->nama) }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
-                @endif
+                </div>
 
                 {{-- Input Hari --}}
                 <div>
@@ -325,8 +330,20 @@
         }
 
         // Event listeners
+        $('#btn_toggle_ubah_kelas').on('click', function(e) {
+            e.preventDefault();
+            $('#wrapper_select_rombel').toggleClass('hidden');
+        });
+
         $('#select_hari').on('change', loadOccupiedSchedules);
-        $('#rombel_id').on('change', loadOccupiedSchedules);
+        $('#rombel_id').on('change', function() {
+            const selectedOpt = $(this).find('option:selected');
+            const namaKelas = selectedOpt.data('nama');
+            if (namaKelas) {
+                $('#text_nama_kelas').text(namaKelas);
+            }
+            loadOccupiedSchedules();
+        });
 
         // Initial load
         loadOccupiedSchedules();

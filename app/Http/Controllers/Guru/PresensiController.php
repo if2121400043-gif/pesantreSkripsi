@@ -106,6 +106,9 @@ class PresensiController extends Controller
             DB::beginTransaction();
 
             $tanggal = $request->tanggal;
+            $jenisPresensi = \App\Models\JenisPresensi::where('kode', 'KBM')->first()
+                ?? \App\Models\JenisPresensi::first();
+            $jenisPresensiId = $jenisPresensi ? $jenisPresensi->id : 1;
 
             foreach ($request->presensi as $peserta_didik_id => $data) {
                 PresensiKelas::updateOrCreate(
@@ -115,6 +118,7 @@ class PresensiController extends Controller
                         'tanggal' => $tanggal,
                     ],
                     [
+                        'jenis_presensi_id' => $jenisPresensiId,
                         'status' => $data['status'],
                         'keterangan' => $data['keterangan'] ?? null,
                         'dicatat_oleh' => auth()->id(),

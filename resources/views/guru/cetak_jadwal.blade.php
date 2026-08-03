@@ -222,7 +222,7 @@
         <div class="kop-surat">
             <div class="nama-pesantren">Pondok Pesantren Nurul Furqon</div>
             <div class="sub-nama">Yayasan Nurul Furqon</div>
-            <div class="alamat">Jl. Imam Bonjol, Kel. Wundudopi, Kec. Baruga, Kota Kendari, Sulawesi Tenggara</div>
+            <div class="alamat">Jln. KH. Zaini Mun'im, Desa Timu, Kec. Tomia Timur, Kab. Wakatobi, Sulawesi Tenggara</div>
         </div>
 
         {{-- Judul Dokumen --}}

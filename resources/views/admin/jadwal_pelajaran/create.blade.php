@@ -107,15 +107,17 @@
             <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-7 border border-surface-200 shadow-sm space-y-5">
                 
                 {{-- Header Target Kelas dengan Tombol Ubah Kelas --}}
-                <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl">
-                    <div class="flex items-center justify-between gap-3">
-                        <div class="flex items-center gap-4 sm:gap-5 min-w-0">
-                            <div class="w-11 h-11 rounded-2xl bg-emerald-700 text-white flex items-center justify-center font-bold shrink-0 shadow-sm mr-1" style="background-color: #047857 !important; color: #ffffff !important;">
-                                <i data-lucide="school" class="w-5 h-5"></i>
+                <div class="p-4 sm:p-5 bg-emerald-50/80 border border-emerald-200 rounded-2xl space-y-4">
+                    <div class="flex items-center justify-between gap-4">
+                        
+                        {{-- Icon + Info Block dengan Margin & Gap Jelas --}}
+                        <div class="flex items-center gap-4 min-w-0">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-700 text-white flex items-center justify-center font-bold shrink-0 shadow-sm" style="background-color: #047857 !important; color: #ffffff !important;">
+                                <i data-lucide="school" class="w-6 h-6"></i>
                             </div>
-                            <div class="min-w-0 pl-1">
-                                <div class="text-[0.7rem] text-emerald-800 font-black uppercase tracking-wider mb-0.5">Target Kelas & Rombel</div>
-                                <div class="text-sm font-black text-emerald-950 font-heading truncate leading-tight" id="text_nama_kelas">
+                            <div class="min-w-0 space-y-1">
+                                <div class="text-[0.7rem] font-black text-emerald-800 uppercase tracking-wider block">Target Kelas & Rombel</div>
+                                <div class="text-base font-black text-emerald-950 font-heading truncate leading-tight block" id="text_nama_kelas">
                                     @if($rombel)
                                         {{ $rombel->lembaga->singkatan ?? $rombel->lembaga->nama }} — {{ str_starts_with(strtoupper($rombel->nama ?? ''), 'KELAS') ? strtoupper($rombel->nama) : 'KELAS ' . strtoupper($rombel->nama) }}
                                     @else
@@ -125,15 +127,18 @@
                             </div>
                         </div>
 
-                        <button type="button" id="btn_toggle_ubah_kelas" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-extrabold text-xs transition-all shadow-2xs shrink-0">
+                        {{-- Tombol Ubah Kelas --}}
+                        <button type="button" id="btn_toggle_ubah_kelas" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-extrabold text-xs transition-all shadow-2xs shrink-0">
                             <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-emerald-700"></i>
                             <span>Ubah Kelas</span>
                         </button>
                     </div>
 
-                    {{-- Container Select Rombel (Hidden by default if $rombel is present, visible if toggled or no $rombel) --}}
-                    <div id="wrapper_select_rombel" class="mt-3.5 pt-3.5 border-t border-emerald-200/80 {{ $rombel ? 'hidden' : '' }}">
-                        <label class="block text-xs font-extrabold text-emerald-900 mb-1.5">Pilih Kelas / Rombel Baru <span class="text-rose-500">*</span></label>
+                    {{-- Container Select Rombel (Dengan padding-top & margin-top yang lega dari garis border) --}}
+                    <div id="wrapper_select_rombel" class="pt-4 border-t border-emerald-200/90 space-y-2 {{ $rombel ? 'hidden' : '' }}">
+                        <label class="block text-xs font-extrabold text-emerald-950 mb-1">
+                            Pilih Kelas / Rombel Baru <span class="text-rose-500">*</span>
+                        </label>
                         <select name="rombel_id" id="rombel_id" required class="select2-search w-full">
                             <option value="" disabled {{ !$rombelId ? 'selected' : '' }}>Ketik nama kelas...</option>
                             @foreach($rombels as $r)

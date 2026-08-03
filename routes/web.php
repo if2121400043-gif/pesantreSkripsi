@@ -113,6 +113,8 @@ Route::middleware('auth')->group(function () {
             ->parameters(['jadwal-pelajaran' => 'jadwal'])
             ->except(['show', 'edit']);
         
+        Route::get('presensi/rekap', [\App\Http\Controllers\Admin\PresensiController::class, 'rekap'])->name('presensi.rekap');
+        Route::get('presensi/cetak', [\App\Http\Controllers\Admin\PresensiController::class, 'cetak'])->name('presensi.cetak');
         Route::get('presensi', [\App\Http\Controllers\Admin\PresensiController::class, 'index'])->name('presensi.index');
         Route::post('presensi', [\App\Http\Controllers\Admin\PresensiController::class, 'store'])->name('presensi.store');
         Route::resource('jenis-presensi', \App\Http\Controllers\Admin\JenisPresensiController::class)->except(['show']);
@@ -186,6 +188,8 @@ Route::middleware('auth')->group(function () {
         
         // Presensi
         Route::get('/presensi', [\App\Http\Controllers\Guru\PresensiController::class, 'index'])->name('presensi.index');
+        Route::get('/presensi/rekap', [\App\Http\Controllers\Guru\PresensiController::class, 'rekap'])->name('presensi.rekap');
+        Route::get('/presensi/cetak', [\App\Http\Controllers\Guru\PresensiController::class, 'cetak'])->name('presensi.cetak');
         Route::get('/presensi/{jadwal_id}', [\App\Http\Controllers\Guru\PresensiController::class, 'create'])->name('presensi.create');
         Route::post('/presensi/{jadwal_id}', [\App\Http\Controllers\Guru\PresensiController::class, 'store'])->name('presensi.store');
         

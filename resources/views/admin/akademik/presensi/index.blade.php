@@ -22,15 +22,22 @@
                 </p>
             </div>
             
-            @if(isset($tahunAktif) && $tahunAktif)
-                <div class="px-4 py-2.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-xs shrink-0 flex items-center gap-2">
-                    <i data-lucide="calendar" class="w-4 h-4 text-emerald-300"></i>
-                    <div>
-                        <div class="text-[0.65rem] text-emerald-200 uppercase tracking-wider font-extrabold">TAHUN PELAJARAN AKTIF</div>
-                        <div class="font-bold text-white">{{ $tahunAktif->nama_tahun ?? $tahunAktif->nama }} ({{ $tahunAktif->semester === 'GANJIL' ? 'Ganjil' : 'Genap' }})</div>
+            <div class="flex flex-wrap items-center gap-3 shrink-0">
+                <a href="{{ route('admin.presensi.rekap') }}" class="px-4 py-2.5 rounded-2xl bg-white text-emerald-900 font-extrabold text-xs shadow-md hover:bg-emerald-50 transition-all flex items-center gap-2 cursor-pointer border border-white/30" style="color: #064e3b !important; background-color: #ffffff !important;">
+                    <i data-lucide="printer" class="w-4 h-4 text-emerald-700"></i>
+                    <span>Rekap & Cetak Laporan</span>
+                </a>
+
+                @if(isset($tahunAktif) && $tahunAktif)
+                    <div class="px-4 py-2 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-xs shrink-0 flex items-center gap-2">
+                        <i data-lucide="calendar" class="w-4 h-4 text-emerald-300"></i>
+                        <div>
+                            <div class="text-[0.65rem] text-emerald-200 uppercase tracking-wider font-extrabold">TAHUN PELAJARAN AKTIF</div>
+                            <div class="font-bold text-white">{{ $tahunAktif->nama_tahun ?? $tahunAktif->nama }} ({{ $tahunAktif->semester === 'GANJIL' ? 'Ganjil' : 'Genap' }})</div>
+                        </div>
                     </div>
-                </div>
-            @endif
+                @endif
+            </div>
         </div>
     </div>
 

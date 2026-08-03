@@ -38,6 +38,22 @@
         background-color: #047857 !important;
         color: #ffffff !important;
     }
+    .btn-quick-duration {
+        background-color: #ecfdf5 !important;
+        color: #065f46 !important;
+        border-color: #a7f3d0 !important;
+    }
+    .btn-quick-duration:hover {
+        background-color: #047857 !important;
+        color: #ffffff !important;
+        border-color: #047857 !important;
+    }
+    .btn-quick-duration i {
+        color: #059669 !important;
+    }
+    .btn-quick-duration:hover i {
+        color: #ffffff !important;
+    }
 </style>
 @endpush
 
@@ -176,24 +192,24 @@
                         </div>
                     </div>
 
-                    {{-- Quick Duration Buttons (+45 min, +90 min, +60 min) --}}
-                    <div class="pt-1">
-                        <span class="text-[0.68rem] text-surface-500 font-bold block mb-1.5 flex items-center gap-1">
-                            <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-500"></i>
-                            <span>Hitung Jam Selesai Otomatis (Durasi Cepat):</span>
-                        </span>
-                        <div class="flex flex-wrap gap-2">
-                            <button type="button" class="btn-quick-duration px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white border border-emerald-200 text-[0.72rem] font-black transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer" data-minutes="45">
-                                <i data-lucide="clock-4" class="w-3.5 h-3.5"></i>
-                                <span>+45 Menit (1 Sesi)</span>
+                    {{-- Quick Duration Buttons (Compact Micro Pills) --}}
+                    <div class="pt-0.5">
+                        <div class="flex items-center gap-1.5 mb-1 text-[0.65rem] font-bold text-surface-500">
+                            <i data-lucide="zap" class="w-3 h-3 text-amber-500 shrink-0"></i>
+                            <span>Durasi Cepat (Hitung Otomatis):</span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-1.5">
+                            <button type="button" class="btn-quick-duration px-2.5 py-1 rounded-lg text-[0.68rem] font-extrabold transition-all duration-200 shadow-2xs flex items-center gap-1 cursor-pointer" data-minutes="45">
+                                <i data-lucide="clock" class="w-3 h-3"></i>
+                                <span>+45m</span>
                             </button>
-                            <button type="button" class="btn-quick-duration px-3 py-1.5 rounded-xl bg-teal-50 hover:bg-teal-600 text-teal-800 hover:text-white border border-teal-200 text-[0.72rem] font-black transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer" data-minutes="90">
-                                <i data-lucide="clock-8" class="w-3.5 h-3.5"></i>
-                                <span>+90 Menit (2 Sesi)</span>
+                            <button type="button" class="btn-quick-duration px-2.5 py-1 rounded-lg text-[0.68rem] font-extrabold transition-all duration-200 shadow-2xs flex items-center gap-1 cursor-pointer" data-minutes="90">
+                                <i data-lucide="clock" class="w-3 h-3"></i>
+                                <span>+90m (2 Sesi)</span>
                             </button>
-                            <button type="button" class="btn-quick-duration px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-600 text-sky-800 hover:text-white border border-sky-200 text-[0.72rem] font-black transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer" data-minutes="60">
-                                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
-                                <span>+60 Menit (1 Jam Penuh)</span>
+                            <button type="button" class="btn-quick-duration px-2.5 py-1 rounded-lg text-[0.68rem] font-extrabold transition-all duration-200 shadow-2xs flex items-center gap-1 cursor-pointer" data-minutes="60">
+                                <i data-lucide="clock" class="w-3 h-3"></i>
+                                <span>+60m</span>
                             </button>
                         </div>
                     </div>

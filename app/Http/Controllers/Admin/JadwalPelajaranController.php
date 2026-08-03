@@ -106,6 +106,33 @@ class JadwalPelajaranController extends Controller
         return view('admin.jadwal_pelajaran.create', compact('rombel', 'rombels', 'mapels', 'gurus', 'rombelId', 'tahunId'));
     }
 
+    public function getOccupiedSchedules(Request $request)
+    {
+        $rombelId = $request->get('rombel_id');
+        $hari = $request->get('hari');
+
+        if (!$rombelId || !$hari) {
+            return response()->json([]);
+        }
+
+        $schedules = JadwalPelajaran::with(['mataPelajaran', 'guru.orang'])
+            ->where('rombel_id', $rombelId)
+            ->where('hari', $hari)
+            ->orderBy('jam_mulai')
+            ->get()
+            ->map(function ($j) {
+                return [
+                    'id' => $j->id,
+                    'jam_mulai' => date('H:i', strtotime($j->jam_mulai)),
+                    'jam_selesai' => date('H:i', strtotime($j->jam_selesai)),
+                    'mapel' => $j->mataPelajaran->nama ?? 'Mata Pelajaran',
+                    'guru' => $j->guru->orang->nama_lengkap ?? 'Belum Ditentukan',
+                ];
+            });
+
+        return response()->json($schedules);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -116,6 +143,26 @@ class JadwalPelajaranController extends Controller
             'jam_mulai' => 'required|date_format:H:i',
             'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
         ]);
+
+        // Overlap Check (Pengecekan bentrok jadwal di kelas & hari yang sama)
+        $conflict = JadwalPelajaran::with(['mataPelajaran', 'guru.orang'])
+            ->where('rombel_id', $validated['rombel_id'])
+            ->where('hari', $validated['hari'])
+            ->where(function ($query) use ($validated) {
+                $query->where('jam_mulai', '<', $validated['jam_selesai'])
+                      ->where('jam_selesai', '>', $validated['jam_mulai']);
+            })
+            ->first();
+
+        if ($conflict) {
+            $mapelExist = $conflict->mataPelajaran->nama ?? 'Mata Pelajaran';
+            $guruExist = $conflict->guru->orang->nama_lengkap ?? 'Guru';
+            $jamExist = date('H:i', strtotime($conflict->jam_mulai)) . ' - ' . date('H:i', strtotime($conflict->jam_selesai));
+
+            return back()->withInput()->withErrors([
+                'jam_mulai' => "Jadwal bentrok! Pada Hari {$validated['hari']} jam {$jamExist} di kelas ini sudah terisi Mata Pelajaran '{$mapelExist}' ({$guruExist})."
+            ])->with('error', "Gagal! Jam {$validated['jam_mulai']} - {$validated['jam_selesai']} bentrok dengan '{$mapelExist}' ({$jamExist}).");
+        }
 
         JadwalPelajaran::create($validated);
 

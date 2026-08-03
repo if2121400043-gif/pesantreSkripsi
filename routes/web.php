@@ -108,6 +108,7 @@ Route::middleware('auth')->group(function () {
         Route::post('penilaian', [\App\Http\Controllers\Admin\PenilaianController::class, 'store'])->name('penilaian.store');
         
         Route::get('jadwal-pelajaran/export-csv', [\App\Http\Controllers\Admin\JadwalPelajaranController::class, 'exportCsv'])->name('jadwal-pelajaran.export-csv');
+        Route::get('jadwal-pelajaran/occupied', [\App\Http\Controllers\Admin\JadwalPelajaranController::class, 'getOccupiedSchedules'])->name('jadwal-pelajaran.occupied');
         Route::resource('jadwal-pelajaran', \App\Http\Controllers\Admin\JadwalPelajaranController::class)
             ->parameters(['jadwal-pelajaran' => 'jadwal'])
             ->except(['show', 'edit']);

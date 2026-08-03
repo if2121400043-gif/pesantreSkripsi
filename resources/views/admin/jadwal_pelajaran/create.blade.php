@@ -45,11 +45,11 @@
 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
     <div>
         <div class="flex items-center gap-2 text-xs text-surface-500 mb-1.5">
-            <a href="{{ route('admin.jadwal-pelajaran.index', ['rombel_id' => $rombelId, 'tahun_pelajaran_id' => $tahunId]) }}" class="hover:text-primary-600 transition-colors font-medium">Jadwal Pelajaran</a>
+            <a href="{{ route('admin.jadwal-pelajaran.index', ['rombel_id' => $rombelId, 'tahun_pelajaran_id' => $tahunId]) }}" class="hover:text-emerald-700 transition-colors font-medium">Jadwal Pelajaran</a>
             <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-            <span class="text-surface-900 font-bold">Tambah Jadwal Sesi</span>
+            <span class="text-surface-900 font-bold">Tambah Sesi Baru</span>
         </div>
-        <h1 class="text-2xl font-bold text-surface-900 font-heading">Tambah Jadwal Pelajaran</h1>
+        <h1 class="text-2xl font-extrabold text-surface-900 font-heading">Tambah Jadwal Pelajaran</h1>
     </div>
     <a href="{{ route('admin.jadwal-pelajaran.index', ['rombel_id' => $rombelId, 'tahun_pelajaran_id' => $tahunId]) }}" class="btn-secondary flex items-center gap-2 text-xs font-bold py-2.5 px-4 rounded-xl">
         <i data-lucide="arrow-left" class="w-4 h-4"></i>
@@ -59,13 +59,22 @@
 @endsection
 
 @section('content')
-<div class="max-w-3xl mx-auto space-y-6 pb-12">
+<div class="max-w-6xl mx-auto space-y-6 pb-12">
 
-    {{-- Notifikasi Error Global --}}
+    {{-- Notifikasi Error Global / Flash --}}
+    @if(session('error'))
+        <div class="bg-rose-50 text-rose-900 p-4 rounded-2xl border border-rose-200 shadow-sm flex items-start gap-3">
+            <i data-lucide="alert-octagon" class="w-5 h-5 text-rose-600 shrink-0 mt-0.5"></i>
+            <div class="text-xs font-bold">
+                {{ session('error') }}
+            </div>
+        </div>
+    @endif
+
     @if($errors->any())
-        <div class="bg-danger-50 text-danger-800 p-4 rounded-2xl border border-danger-200 shadow-sm">
+        <div class="bg-rose-50 text-rose-800 p-4 rounded-2xl border border-rose-200 shadow-sm">
             <div class="flex gap-3">
-                <i data-lucide="alert-circle" class="w-5 h-5 text-danger-600 flex-shrink-0 mt-0.5"></i>
+                <i data-lucide="alert-circle" class="w-5 h-5 text-rose-600 shrink-0 mt-0.5"></i>
                 <div>
                     <h3 class="font-bold text-xs mb-1">Terdapat kesalahan pengisian:</h3>
                     <ul class="list-disc pl-5 space-y-1 text-xs font-medium">
@@ -78,98 +87,143 @@
         </div>
     @endif
 
-    <form action="{{ route('admin.jadwal-pelajaran.store') }}" method="POST">
+    <form action="{{ route('admin.jadwal-pelajaran.store') }}" method="POST" id="jadwal-form">
         @csrf
 
-        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-surface-200 shadow-sm space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             
-            {{-- Header Info Kelas --}}
-            <div class="flex items-center gap-3.5 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl">
-                <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0 shadow-sm" style="background-color: #047857 !important; color: #ffffff !important;">
-                    <i data-lucide="school" class="w-5 h-5"></i>
-                </div>
-                <div>
-                    <div class="text-[0.68rem] text-emerald-800 font-extrabold uppercase tracking-wider">Target Kelas & Rombel</div>
-                    <div class="text-sm font-extrabold text-emerald-950 font-heading">
-                        @if($rombel)
-                            {{ $rombel->lembaga->singkatan ?? $rombel->lembaga->nama }} — {{ $rombel->tingkat ? $rombel->tingkat . '-' : '' }}{{ $rombel->nama }}
-                        @else
-                            Silakan Pilih Kelas
-                        @endif
+            {{-- Kolom Kiri: Form Input Sesi Jadwal (7/12) --}}
+            <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-7 border border-surface-200 shadow-sm space-y-5">
+                
+                {{-- Header Target Kelas --}}
+                <div class="flex items-center gap-3.5 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-bold shrink-0 shadow-sm" style="background-color: #047857 !important; color: #ffffff !important;">
+                        <i data-lucide="school" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="text-[0.68rem] text-emerald-800 font-extrabold uppercase tracking-wider">Target Kelas & Rombel</div>
+                        <div class="text-sm font-extrabold text-emerald-950 font-heading">
+                            @if($rombel)
+                                {{ $rombel->lembaga->singkatan ?? $rombel->lembaga->nama }} — {{ str_starts_with(strtoupper($rombel->nama ?? ''), 'KELAS') ? strtoupper($rombel->nama) : 'KELAS ' . strtoupper($rombel->nama) }}
+                            @else
+                                Pilih Kelas Rombel
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {{-- Input Hidden atau Select Kelas --}}
-            @if($rombel)
-                <input type="hidden" name="rombel_id" value="{{ $rombel->id }}">
-            @else
+                {{-- Input Hidden atau Select Kelas --}}
+                @if($rombel)
+                    <input type="hidden" name="rombel_id" id="rombel_id" value="{{ $rombel->id }}">
+                @else
+                    <div>
+                        <label class="block text-xs font-bold text-surface-700 mb-1.5">Pilih Kelas / Rombel <span class="text-rose-500">*</span></label>
+                        <select name="rombel_id" id="rombel_id" required class="select2-search w-full">
+                            <option value="" disabled selected>Ketik nama kelas...</option>
+                            @foreach($rombels as $r)
+                                <option value="{{ $r->id }}" {{ old('rombel_id', $rombelId) == $r->id ? 'selected' : '' }}>
+                                    {{ $r->lembaga->singkatan ?? $r->lembaga->nama }} | {{ str_starts_with(strtoupper($r->nama ?? ''), 'KELAS') ? strtoupper($r->nama) : 'KELAS ' . strtoupper($r->nama) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
+
+                {{-- Input Hari --}}
                 <div>
-                    <label class="block text-xs font-bold text-surface-700 mb-1.5">Pilih Kelas / Rombel <span class="text-danger-500">*</span></label>
-                    <select name="rombel_id" required class="select2-search w-full">
-                        <option value="" disabled selected>Ketik nama kelas...</option>
-                        @foreach($rombels as $r)
-                            <option value="{{ $r->id }}" {{ old('rombel_id') == $r->id ? 'selected' : '' }}>
-                                {{ $r->lembaga->singkatan ?? $r->lembaga->nama }} | {{ $r->tingkat ? $r->tingkat . '-' : '' }}{{ $r->nama }}
+                    <label class="block text-xs font-bold text-surface-700 mb-1.5 flex items-center justify-between">
+                        <span>Hari Pelaksanaan <span class="text-rose-500">*</span></span>
+                        <span class="text-[0.68rem] text-emerald-700 font-bold">Mengatur Peta Jam Terisi</span>
+                    </label>
+                    <select name="hari" id="select_hari" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all">
+                        @foreach(['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'AHAD'] as $h)
+                            <option value="{{ $h }}" {{ old('hari', 'SENIN') === $h ? 'selected' : '' }}>Hari {{ ucfirst(strtolower($h)) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                {{-- Input Jam Mulai & Jam Selesai --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-surface-700 mb-1.5">Jam Mulai <span class="text-rose-500">*</span></label>
+                        <input type="time" name="jam_mulai" id="jam_mulai" value="{{ old('jam_mulai', '07:30') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-surface-700 mb-1.5">Jam Selesai <span class="text-rose-500">*</span></label>
+                        <input type="time" name="jam_selesai" id="jam_selesai" value="{{ old('jam_selesai', '08:15') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                    </div>
+                </div>
+
+                {{-- Select Mata Pelajaran (Select2 Real-Time Search) --}}
+                <div>
+                    <label class="block text-xs font-bold text-surface-700 mb-1.5">Mata Pelajaran <span class="text-rose-500">*</span></label>
+                    <select name="mata_pelajaran_id" required class="select2-search w-full">
+                        <option value="" disabled selected>Cari & ketik nama mapel...</option>
+                        @foreach($mapels as $m)
+                            <option value="{{ $m->id }}" {{ old('mata_pelajaran_id') == $m->id ? 'selected' : '' }}>
+                                {{ $m->nama ?? $m->nama_mapel }} {{ $m->kode ? '('.$m->kode.')' : '' }}
                             </option>
                         @endforeach
                     </select>
                 </div>
-            @endif
 
-            {{-- Input Hari --}}
-            <div>
-                <label class="block text-xs font-bold text-surface-700 mb-1.5">Hari Pelaksanaan <span class="text-danger-500">*</span></label>
-                <select name="hari" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
-                    @foreach(['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'AHAD'] as $h)
-                        <option value="{{ $h }}" {{ old('hari') === $h ? 'selected' : '' }}>{{ $h }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            {{-- Input Jam Mulai & Jam Selesai --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {{-- Select Guru Pengampu (Select2 Real-Time Search) --}}
                 <div>
-                    <label class="block text-xs font-bold text-surface-700 mb-1.5">Jam Mulai <span class="text-danger-500">*</span></label>
-                    <input type="time" name="jam_mulai" value="{{ old('jam_mulai', '07:00') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                    <label class="block text-xs font-bold text-surface-700 mb-1.5">Guru Pengampu / Ustadz (Opsional)</label>
+                    <select name="pegawai_id" class="select2-search w-full">
+                        <option value="" selected>Belum Ditentukan (Kosongkan jika belum ada guru)</option>
+                        @foreach($gurus as $g)
+                            <option value="{{ $g->id }}" {{ old('pegawai_id') == $g->id ? 'selected' : '' }}>
+                                {{ $g->orang->nama_lengkap }} — (NIUP: {{ $g->orang->niup }})
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-surface-700 mb-1.5">Jam Selesai <span class="text-danger-500">*</span></label>
-                    <input type="time" name="jam_selesai" value="{{ old('jam_selesai', '08:30') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+
+                {{-- Submit & Cancel Buttons --}}
+                <div class="pt-4 border-t border-surface-100 flex items-center justify-end gap-3">
+                    <a href="{{ route('admin.jadwal-pelajaran.index', ['rombel_id' => $rombelId, 'tahun_pelajaran_id' => $tahunId]) }}" class="btn-secondary text-xs font-bold py-2.5 px-5 rounded-xl">
+                        Batal
+                    </a>
+                    <button type="submit" class="btn-primary text-xs font-bold py-2.5 px-6 rounded-xl shadow-md flex items-center gap-2" style="color: #ffffff !important; background-color: #047857 !important;">
+                        <i data-lucide="save" class="w-4 h-4 text-white" style="color: #ffffff !important;"></i>
+                        <span style="color: #ffffff !important;">Simpan Sesi Jadwal</span>
+                    </button>
                 </div>
+
             </div>
 
-            {{-- Select Mata Pelajaran (Select2 Real-Time Search) --}}
-            <div>
-                <label class="block text-xs font-bold text-surface-700 mb-1.5">Mata Pelajaran <span class="text-danger-500">*</span></label>
-                <select name="mata_pelajaran_id" required class="select2-search w-full">
-                    <option value="" disabled selected>Cari & ketik nama mapel...</option>
-                    @foreach($mapels as $m)
-                        <option value="{{ $m->id }}" {{ old('mata_pelajaran_id') == $m->id ? 'selected' : '' }}>{{ $m->nama ?? $m->nama_mapel }} {{ $m->kode ? '('.$m->kode.')' : '' }}</option>
-                    @endforeach
-                </select>
-            </div>
+            {{-- Kolom Kanan: Live Occupied Schedule Guidance Panel (5/12) --}}
+            <div class="lg:col-span-5 space-y-4 sticky top-20">
+                <div class="bg-white rounded-3xl p-6 border border-surface-200 shadow-md">
+                    <div class="flex items-center justify-between gap-2 pb-3 mb-4 border-b border-surface-100">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold shrink-0">
+                                <i data-lucide="clock" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-extrabold text-surface-900 font-heading">Jadwal Terisi Di Kelas Ini</h3>
+                                <p class="text-[0.68rem] text-surface-500">Peta jam terpakai untuk cegah bentrok.</p>
+                            </div>
+                        </div>
+                        <span id="label_hari_aktif" class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-900 text-[0.7rem] font-black uppercase tracking-wider">
+                            Hari Senin
+                        </span>
+                    </div>
 
-            {{-- Select Guru Pengampu (Select2 Real-Time Search) --}}
-            <div>
-                <label class="block text-xs font-bold text-surface-700 mb-1.5">Guru Pengampu / Ustadz (Opsional)</label>
-                <select name="pegawai_id" class="select2-search w-full">
-                    <option value="" selected>Belum Ditentukan (Kosongkan jika belum ada guru)</option>
-                    @foreach($gurus as $g)
-                        <option value="{{ $g->id }}" {{ old('pegawai_id') == $g->id ? 'selected' : '' }}>{{ $g->orang->nama_lengkap }} — (NIUP: {{ $g->orang->niup }})</option>
-                    @endforeach
-                </select>
-            </div>
+                    {{-- Dynamic Occupied Schedules Container --}}
+                    <div id="occupied_container" class="space-y-3 min-h-[160px]">
+                        <div class="text-center py-8 text-surface-400 text-xs">
+                            <i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto mb-2 text-emerald-600"></i>
+                            <span>Memuat peta jam terisi...</span>
+                        </div>
+                    </div>
 
-            {{-- Submit & Cancel Buttons --}}
-            <div class="pt-4 border-t border-surface-100 flex items-center justify-end gap-3">
-                <a href="{{ route('admin.jadwal-pelajaran.index', ['rombel_id' => $rombelId, 'tahun_pelajaran_id' => $tahunId]) }}" class="btn-secondary text-xs font-bold py-2.5 px-5 rounded-xl">
-                    Batal
-                </a>
-                <button type="submit" class="btn-primary text-xs font-bold py-2.5 px-6 rounded-xl shadow-md flex items-center gap-2" style="color: #ffffff !important; background-color: #047857 !important;">
-                    <i data-lucide="save" class="w-4 h-4 text-white" style="color: #ffffff !important;"></i>
-                    <span style="color: #ffffff !important;">Simpan Jadwal Sesi</span>
-                </button>
+                    <div class="mt-4 pt-3 border-t border-surface-100 flex items-center gap-2 text-[0.68rem] text-surface-450">
+                        <i data-lucide="info" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>
+                        <span>Sistem otomatis menolak jika jam yang diinput menabrak jam yang terisi di atas.</span>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -187,6 +241,84 @@
             allowClear: true,
             width: '100%'
         });
+
+        // Function to fetch occupied schedules
+        function loadOccupiedSchedules() {
+            const rombelId = $('#rombel_id').val();
+            const hari = $('#select_hari').val();
+            const container = $('#occupied_container');
+            const labelHari = $('#label_hari_aktif');
+
+            if (labelHari && hari) {
+                labelHari.text('Hari ' + hari.charAt(0) + hari.slice(1).toLowerCase());
+            }
+
+            if (!rombelId || !hari) {
+                container.html(`
+                    <div class="text-center py-6 text-surface-400 text-xs">
+                        <i data-lucide="alert-circle" class="w-5 h-5 mx-auto mb-1 text-surface-300"></i>
+                        <span>Pilih Kelas dan Hari terlebih dahulu.</span>
+                    </div>
+                `);
+                if (window.lucide) lucide.createIcons();
+                return;
+            }
+
+            container.html(`
+                <div class="text-center py-6 text-surface-400 text-xs">
+                    <i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto mb-2 text-emerald-600"></i>
+                    <span>Memeriksa jam terisi...</span>
+                </div>
+            `);
+            if (window.lucide) lucide.createIcons();
+
+            $.getJSON('/admin/jadwal-pelajaran/occupied', { rombel_id: rombelId, hari: hari }, function(data) {
+                if (!data || data.length === 0) {
+                    container.html(`
+                        <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-center">
+                            <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-2">
+                                <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                            </div>
+                            <h4 class="font-extrabold text-emerald-900 text-xs mb-0.5">Belum Ada Jam Terisi</h4>
+                            <p class="text-[0.68rem] text-emerald-700">Hari ini kelas masih kosong. Bebas menginput jam berapa saja.</p>
+                        </div>
+                    `);
+                } else {
+                    let html = '<div class="space-y-2.5">';
+                    data.forEach(function(item) {
+                        html += `
+                            <div class="p-3.5 bg-rose-50/60 border border-rose-200 rounded-2xl flex items-start gap-3">
+                                <div class="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0 mt-1"></div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between gap-2 mb-0.5">
+                                        <span class="font-mono font-extrabold text-rose-900 text-xs">${item.jam_mulai} - ${item.jam_selesai}</span>
+                                        <span class="text-[0.62rem] px-2 py-0.5 rounded-md bg-rose-100 text-rose-800 font-bold border border-rose-200">Terisi</span>
+                                    </div>
+                                    <h5 class="text-xs font-bold text-surface-900 truncate">${item.mapel}</h5>
+                                    <p class="text-[0.65rem] text-surface-500 truncate"><i data-lucide="user" class="w-3 h-3 inline"></i> ${item.guru}</p>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                    container.html(html);
+                }
+                if (window.lucide) lucide.createIcons();
+            }).fail(function() {
+                container.html(`
+                    <div class="p-3 bg-surface-100 rounded-2xl text-center text-xs text-surface-500">
+                        Gagal memuat jadwal terisi.
+                    </div>
+                `);
+            });
+        }
+
+        // Event listeners
+        $('#select_hari').on('change', loadOccupiedSchedules);
+        $('#rombel_id').on('change', loadOccupiedSchedules);
+
+        // Initial load
+        loadOccupiedSchedules();
     });
 </script>
 @endpush

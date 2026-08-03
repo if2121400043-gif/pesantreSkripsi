@@ -40,18 +40,19 @@ class PenilaianController extends Controller
         $pegawai = $this->getPegawai();
         if (!$pegawai) return redirect()->route('guru.dashboard');
 
-        $jadwal = JadwalPelajaran::with(['mataPelajaran', 'rombel.riwayatPeserta' => function($q) {
+        $jadwal = JadwalPelajaran::with(['mataPelajaran', 'rombel.tahunPelajaran', 'rombel.riwayatPeserta' => function($q) {
                 $q->where('status', 'AKTIF')->with('pesertaDidik.orang');
             }])
             ->where('pegawai_id', $pegawai->id)
             ->findOrFail($jadwal_id);
 
         $semester = $request->get('semester', 'Ganjil'); // Default Ganjil
+        $tahunPelajaranId = $jadwal->tahun_pelajaran_id;
 
         // Get existing nilai for this rombel, mapel, and semester
         $existingNilai = NilaiRapor::where('rombel_id', $jadwal->rombel_id)
             ->where('mata_pelajaran_id', $jadwal->mata_pelajaran_id)
-            ->where('tahun_pelajaran_id', $jadwal->tahun_pelajaran_id)
+            ->where('tahun_pelajaran_id', $tahunPelajaranId)
             ->where('semester', strtoupper($semester))
             ->get()
             ->keyBy('peserta_didik_id');
@@ -64,7 +65,7 @@ class PenilaianController extends Controller
         $pegawai = $this->getPegawai();
         if (!$pegawai) return redirect()->route('guru.dashboard');
 
-        $jadwal = JadwalPelajaran::where('pegawai_id', $pegawai->id)->findOrFail($jadwal_id);
+        $jadwal = JadwalPelajaran::with('rombel')->where('pegawai_id', $pegawai->id)->findOrFail($jadwal_id);
         
         $request->validate([
             'semester' => 'required|string|in:GANJIL,GENAP',
@@ -77,6 +78,8 @@ class PenilaianController extends Controller
 
         try {
             DB::beginTransaction();
+
+            $tahunPelajaranId = $jadwal->tahun_pelajaran_id;
 
             foreach ($request->nilai as $peserta_didik_id => $data) {
                 $tugas = $data['tugas'] ?? 0;
@@ -97,7 +100,7 @@ class PenilaianController extends Controller
                         'peserta_didik_id' => $peserta_didik_id,
                         'rombel_id' => $jadwal->rombel_id,
                         'mata_pelajaran_id' => $jadwal->mata_pelajaran_id,
-                        'tahun_pelajaran_id' => $jadwal->tahun_pelajaran_id,
+                        'tahun_pelajaran_id' => $tahunPelajaranId,
                         'semester' => strtoupper($request->semester),
                     ],
                     [

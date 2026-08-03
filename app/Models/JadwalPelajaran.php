@@ -26,4 +26,21 @@ class JadwalPelajaran extends Model
     {
         return $this->belongsTo(Pegawai::class, 'pegawai_id');
     }
+
+    public function tahunPelajaran()
+    {
+        return $this->hasOneThrough(
+            TahunPelajaran::class,
+            Rombel::class,
+            'id',
+            'id',
+            'rombel_id',
+            'tahun_pelajaran_id'
+        );
+    }
+
+    public function getTahunPelajaranIdAttribute()
+    {
+        return $this->attributes['tahun_pelajaran_id'] ?? $this->rombel?->tahun_pelajaran_id;
+    }
 }

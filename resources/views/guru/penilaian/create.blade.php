@@ -30,7 +30,7 @@
                 </select>
             </div>
             <div class="flex-1 text-right text-sm text-surface-500 pb-1">
-                Tahun Pelajaran: <strong>{{ $jadwal->tahunPelajaran->nama }}</strong>
+                Tahun Pelajaran: <strong>{{ $jadwal->rombel->tahunPelajaran->nama ?? $jadwal->tahunPelajaran->nama ?? '-' }}</strong>
             </div>
         </div>
     </form>

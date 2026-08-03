@@ -88,19 +88,21 @@ class JadwalPelajaranController extends Controller
         if ($rombelId) {
             $rombel = Rombel::with('lembaga', 'tahunPelajaran')->find($rombelId);
             if ($rombel) {
-                $mapels = MataPelajaran::where('is_active', true)
-                    ->where(function($q) use ($rombel) {
-                        $q->where('lembaga_id', $rombel->lembaga_id)
-                          ->orWhereNull('lembaga_id');
-                    })
+                // Strictly fetch MataPelajaran belonging to this Rombel's Lembaga
+                $mapels = MataPelajaran::with('lembaga')
+                    ->where('is_active', true)
+                    ->where('lembaga_id', $rombel->lembaga_id)
                     ->orderBy('nama')
                     ->get();
             }
         }
 
-        // Fallback: If no rombel selected or no lembaga-specific mapels found, load all active MataPelajaran
+        // If no rombel is selected yet or no specific mapels, load all active MataPelajaran with lembaga
         if ($mapels->isEmpty()) {
-            $mapels = MataPelajaran::where('is_active', true)->orderBy('nama')->get();
+            $mapels = MataPelajaran::with('lembaga')
+                ->where('is_active', true)
+                ->orderBy('nama')
+                ->get();
         }
 
         $gurus = Pegawai::with('orang')->where('is_active', true)->whereIn('jenis_pegawai', ['GURU', 'USTADZ', 'PENGASUH'])->get();

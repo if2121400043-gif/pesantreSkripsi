@@ -142,7 +142,7 @@
                         <select name="rombel_id" id="rombel_id" required class="select2-search w-full">
                             <option value="" disabled {{ !$rombelId ? 'selected' : '' }}>Ketik nama kelas...</option>
                             @foreach($rombels as $r)
-                                <option value="{{ $r->id }}" {{ old('rombel_id', $rombelId) == $r->id ? 'selected' : '' }} data-nama="{{ $r->lembaga->singkatan ?? $r->lembaga->nama }} — {{ str_starts_with(strtoupper($r->nama ?? ''), 'KELAS') ? strtoupper($r->nama) : 'KELAS ' . strtoupper($r->nama) }}">
+                                <option value="{{ $r->id }}" {{ old('rombel_id', $rombelId) == $r->id ? 'selected' : '' }} data-lembaga-id="{{ $r->lembaga_id }}" data-nama="{{ $r->lembaga->singkatan ?? $r->lembaga->nama }} — {{ str_starts_with(strtoupper($r->nama ?? ''), 'KELAS') ? strtoupper($r->nama) : 'KELAS ' . strtoupper($r->nama) }}">
                                     {{ $r->lembaga->singkatan ?? $r->lembaga->nama }} | {{ str_starts_with(strtoupper($r->nama ?? ''), 'KELAS') ? strtoupper($r->nama) : 'KELAS ' . strtoupper($r->nama) }}
                                 </option>
                             @endforeach
@@ -178,11 +178,11 @@
                 {{-- Select Mata Pelajaran (Select2 Real-Time Search) --}}
                 <div>
                     <label class="block text-xs font-bold text-surface-700 mb-1.5">Mata Pelajaran <span class="text-rose-500">*</span></label>
-                    <select name="mata_pelajaran_id" required class="select2-search w-full">
+                    <select name="mata_pelajaran_id" id="mata_pelajaran_id" required class="select2-search w-full">
                         <option value="" disabled selected>Cari & ketik nama mapel...</option>
                         @foreach($mapels as $m)
-                            <option value="{{ $m->id }}" {{ old('mata_pelajaran_id') == $m->id ? 'selected' : '' }}>
-                                {{ $m->nama ?? $m->nama_mapel }} {{ $m->kode ? '('.$m->kode.')' : '' }}
+                            <option value="{{ $m->id }}" data-lembaga-id="{{ $m->lembaga_id }}" {{ old('mata_pelajaran_id') == $m->id ? 'selected' : '' }}>
+                                {{ $m->nama ?? $m->nama_mapel }} {{ $m->kode ? '('.$m->kode.')' : '' }} @if($m->lembaga) — ({{ $m->lembaga->singkatan ?? $m->lembaga->nama }}) @endif
                             </option>
                         @endforeach
                     </select>
@@ -334,6 +334,34 @@
             });
         }
 
+        // Function to strictly filter Mata Pelajaran options by selected Rombel's Lembaga
+        function filterMapelByLembaga() {
+            const selectedRombel = $('#rombel_id').find('option:selected');
+            const lembagaId = selectedRombel.data('lembaga-id');
+            const mapelSelect = $('#mata_pelajaran_id');
+
+            if (lembagaId) {
+                mapelSelect.find('option').each(function() {
+                    const optLembaga = $(this).data('lembaga-id');
+                    // Show only if optLembaga matches
+                    if (!optLembaga || optLembaga == lembagaId) {
+                        $(this).prop('disabled', false);
+                    } else {
+                        $(this).prop('disabled', true);
+                    }
+                });
+            } else {
+                mapelSelect.find('option').prop('disabled', false);
+            }
+
+            // Re-initialize select2 to reflect disabled states
+            mapelSelect.select2({
+                placeholder: 'Cari & ketik nama mapel...',
+                allowClear: true,
+                width: '100%'
+            });
+        }
+
         // Event listeners
         $('#btn_toggle_ubah_kelas').on('click', function(e) {
             e.preventDefault();
@@ -347,10 +375,12 @@
             if (namaKelas) {
                 $('#text_nama_kelas').text(namaKelas);
             }
+            filterMapelByLembaga();
             loadOccupiedSchedules();
         });
 
-        // Initial load
+        // Initial filter & load
+        filterMapelByLembaga();
         loadOccupiedSchedules();
     });
 </script>

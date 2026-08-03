@@ -98,7 +98,7 @@ class PresensiController extends Controller
         $request->validate([
             'tanggal' => 'required|date',
             'presensi' => 'required|array',
-            'presensi.*.status' => 'required|in:HADIR,SAKIT,IZIN,ALPHA',
+            'presensi.*.status' => 'required|in:HADIR,SAKIT,IZIN,ALPHA,ALPA',
             'presensi.*.keterangan' => 'nullable|string|max:255',
         ]);
 
@@ -111,6 +111,8 @@ class PresensiController extends Controller
             $jenisPresensiId = $jenisPresensi ? $jenisPresensi->id : 1;
 
             foreach ($request->presensi as $peserta_didik_id => $data) {
+                $statusDb = ($data['status'] === 'ALPHA') ? 'ALPA' : $data['status'];
+
                 PresensiKelas::updateOrCreate(
                     [
                         'peserta_didik_id' => $peserta_didik_id,
@@ -119,7 +121,7 @@ class PresensiController extends Controller
                     ],
                     [
                         'jenis_presensi_id' => $jenisPresensiId,
-                        'status' => $data['status'],
+                        'status' => $statusDb,
                         'keterangan' => $data['keterangan'] ?? null,
                         'dicatat_oleh' => auth()->id(),
                     ]

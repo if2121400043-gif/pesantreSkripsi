@@ -207,9 +207,9 @@
                                 <i data-lucide="clock" class="w-3 h-3"></i>
                                 <span>+90m (2 Sesi)</span>
                             </button>
-                            <button type="button" class="btn-quick-duration px-2.5 py-1 rounded-lg text-[0.68rem] font-extrabold transition-all duration-200 shadow-2xs flex items-center gap-1 cursor-pointer" data-minutes="60">
+                            <button type="button" class="btn-quick-duration px-2.5 py-1 rounded-lg text-[0.68rem] font-extrabold transition-all duration-200 shadow-2xs flex items-center gap-1 cursor-pointer" data-minutes="135">
                                 <i data-lucide="clock" class="w-3 h-3"></i>
-                                <span>+60m</span>
+                                <span>+135m (3 Sesi)</span>
                             </button>
                         </div>
                     </div>

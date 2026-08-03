@@ -61,7 +61,7 @@
                 <tr class="hover:bg-surface-50/50 transition-colors">
                     <td class="px-6 py-4 text-surface-500">
                         <div class="font-bold text-surface-900">{{ \Carbon\Carbon::parse($izin->waktu_keluar)->format('d/m/Y') }}</div>
-                        <div class="text-xs">{{ \Carbon\Carbon::parse($izin->waktu_keluar)->format('H:i') }} WIB</div>
+                        <div class="text-xs">{{ \Carbon\Carbon::parse($izin->waktu_keluar)->format('H:i') }} WITA</div>
                     </td>
                     <td class="px-6 py-4">
                         <div class="font-bold text-surface-900">{{ $izin->pesertaDidik->orang->nama_lengkap }}</div>

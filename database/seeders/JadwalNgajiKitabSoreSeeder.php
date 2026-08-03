@@ -67,7 +67,7 @@ class JadwalNgajiKitabSoreSeeder extends Seeder
         $hariList = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'AHAD'];
         $count = 0;
 
-        // 5. Tambahkan Sesi Ngaji Kitab Fathul Qorib (16:45 - 17:45 WIB) untuk Setiap Rombel & Setiap Hari
+        // 5. Tambahkan Sesi Ngaji Kitab Fathul Qorib (16:45 - 17:45 WITA) untuk Setiap Rombel & Setiap Hari
         foreach ($rombels as $rombel) {
             $mapelId = $mapelKitabMap[$rombel->lembaga_id] ?? reset($mapelKitabMap);
 
@@ -88,6 +88,6 @@ class JadwalNgajiKitabSoreSeeder extends Seeder
             }
         }
 
-        $this->command->info("Berhasil mengimpor {$count} sesi jadwal Ngaji Kitab Fathul Qorib (16:45 - 17:45 WIB) Ustadz Makin ke database.");
+        $this->command->info("Berhasil mengimpor {$count} sesi jadwal Ngaji Kitab Fathul Qorib (16:45 - 17:45 WITA) Ustadz Makin ke database.");
     }
 }

@@ -67,7 +67,7 @@ class JadwalNgajiKitabSeeder extends Seeder
         $hariList = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'AHAD'];
         $count = 0;
 
-        // 5. Tambahkan Sesi Ngaji Kitab (06:00 - 07:45 WIB) untuk Setiap Rombel & Setiap Hari
+        // 5. Tambahkan Sesi Ngaji Kitab (06:00 - 07:45 WITA) untuk Setiap Rombel & Setiap Hari
         foreach ($rombels as $rombel) {
             $mapelId = $mapelKitabMap[$rombel->lembaga_id] ?? reset($mapelKitabMap);
 
@@ -88,6 +88,6 @@ class JadwalNgajiKitabSeeder extends Seeder
             }
         }
 
-        $this->command->info("Berhasil mengimpor {$count} sesi jadwal Ngaji Kitab Ta'limul Muta'allim (06:00 - 07:45 WIB) Ustadz Makin ke database.");
+        $this->command->info("Berhasil mengimpor {$count} sesi jadwal Ngaji Kitab Ta'limul Muta'allim (06:00 - 07:45 WITA) Ustadz Makin ke database.");
     }
 }

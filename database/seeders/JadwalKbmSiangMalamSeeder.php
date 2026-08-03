@@ -105,13 +105,13 @@ class JadwalKbmSiangMalamSeeder extends Seeder
         $guruIndex = 0;
         $totalGurus = count($guruPegawaiIds);
 
-        // 5. Tambahkan Sesi KBM Siang (13:00 - 15:00 WIB) & KBM Malam (20:00 - 23:00 WIB)
+        // 5. Tambahkan Sesi KBM Siang (13:00 - 15:00 WITA) & KBM Malam (20:00 - 23:00 WITA)
         foreach ($rombels as $rombel) {
             $mapelSiangId = $mapelSiangMap[$rombel->lembaga_id] ?? reset($mapelSiangMap);
             $mapelMalamId = $mapelMalamMap[$rombel->lembaga_id] ?? reset($mapelMalamMap);
 
             foreach ($hariList as $hari) {
-                // Sesi Siang (13:00 - 15:00 WIB)
+                // Sesi Siang (13:00 - 15:00 WITA)
                 $assignedGuruSiang = $guruPegawaiIds[$guruIndex % $totalGurus];
                 $guruIndex++;
 
@@ -129,7 +129,7 @@ class JadwalKbmSiangMalamSeeder extends Seeder
                 );
                 $count++;
 
-                // Sesi Malam (20:00 - 23:00 WIB)
+                // Sesi Malam (20:00 - 23:00 WITA)
                 $assignedGuruMalam = $guruPegawaiIds[$guruIndex % $totalGurus];
                 $guruIndex++;
 

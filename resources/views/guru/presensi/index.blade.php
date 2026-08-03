@@ -76,7 +76,7 @@ $labelHari = [
                             <div class="flex items-center justify-between gap-2 mb-3">
                                 <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-primary-50 text-primary-800 font-bold text-xs border border-primary-100">
                                     <i data-lucide="clock" class="w-3.5 h-3.5 text-primary-600"></i>
-                                    <span>Pukul {{ $jamFormatted }} @if($jamSelesaiFormatted && $jamSelesaiFormatted !== '00:00') - {{ $jamSelesaiFormatted }} @endif WIB</span>
+                                    <span>Pukul {{ $jamFormatted }} @if($jamSelesaiFormatted && $jamSelesaiFormatted !== '00:00') - {{ $jamSelesaiFormatted }} @endif WITA</span>
                                 </div>
                             </div>
 

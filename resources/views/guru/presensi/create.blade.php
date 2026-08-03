@@ -42,7 +42,7 @@
                 <span>•</span>
                 <span class="px-2.5 py-0.5 rounded-md bg-sky-50 text-sky-800 border border-sky-200 font-bold flex items-center gap-1">
                     <i data-lucide="clock" class="w-3.5 h-3.5 text-sky-600"></i>
-                    <span>Pukul {{ substr($jadwal->jam_mulai, 0, 5) }} - {{ substr($jadwal->jam_selesai, 0, 5) }} WIB</span>
+                    <span>Pukul {{ substr($jadwal->jam_mulai, 0, 5) }} - {{ substr($jadwal->jam_selesai, 0, 5) }} WITA</span>
                 </span>
             </div>
             <h1 class="text-xl sm:text-2xl font-bold text-surface-900 font-heading">Daftar Hadir Santri</h1>
@@ -73,7 +73,7 @@
                     <span>•</span>
                     <span class="flex items-center gap-1">
                         <i data-lucide="clock" class="w-3.5 h-3.5 text-emerald-300"></i>
-                        <span>Pukul {{ substr($jadwal->jam_mulai, 0, 5) }} - {{ substr($jadwal->jam_selesai, 0, 5) }} WIB</span>
+                        <span>Pukul {{ substr($jadwal->jam_mulai, 0, 5) }} - {{ substr($jadwal->jam_selesai, 0, 5) }} WITA</span>
                     </span>
                     <span>•</span>
                     <span class="flex items-center gap-1">
@@ -96,7 +96,7 @@
                 </div>
                 <div class="text-2xl font-black text-surface-900 tracking-tight flex items-baseline gap-1.5" id="realtime_clock">
                     <span>00:00:00</span>
-                    <span class="text-xs font-bold text-emerald-700">WIB</span>
+                    <span class="text-xs font-bold text-emerald-700">WITA</span>
                 </div>
             </div>
             <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center font-black text-xs shrink-0 tracking-wider">

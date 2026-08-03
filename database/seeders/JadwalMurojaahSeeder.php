@@ -101,7 +101,7 @@ class JadwalMurojaahSeeder extends Seeder
         $guruIndex = 0;
         $totalGurus = count($guruPegawaiIds);
 
-        // 5. Tambahkan Sesi Murojaah (03:00-04:00, 05:00-06:00, 18:30-19:30 WIB) untuk Setiap Rombel & Setiap Hari
+        // 5. Tambahkan Sesi Murojaah (03:00-04:00, 05:00-06:00, 18:30-19:30 WITA) untuk Setiap Rombel & Setiap Hari
         foreach ($rombels as $rombel) {
             $mapelId = $mapelMurojaahMap[$rombel->lembaga_id] ?? reset($mapelMurojaahMap);
 
@@ -131,6 +131,6 @@ class JadwalMurojaahSeeder extends Seeder
             }
         }
 
-        $this->command->info("Berhasil mengimpor {$count} sesi jadwal Murojaah (03:00-04:00, 05:00-06:00, 18:30-19:30 WIB) ke database tanpa duplikasi data guru.");
+        $this->command->info("Berhasil mengimpor {$count} sesi jadwal Murojaah (03:00-04:00, 05:00-06:00, 18:30-19:30 WITA) ke database tanpa duplikasi data guru.");
     }
 }

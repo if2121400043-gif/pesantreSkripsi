@@ -163,15 +163,39 @@
                     </select>
                 </div>
 
-                {{-- Input Jam Mulai & Jam Selesai --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-surface-700 mb-1.5">Jam Mulai <span class="text-rose-500">*</span></label>
-                        <input type="time" name="jam_mulai" id="jam_mulai" value="{{ old('jam_mulai', $lastJamMulai ?? '07:30') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                {{-- Input Jam Mulai & Jam Selesai dengan Quick Duration Buttons --}}
+                <div class="space-y-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1.5">Jam Mulai <span class="text-rose-500">*</span></label>
+                            <input type="time" name="jam_mulai" id="jam_mulai" value="{{ old('jam_mulai', $lastJamMulai ?? '07:30') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-1.5">Jam Selesai <span class="text-rose-500">*</span></label>
+                            <input type="time" name="jam_selesai" id="jam_selesai" value="{{ old('jam_selesai', $lastJamSelesai ?? '08:15') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all">
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-surface-700 mb-1.5">Jam Selesai <span class="text-rose-500">*</span></label>
-                        <input type="time" name="jam_selesai" id="jam_selesai" value="{{ old('jam_selesai', $lastJamSelesai ?? '08:15') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+
+                    {{-- Quick Duration Buttons (+45 min, +90 min, +60 min) --}}
+                    <div class="pt-1">
+                        <span class="text-[0.68rem] text-surface-500 font-bold block mb-1.5 flex items-center gap-1">
+                            <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-500"></i>
+                            <span>Hitung Jam Selesai Otomatis (Durasi Cepat):</span>
+                        </span>
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" class="btn-quick-duration px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white border border-emerald-200 text-[0.72rem] font-black transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer" data-minutes="45">
+                                <i data-lucide="clock-4" class="w-3.5 h-3.5"></i>
+                                <span>+45 Menit (1 Sesi)</span>
+                            </button>
+                            <button type="button" class="btn-quick-duration px-3 py-1.5 rounded-xl bg-teal-50 hover:bg-teal-600 text-teal-800 hover:text-white border border-teal-200 text-[0.72rem] font-black transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer" data-minutes="90">
+                                <i data-lucide="clock-8" class="w-3.5 h-3.5"></i>
+                                <span>+90 Menit (2 Sesi)</span>
+                            </button>
+                            <button type="button" class="btn-quick-duration px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-600 text-sky-800 hover:text-white border border-sky-200 text-[0.72rem] font-black transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer" data-minutes="60">
+                                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                                <span>+60 Menit (1 Jam Penuh)</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -361,6 +385,37 @@
                 width: '100%'
             });
         }
+
+        // Quick Duration Handler (+45m, +90m, +60m)
+        $('.btn-quick-duration').on('click', function(e) {
+            e.preventDefault();
+            const minutesToAdd = parseInt($(this).data('minutes'));
+            const jamMulaiVal = $('#jam_mulai').val();
+
+            if (!jamMulaiVal) {
+                alert('Silakan pilih Jam Mulai terlebih dahulu.');
+                return;
+            }
+
+            const parts = jamMulaiVal.split(':');
+            let hours = parseInt(parts[0]);
+            let minutes = parseInt(parts[1]);
+
+            let totalMinutes = (hours * 60) + minutes + minutesToAdd;
+            let endHours = Math.floor(totalMinutes / 60) % 24;
+            let endMinutes = totalMinutes % 60;
+
+            const formattedEnd = String(endHours).padStart(2, '0') + ':' + String(endMinutes).padStart(2, '0');
+            
+            const jamSelesaiInput = $('#jam_selesai');
+            jamSelesaiInput.val(formattedEnd);
+
+            // Visual feedback highlight
+            jamSelesaiInput.addClass('ring-2 ring-emerald-500 bg-emerald-50');
+            setTimeout(function() {
+                jamSelesaiInput.removeClass('ring-2 ring-emerald-500 bg-emerald-50');
+            }, 600);
+        });
 
         // Event listeners
         $('#btn_toggle_ubah_kelas').on('click', function(e) {

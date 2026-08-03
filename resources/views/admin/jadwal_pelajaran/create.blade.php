@@ -145,7 +145,7 @@
                 <select name="mata_pelajaran_id" required class="select2-search w-full">
                     <option value="" disabled selected>Cari & ketik nama mapel...</option>
                     @foreach($mapels as $m)
-                        <option value="{{ $m->id }}" {{ old('mata_pelajaran_id') == $m->id ? 'selected' : '' }}>{{ $m->nama_mapel }}</option>
+                        <option value="{{ $m->id }}" {{ old('mata_pelajaran_id') == $m->id ? 'selected' : '' }}>{{ $m->nama ?? $m->nama_mapel }} {{ $m->kode ? '('.$m->kode.')' : '' }}</option>
                     @endforeach
                 </select>
             </div>

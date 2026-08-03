@@ -2,6 +2,31 @@
 
 @section('title', 'Isi Presensi Kelas — PP Nurul Furqon')
 
+@push('styles')
+<style>
+    .radio-status-hadir:checked + div {
+        background-color: #047857 !important;
+        color: #ffffff !important;
+        box-shadow: 0 2px 6px rgba(4, 120, 87, 0.25) !important;
+    }
+    .radio-status-sakit:checked + div {
+        background-color: #0284c7 !important;
+        color: #ffffff !important;
+        box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25) !important;
+    }
+    .radio-status-izin:checked + div {
+        background-color: #d97706 !important;
+        color: #ffffff !important;
+        box-shadow: 0 2px 6px rgba(217, 119, 6, 0.25) !important;
+    }
+    .radio-status-alpha:checked + div {
+        background-color: #e11d48 !important;
+        color: #ffffff !important;
+        box-shadow: 0 2px 6px rgba(225, 29, 72, 0.25) !important;
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="space-y-6">
 
@@ -72,26 +97,26 @@
                                 <td class="px-4 py-3.5">
                                     <div class="flex items-center justify-center gap-1 bg-surface-100 p-1 rounded-xl mx-auto w-full">
                                         <label class="flex-1 cursor-pointer text-center">
-                                            <input type="radio" name="presensi[{{ $peserta->id }}][status]" value="HADIR" class="peer sr-only status-radio-hadir" {{ $oldStatus === 'HADIR' ? 'checked' : '' }}>
-                                            <div class="py-1.5 px-2 rounded-lg text-xs font-bold text-surface-600 transition-all peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:shadow-sm hover:bg-surface-200">
+                                            <input type="radio" name="presensi[{{ $peserta->id }}][status]" value="HADIR" class="peer sr-only status-radio-hadir radio-status-hadir" {{ $oldStatus === 'HADIR' ? 'checked' : '' }}>
+                                            <div class="py-1.5 px-2 rounded-lg text-xs font-bold text-surface-700 transition-all hover:bg-surface-200">
                                                 Hadir
                                             </div>
                                         </label>
                                         <label class="flex-1 cursor-pointer text-center">
-                                            <input type="radio" name="presensi[{{ $peserta->id }}][status]" value="SAKIT" class="peer sr-only" {{ $oldStatus === 'SAKIT' ? 'checked' : '' }}>
-                                            <div class="py-1.5 px-2 rounded-lg text-xs font-bold text-surface-600 transition-all peer-checked:bg-sky-600 peer-checked:text-white peer-checked:shadow-sm hover:bg-surface-200">
+                                            <input type="radio" name="presensi[{{ $peserta->id }}][status]" value="SAKIT" class="peer sr-only radio-status-sakit" {{ $oldStatus === 'SAKIT' ? 'checked' : '' }}>
+                                            <div class="py-1.5 px-2 rounded-lg text-xs font-bold text-surface-700 transition-all hover:bg-surface-200">
                                                 Sakit
                                             </div>
                                         </label>
                                         <label class="flex-1 cursor-pointer text-center">
-                                            <input type="radio" name="presensi[{{ $peserta->id }}][status]" value="IZIN" class="peer sr-only" {{ $oldStatus === 'IZIN' ? 'checked' : '' }}>
-                                            <div class="py-1.5 px-2 rounded-lg text-xs font-bold text-surface-600 transition-all peer-checked:bg-amber-600 peer-checked:text-white peer-checked:shadow-sm hover:bg-surface-200">
+                                            <input type="radio" name="presensi[{{ $peserta->id }}][status]" value="IZIN" class="peer sr-only radio-status-izin" {{ $oldStatus === 'IZIN' ? 'checked' : '' }}>
+                                            <div class="py-1.5 px-2 rounded-lg text-xs font-bold text-surface-700 transition-all hover:bg-surface-200">
                                                 Izin
                                             </div>
                                         </label>
                                         <label class="flex-1 cursor-pointer text-center">
-                                            <input type="radio" name="presensi[{{ $peserta->id }}][status]" value="ALPHA" class="peer sr-only" {{ $oldStatus === 'ALPA' || $oldStatus === 'ALPHA' ? 'checked' : '' }}>
-                                            <div class="py-1.5 px-2 rounded-lg text-xs font-bold text-surface-600 transition-all peer-checked:bg-rose-600 peer-checked:text-white peer-checked:shadow-sm hover:bg-surface-200">
+                                            <input type="radio" name="presensi[{{ $peserta->id }}][status]" value="ALPHA" class="peer sr-only radio-status-alpha" {{ $oldStatus === 'ALPA' || $oldStatus === 'ALPHA' ? 'checked' : '' }}>
+                                            <div class="py-1.5 px-2 rounded-lg text-xs font-bold text-surface-700 transition-all hover:bg-surface-200">
                                                 Alpha
                                             </div>
                                         </label>

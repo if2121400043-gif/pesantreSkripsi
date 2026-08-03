@@ -78,6 +78,9 @@ class JadwalPelajaranController extends Controller
     {
         $rombelId = $request->get('rombel_id');
         $tahunId = $request->get('tahun_pelajaran_id');
+        $hari = $request->get('hari', 'SENIN');
+        $lastJamMulai = $request->get('last_jam_mulai', '07:30');
+        $lastJamSelesai = $request->get('last_jam_selesai', '08:15');
 
         $rombel = null;
         $mapels = collect();
@@ -103,7 +106,17 @@ class JadwalPelajaranController extends Controller
         $gurus = Pegawai::with('orang')->where('is_active', true)->whereIn('jenis_pegawai', ['GURU', 'USTADZ', 'PENGASUH'])->get();
         $rombels = Rombel::with('lembaga')->orderBy('nama')->get();
 
-        return view('admin.jadwal_pelajaran.create', compact('rombel', 'rombels', 'mapels', 'gurus', 'rombelId', 'tahunId'));
+        return view('admin.jadwal_pelajaran.create', compact(
+            'rombel', 
+            'rombels', 
+            'mapels', 
+            'gurus', 
+            'rombelId', 
+            'tahunId', 
+            'hari', 
+            'lastJamMulai', 
+            'lastJamSelesai'
+        ));
     }
 
     public function getOccupiedSchedules(Request $request)
@@ -165,13 +178,23 @@ class JadwalPelajaranController extends Controller
         }
 
         JadwalPelajaran::create($validated);
+        $mapelSaved = MataPelajaran::find($validated['mata_pelajaran_id']);
+        $mapelTitle = $mapelSaved->nama ?? 'Mata Pelajaran';
 
         $rombel = Rombel::find($validated['rombel_id']);
 
-        return redirect()->route('admin.jadwal-pelajaran.index', [
+        // Next automatic time slot (+45 mins after jam_selesai)
+        $nextJamMulai = $validated['jam_selesai'];
+        $nextJamSelesai = date('H:i', strtotime($validated['jam_selesai'] . ' + 45 minutes'));
+
+        // Redirect back to create page maintaining last selected rombel & hari
+        return redirect()->route('admin.jadwal-pelajaran.create', [
             'rombel_id' => $validated['rombel_id'],
-            'tahun_pelajaran_id' => $rombel?->tahun_pelajaran_id
-        ])->with('success', 'Jadwal pelajaran berhasil ditambahkan.');
+            'tahun_pelajaran_id' => $rombel?->tahun_pelajaran_id,
+            'hari' => $validated['hari'],
+            'last_jam_mulai' => $nextJamMulai,
+            'last_jam_selesai' => $nextJamSelesai,
+        ])->with('success', "Sesi jadwal '{$mapelTitle}' ({$validated['jam_mulai']} - {$validated['jam_selesai']}) berhasil disimpan! Silakan lanjut menginput sesi berikutnya di bawah ini.");
     }
 
     public function destroy($id)

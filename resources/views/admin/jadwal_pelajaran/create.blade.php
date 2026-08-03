@@ -62,6 +62,17 @@
 <div class="max-w-6xl mx-auto space-y-6 pb-12">
 
     {{-- Notifikasi Error Global / Flash --}}
+    @if(session('success'))
+        <div class="bg-emerald-50 text-emerald-950 p-4 rounded-2xl border border-emerald-300 shadow-sm flex items-start gap-3">
+            <div class="w-7 h-7 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0 mt-0.5" style="background-color: #047857 !important; color: #ffffff !important;">
+                <i data-lucide="check-circle" class="w-4 h-4 text-white" style="color: #ffffff !important;"></i>
+            </div>
+            <div class="text-xs font-bold leading-relaxed pt-1">
+                {{ session('success') }}
+            </div>
+        </div>
+    @endif
+
     @if(session('error'))
         <div class="bg-rose-50 text-rose-900 p-4 rounded-2xl border border-rose-200 shadow-sm flex items-start gap-3">
             <i data-lucide="alert-octagon" class="w-5 h-5 text-rose-600 shrink-0 mt-0.5"></i>
@@ -137,7 +148,7 @@
                     </label>
                     <select name="hari" id="select_hari" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all">
                         @foreach(['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'AHAD'] as $h)
-                            <option value="{{ $h }}" {{ old('hari', 'SENIN') === $h ? 'selected' : '' }}>Hari {{ ucfirst(strtolower($h)) }}</option>
+                            <option value="{{ $h }}" {{ old('hari', $hari ?? 'SENIN') === $h ? 'selected' : '' }}>Hari {{ ucfirst(strtolower($h)) }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -146,11 +157,11 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-surface-700 mb-1.5">Jam Mulai <span class="text-rose-500">*</span></label>
-                        <input type="time" name="jam_mulai" id="jam_mulai" value="{{ old('jam_mulai', '07:30') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                        <input type="time" name="jam_mulai" id="jam_mulai" value="{{ old('jam_mulai', $lastJamMulai ?? '07:30') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-surface-700 mb-1.5">Jam Selesai <span class="text-rose-500">*</span></label>
-                        <input type="time" name="jam_selesai" id="jam_selesai" value="{{ old('jam_selesai', '08:15') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                        <input type="time" name="jam_selesai" id="jam_selesai" value="{{ old('jam_selesai', $lastJamSelesai ?? '08:15') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
                     </div>
                 </div>
 

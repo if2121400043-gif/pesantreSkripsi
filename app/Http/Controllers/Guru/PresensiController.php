@@ -84,7 +84,7 @@ class PresensiController extends Controller
             ->where('pegawai_id', $pegawai->id)
             ->findOrFail($jadwal_id);
 
-        $tanggal = $request->get('tanggal', date('Y-m-d'));
+        $tanggal = $request->get('tanggal', \Carbon\Carbon::now('Asia/Makassar')->format('Y-m-d'));
 
         // Get existing presensi for this rombel on this date
         $existingPresensi = PresensiKelas::where('rombel_id', $jadwal->rombel_id)

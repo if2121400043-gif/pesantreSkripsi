@@ -3,19 +3,29 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreAdminAttendanceRequest;
 use App\Models\Asrama;
+use App\Models\Attendance;
+use App\Models\JadwalPelajaran;
 use App\Models\JenisPresensi;
+use App\Models\MataPelajaran;
+use App\Models\Pegawai;
 use App\Models\PesertaDidik;
 use App\Models\PesertaMukimTahun;
-use App\Models\PresensiKelas;
 use App\Models\Rombel;
 use App\Models\TahunPelajaran;
 use App\Models\RiwayatRombelPeserta;
+use App\Services\AttendanceService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class PresensiController extends Controller
 {
+    public function __construct(
+        private readonly AttendanceService $attendanceService
+    ) {}
+
     public function index(Request $request)
     {
         $tahunAktif = TahunPelajaran::where('is_active', true)->first();
@@ -59,11 +69,12 @@ class PresensiController extends Controller
                         })
                         ->sortBy(fn($p) => $p->orang?->nama_lengkap);
 
-                    $presensiHariIni = PresensiKelas::where('jenis_presensi_id', $selectedJenis->id)
+                    // Query dari tabel attendance (Layer 2) — bukan lagi presensi_kelas
+                    $presensiHariIni = Attendance::where('jenis_presensi_id', $selectedJenis->id)
                         ->where('rombel_id', $request->rombel_id)
-                        ->whereDate('tanggal', $tanggal)
+                        ->whereDate('attendance_date', $tanggal)
                         ->get()
-                        ->keyBy('peserta_didik_id');
+                        ->keyBy('student_id');
                 }
 
             } elseif ($selectedJenis->tipe_target === 'PER_ASRAMA') {
@@ -95,11 +106,12 @@ class PresensiController extends Controller
                         })
                         ->sortBy(fn($p) => $p->orang?->nama_lengkap);
 
-                    $presensiHariIni = PresensiKelas::where('jenis_presensi_id', $selectedJenis->id)
+                    // Query dari tabel attendance (Layer 2)
+                    $presensiHariIni = Attendance::where('jenis_presensi_id', $selectedJenis->id)
                         ->where('asrama_id', $request->asrama_id)
-                        ->whereDate('tanggal', $tanggal)
+                        ->whereDate('attendance_date', $tanggal)
                         ->get()
-                        ->keyBy('peserta_didik_id');
+                        ->keyBy('student_id');
                 }
 
             } elseif ($selectedJenis->tipe_target === 'SEMUA_SANTRI') {
@@ -113,10 +125,11 @@ class PresensiController extends Controller
                     })
                     ->sortBy(fn($p) => $p->orang?->nama_lengkap);
 
-                $presensiHariIni = PresensiKelas::where('jenis_presensi_id', $selectedJenis->id)
-                    ->whereDate('tanggal', $tanggal)
+                // Query dari tabel attendance (Layer 2)
+                $presensiHariIni = Attendance::where('jenis_presensi_id', $selectedJenis->id)
+                    ->whereDate('attendance_date', $tanggal)
                     ->get()
-                    ->keyBy('peserta_didik_id');
+                    ->keyBy('student_id');
             }
         }
 
@@ -128,67 +141,63 @@ class PresensiController extends Controller
         ));
     }
 
-    public function store(Request $request)
+    /**
+     * Store attendance — delegate to AttendanceService (thin controller).
+     */
+    public function store(StoreAdminAttendanceRequest $request)
     {
-        $request->validate([
-            'jenis_presensi_id' => 'required|exists:jenis_presensi,id',
-            'tanggal' => 'required|date',
-            'presensi' => 'required|array',
-            'presensi.*.status' => 'required|in:HADIR,SAKIT,IZIN,ALPHA',
-            'presensi.*.keterangan' => 'nullable|string',
-            'rombel_id' => 'nullable|exists:rombel,id',
-            'asrama_id' => 'nullable|exists:asrama,id',
-        ]);
-
         $jenisPresensiId = $request->jenis_presensi_id;
         $rombelId = $request->rombel_id;
         $asramaId = $request->asrama_id;
-        $tanggal = $request->tanggal;
-        $dicatatOleh = auth()->id() ?? 1;
 
-        foreach ($request->presensi as $pesertaId => $data) {
-            PresensiKelas::updateOrCreate(
-                [
-                    'peserta_didik_id' => $pesertaId,
-                    'jenis_presensi_id' => $jenisPresensiId,
-                    'tanggal' => $tanggal,
-                ],
-                [
+        // Gunakan server date (WITA), bukan tanggal dari browser
+        $tanggal = Carbon::now('Asia/Makassar')->format('Y-m-d');
+
+        try {
+            $this->attendanceService->bulkRecordAttendance(
+                studentsData: $request->normalizedPresensi(),
+                jenisPresensiId: (int) $jenisPresensiId,
+                date: $tanggal,
+                sharedMetadata: [
                     'rombel_id' => $rombelId,
                     'asrama_id' => $asramaId,
-                    'status' => $data['status'],
-                    'keterangan' => $data['keterangan'] ?? null,
-                    'dicatat_oleh' => $dicatatOleh,
-                ]
+                    'device' => 'WEB',
+                    'ip_address' => $request->ip(),
+                    'user_agent' => substr($request->userAgent() ?? '', 0, 500),
+                ],
+                userId: auth()->id()
             );
-        }
 
-        return redirect()->route('admin.presensi.index', [
-            'jenis_presensi_id' => $jenisPresensiId,
-            'rombel_id' => $rombelId,
-            'asrama_id' => $asramaId,
-            'tanggal' => $tanggal,
-        ])->with('success', 'Data presensi berhasil disimpan.');
+            return redirect()->route('admin.presensi.index', [
+                'jenis_presensi_id' => $jenisPresensiId,
+                'rombel_id' => $rombelId,
+                'asrama_id' => $asramaId,
+                'tanggal' => $tanggal,
+            ])->with('success', 'Data presensi berhasil disimpan.');
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
+        }
     }
 
     public function rekap(Request $request)
     {
-        $gurus = \App\Models\Pegawai::with('orang')->whereHas('jadwalPelajaran')->get();
+        $gurus = Pegawai::with('orang')->whereHas('jadwalMengajar')->get();
         $rombels = Rombel::with('lembaga')->orderBy('nama')->get();
-        $mapels = \App\Models\MataPelajaran::orderBy('nama')->get();
+        $mapels = MataPelajaran::orderBy('nama')->get();
 
         $selectedPegawaiId = $request->get('pegawai_id');
         $selectedRombelId = $request->get('rombel_id');
         $selectedMapelId = $request->get('mata_pelajaran_id');
 
-        $filterMode = $request->get('filter_mode', 'bulan'); // 'hari', 'minggu', 'bulan'
+        $filterMode = $request->get('filter_mode', 'bulan');
         $tanggalStart = $request->get('tanggal_start', date('Y-m-d'));
         $tanggalEnd = $request->get('tanggal_end', date('Y-m-d'));
         $bulan = (int) $request->get('bulan', date('n'));
         $tahun = (int) $request->get('tahun', date('Y'));
 
         // Query Jadwal Pelajaran based on selected filters
-        $jadwalQuery = \App\Models\JadwalPelajaran::with(['mataPelajaran', 'rombel.riwayatPeserta' => function($q) {
+        $jadwalQuery = JadwalPelajaran::with(['mataPelajaran', 'rombel.riwayatPeserta' => function($q) {
             $q->where('status', 'AKTIF')->with('pesertaDidik.orang');
         }, 'guru.orang']);
 
@@ -204,17 +213,19 @@ class PresensiController extends Controller
 
         $jadwals = $jadwalQuery->get();
         $rombelIds = $jadwals->pluck('rombel_id')->unique()->filter();
-        $query = PresensiKelas::whereIn('rombel_id', $rombelIds);
+
+        // Query dari tabel attendance (Layer 2) — bukan lagi presensi_kelas
+        $query = Attendance::whereIn('rombel_id', $rombelIds);
 
         $periodeLabel = '';
         $dateList = [];
 
         if ($filterMode === 'hari') {
-            $query->whereDate('tanggal', $tanggalStart);
+            $query->whereDate('attendance_date', $tanggalStart);
             $periodeLabel = 'Harian: ' . Carbon::parse($tanggalStart)->locale('id')->isoFormat('D MMMM YYYY');
             $dateList = [$tanggalStart];
         } elseif ($filterMode === 'minggu') {
-            $query->whereBetween('tanggal', [$tanggalStart, $tanggalEnd]);
+            $query->whereBetween('attendance_date', [$tanggalStart, $tanggalEnd]);
             $periodeLabel = 'Mingguan: ' . Carbon::parse($tanggalStart)->locale('id')->isoFormat('D MMM YYYY') . ' s/d ' . Carbon::parse($tanggalEnd)->locale('id')->isoFormat('D MMM YYYY');
             
             $dt = Carbon::parse($tanggalStart);
@@ -224,21 +235,21 @@ class PresensiController extends Controller
                 $dt->addDay();
             }
         } else { // bulan
-            $query->whereYear('tanggal', $tahun)->whereMonth('tanggal', $bulan);
+            $query->whereYear('attendance_date', $tahun)->whereMonth('attendance_date', $bulan);
             $namaBulan = Carbon::createFromDate($tahun, $bulan, 1)->locale('id')->isoFormat('MMMM YYYY');
             $periodeLabel = 'Bulanan: ' . $namaBulan;
 
-            $dateList = PresensiKelas::whereIn('rombel_id', $rombelIds)
-                ->whereYear('tanggal', $tahun)
-                ->whereMonth('tanggal', $bulan)
-                ->select(\Illuminate\Support\Facades\DB::raw('DISTINCT DATE(tanggal) as date_val'))
+            $dateList = Attendance::whereIn('rombel_id', $rombelIds)
+                ->whereYear('attendance_date', $tahun)
+                ->whereMonth('attendance_date', $bulan)
+                ->select(DB::raw('DISTINCT DATE(attendance_date) as date_val'))
                 ->orderBy('date_val')
                 ->pluck('date_val')
                 ->toArray();
         }
 
-        $presensiData = $query->get()->groupBy(['peserta_didik_id', function($item) {
-            return Carbon::parse($item->tanggal)->format('Y-m-d');
+        $presensiData = $query->get()->groupBy(['student_id', function($item) {
+            return Carbon::parse($item->attendance_date)->format('Y-m-d');
         }]);
 
         return view('admin.akademik.presensi.rekap', compact(
@@ -261,7 +272,7 @@ class PresensiController extends Controller
         $bulan = (int) $request->get('bulan', date('n'));
         $tahun = (int) $request->get('tahun', date('Y'));
 
-        $jadwalQuery = \App\Models\JadwalPelajaran::with(['mataPelajaran', 'rombel.riwayatPeserta' => function($q) {
+        $jadwalQuery = JadwalPelajaran::with(['mataPelajaran', 'rombel.riwayatPeserta' => function($q) {
             $q->where('status', 'AKTIF')->with('pesertaDidik.orang');
         }, 'guru.orang']);
 
@@ -273,17 +284,19 @@ class PresensiController extends Controller
         $selectedJadwal = $jadwals->first();
 
         $rombelIds = $jadwals->pluck('rombel_id')->unique()->filter();
-        $query = PresensiKelas::whereIn('rombel_id', $rombelIds);
+
+        // Query dari tabel attendance (Layer 2) — bukan lagi presensi_kelas
+        $query = Attendance::whereIn('rombel_id', $rombelIds);
 
         $periodeLabel = '';
         $dateList = [];
 
         if ($filterMode === 'hari') {
-            $query->whereDate('tanggal', $tanggalStart);
+            $query->whereDate('attendance_date', $tanggalStart);
             $periodeLabel = Carbon::parse($tanggalStart)->locale('id')->isoFormat('dddd, D MMMM YYYY');
             $dateList = [$tanggalStart];
         } elseif ($filterMode === 'minggu') {
-            $query->whereBetween('tanggal', [$tanggalStart, $tanggalEnd]);
+            $query->whereBetween('attendance_date', [$tanggalStart, $tanggalEnd]);
             $periodeLabel = Carbon::parse($tanggalStart)->locale('id')->isoFormat('D MMMM YYYY') . ' s/d ' . Carbon::parse($tanggalEnd)->locale('id')->isoFormat('D MMMM YYYY');
             
             $dt = Carbon::parse($tanggalStart);
@@ -293,21 +306,21 @@ class PresensiController extends Controller
                 $dt->addDay();
             }
         } else {
-            $query->whereYear('tanggal', $tahun)->whereMonth('tanggal', $bulan);
+            $query->whereYear('attendance_date', $tahun)->whereMonth('attendance_date', $bulan);
             $namaBulan = Carbon::createFromDate($tahun, $bulan, 1)->locale('id')->isoFormat('MMMM YYYY');
             $periodeLabel = 'Bulan ' . $namaBulan;
 
-            $dateList = PresensiKelas::whereIn('rombel_id', $rombelIds)
-                ->whereYear('tanggal', $tahun)
-                ->whereMonth('tanggal', $bulan)
-                ->select(\Illuminate\Support\Facades\DB::raw('DISTINCT DATE(tanggal) as date_val'))
+            $dateList = Attendance::whereIn('rombel_id', $rombelIds)
+                ->whereYear('attendance_date', $tahun)
+                ->whereMonth('attendance_date', $bulan)
+                ->select(DB::raw('DISTINCT DATE(attendance_date) as date_val'))
                 ->orderBy('date_val')
                 ->pluck('date_val')
                 ->toArray();
         }
 
-        $presensiData = $query->get()->groupBy(['peserta_didik_id', function($item) {
-            return Carbon::parse($item->tanggal)->format('Y-m-d');
+        $presensiData = $query->get()->groupBy(['student_id', function($item) {
+            return Carbon::parse($item->attendance_date)->format('Y-m-d');
         }]);
 
         return view('admin.akademik.presensi.cetak', compact(

@@ -71,7 +71,7 @@
                     @forelse($presensis as $presensi)
                     <tr class="hover:bg-surface-50/50 transition-colors">
                         <td class="py-4 px-5 font-bold text-surface-900">
-                            {{ \Carbon\Carbon::parse($presensi->tanggal)->translatedFormat('l, d M Y') }}
+                            {{ \Carbon\Carbon::parse($presensi->attendance_date)->translatedFormat('l, d M Y') }}
                         </td>
                         <td class="py-4 px-5 text-surface-700 font-medium">
                             {{ $presensi->rombel->nama ?? '-' }}

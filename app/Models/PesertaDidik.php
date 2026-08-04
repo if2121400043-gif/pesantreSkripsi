@@ -49,9 +49,26 @@ class PesertaDidik extends Model
         return $this->hasMany(Tagihan::class);
     }
 
+    /** @deprecated Gunakan attendance() atau attendanceLogs() */
     public function presensi(): HasMany
     {
         return $this->hasMany(PresensiKelas::class);
+    }
+
+    /**
+     * Daily attendance summaries (Layer 2 — source of truth untuk laporan).
+     */
+    public function attendance(): HasMany
+    {
+        return $this->hasMany(Attendance::class, 'student_id');
+    }
+
+    /**
+     * Raw attendance event logs (Layer 1 — immutable audit trail).
+     */
+    public function attendanceLogs(): HasMany
+    {
+        return $this->hasMany(AttendanceLog::class, 'student_id');
     }
 
     public function nilaiRapor(): HasMany

@@ -112,7 +112,7 @@
                 Hadir: <span class="font-bold text-surface-800">{{ $kehadiranStats['HADIR'] }}</span> &bull; 
                 Izin: <span class="font-bold text-surface-800">{{ $kehadiranStats['IZIN'] }}</span> &bull; 
                 Sakit: <span class="font-bold text-surface-800">{{ $kehadiranStats['SAKIT'] }}</span> &bull; 
-                Alpha: <span class="font-bold text-danger-600">{{ $kehadiranStats['ALPHA'] ?? $kehadiranStats['ALPA'] ?? 0 }}</span>
+                Alpha: <span class="font-bold text-danger-600">{{ $kehadiranStats['ALPA'] ?? 0 }}</span>
             </div>
         </div>
 
@@ -282,7 +282,7 @@
                             @foreach($presensis as $index => $absensi)
                             <tr class="hover:bg-surface-50/50 transition-colors">
                                 <td class="px-6 py-3.5 text-center">{{ $index + 1 }}</td>
-                                <td class="px-6 py-3.5 font-medium text-surface-900">{{ $absensi->tanggal->isoFormat('dddd, D MMMM YYYY') }}</td>
+                                <td class="px-6 py-3.5 font-medium text-surface-900">{{ $absensi->attendance_date->isoFormat('dddd, D MMMM YYYY') }}</td>
                                 <td class="px-6 py-3.5 text-surface-600">{{ $absensi->rombel->nama ?? '-' }}</td>
                                 <td class="px-6 py-3.5 text-center">
                                     @php

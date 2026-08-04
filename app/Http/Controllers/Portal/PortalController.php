@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\HubunganKeluarga;
 use App\Models\PesertaDidik;
 use App\Models\Tagihan;
-use App\Models\PresensiKelas;
+use App\Models\Attendance;
 use App\Models\NilaiRapor;
 use App\Models\CatatanPelanggaran;
 use App\Models\CatatanPrestasi;
@@ -65,14 +65,14 @@ class PortalController extends Controller
 
         // Kehadiran Stats
         $presensis = collect();
-        $kehadiranStats = ['HADIR' => 0, 'SAKIT' => 0, 'IZIN' => 0, 'ALPHA' => 0];
+        $kehadiranStats = ['HADIR' => 0, 'SAKIT' => 0, 'IZIN' => 0, 'ALPA' => 0];
         $kehadiranPersen = 100;
         if ($activeAnak && $activeTahun) {
-            $presensis = PresensiKelas::where('peserta_didik_id', $activeAnak->id)
+            $presensis = Attendance::where('student_id', $activeAnak->id)
                 ->whereHas('rombel', function($q) use ($activeTahun) {
                     $q->where('tahun_pelajaran_id', $activeTahun->id);
                 })
-                ->orderBy('tanggal', 'desc')
+                ->orderBy('attendance_date', 'desc')
                 ->get();
 
             $totalPresensi = $presensis->count();
@@ -227,18 +227,18 @@ class PortalController extends Controller
         $activeTahun = TahunPelajaran::where('is_active', true)->first();
 
         $presensis = collect();
-        $kehadiranStats = ['HADIR' => 0, 'SAKIT' => 0, 'IZIN' => 0, 'ALPHA' => 0];
+        $kehadiranStats = ['HADIR' => 0, 'SAKIT' => 0, 'IZIN' => 0, 'ALPA' => 0];
         $kehadiranPersen = 100;
 
         if ($activeAnak && $activeTahun) {
-            $presensis = PresensiKelas::with('rombel')
-                ->where('peserta_didik_id', $activeAnak->id)
-                ->orderBy('tanggal', 'desc')
+            $presensis = Attendance::with('rombel')
+                ->where('student_id', $activeAnak->id)
+                ->orderBy('attendance_date', 'desc')
                 ->paginate(20);
 
             $totalPresensi = $presensis->total();
             if ($totalPresensi > 0) {
-                $allPresensi = PresensiKelas::where('peserta_didik_id', $activeAnak->id)->get();
+                $allPresensi = Attendance::where('student_id', $activeAnak->id)->get();
                 foreach ($allPresensi as $p) {
                     $statusUpper = strtoupper($p->status);
                     if (array_key_exists($statusUpper, $kehadiranStats)) {

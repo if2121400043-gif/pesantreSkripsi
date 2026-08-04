@@ -5,6 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @deprecated Gunakan model Attendance, AttendanceLog, dan AttendanceCorrection.
+ * Model ini dipertahankan untuk backward compatibility dengan tabel presensi_kelas legacy.
+ * Tabel presensi_kelas TIDAK dihapus, tetapi tidak digunakan oleh flow baru.
+ */
 class PresensiKelas extends Model
 {
     protected $table = 'presensi_kelas';

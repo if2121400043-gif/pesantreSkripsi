@@ -44,7 +44,7 @@
         </div>
         <div class="bg-white rounded-2xl p-4 border border-rose-200 shadow-2xs text-center">
             <span class="text-xs font-bold text-rose-700 uppercase tracking-wider block">ALPHA</span>
-            <span class="text-2xl sm:text-3xl font-black text-rose-800 mt-1 block">{{ $kehadiranStats['ALPHA'] }}</span>
+            <span class="text-2xl sm:text-3xl font-black text-rose-800 mt-1 block">{{ $kehadiranStats['ALPA'] }}</span>
         </div>
     </div>
 

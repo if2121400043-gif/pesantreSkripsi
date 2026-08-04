@@ -18,9 +18,26 @@ class JenisPresensi extends Model
         'is_active' => 'boolean',
     ];
 
+    /** @deprecated Gunakan attendance() atau attendanceLogs() */
     public function presensi(): HasMany
     {
         return $this->hasMany(PresensiKelas::class);
+    }
+
+    /**
+     * Daily attendance summaries (Layer 2).
+     */
+    public function attendance(): HasMany
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    /**
+     * Raw attendance event logs (Layer 1).
+     */
+    public function attendanceLogs(): HasMany
+    {
+        return $this->hasMany(AttendanceLog::class);
     }
 
     public function scopeActive($query)

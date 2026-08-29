@@ -48,9 +48,9 @@
             <div class="text-2xl font-extrabold text-amber-700">{{ $hadirTes }}</div>
             <div class="text-xs text-amber-600 mt-1 font-medium">Hadir Tes</div>
         </div>
-        <div class="bg-emerald-50/60 rounded-2xl border border-emerald-100 p-4 text-center shadow-sm">
-            <div class="text-2xl font-extrabold text-emerald-700">{{ $diterima }}</div>
-            <div class="text-xs text-emerald-600 mt-1 font-medium">Diterima</div>
+        <div class="bg-primary-50/60 rounded-2xl border border-primary-100 p-4 text-center shadow-sm">
+            <div class="text-2xl font-extrabold text-primary-700">{{ $diterima }}</div>
+            <div class="text-xs text-primary-600 mt-1 font-medium">Diterima</div>
         </div>
         <div class="bg-rose-50/60 rounded-2xl border border-rose-100 p-4 text-center shadow-sm">
             <div class="text-2xl font-extrabold text-rose-700">{{ $tidakLulus }}</div>
@@ -186,7 +186,7 @@
                         </div>
                         <div class="shrink-0">
                             @if($cs->status === 'DITERIMA')
-                                <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-emerald-100 text-emerald-700 border border-emerald-200">Diterima</span>
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-primary-100 text-primary-700 border border-primary-200">Diterima</span>
                             @elseif($cs->status === 'TIDAK_LULUS')
                                 <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-rose-100 text-rose-700 border border-rose-200">Tidak Lulus</span>
                             @elseif($cs->status === 'HADIR_TES')

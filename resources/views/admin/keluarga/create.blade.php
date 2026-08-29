@@ -128,9 +128,9 @@
                 </div>
 
                 {{-- Mode New Wali --}}
-                <div id="mode_new" class="hidden space-y-4 bg-emerald-50/70 p-5 rounded-3xl border border-emerald-200">
-                    <div class="flex items-center gap-2 text-emerald-900 font-extrabold text-xs mb-2">
-                        <i data-lucide="user-plus" class="w-4 h-4 text-emerald-700"></i>
+                <div id="mode_new" class="hidden space-y-4 bg-primary-50/70 p-5 rounded-3xl border border-primary-200">
+                    <div class="flex items-center gap-2 text-primary-900 font-extrabold text-xs mb-2">
+                        <i data-lucide="user-plus" class="w-4 h-4 text-primary-700"></i>
                         <span>Input Identitas Wali Baru</span>
                     </div>
 
@@ -143,7 +143,7 @@
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">Nomor WA / HP Aktif <span class="text-danger-500">*</span></label>
                             <input type="text" name="telepon_wali" id="telepon_wali" value="{{ old('telepon_wali') }}" placeholder="08xxxxxxxxxx" class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
-                            <p class="text-[0.68rem] text-emerald-800 font-semibold mt-1"><i data-lucide="info" class="w-3 h-3 inline"></i> Nomor ini akan menjadi Username & Password login portal.</p>
+                            <p class="text-[0.68rem] text-primary-800 font-semibold mt-1"><i data-lucide="info" class="w-3 h-3 inline"></i> Nomor ini akan menjadi Username & Password login portal.</p>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">Email Wali (Opsional)</label>

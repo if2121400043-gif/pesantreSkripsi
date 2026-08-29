@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="bg-white p-4 rounded-xl border border-surface-200 flex items-center gap-4 shadow-sm">
-        <div class="w-12 h-12 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center">
+        <div class="w-12 h-12 rounded-lg bg-primary-100 text-primary-600 flex items-center justify-center">
             <i data-lucide="calendar" class="w-6 h-6"></i>
         </div>
         <div>
@@ -72,7 +72,7 @@
                     <td class="px-6 py-4 text-center">
                         <span class="inline-flex px-2.5 py-1 rounded-md text-xs font-bold
                             {{ $biaya->jenis == 'BULANAN' ? 'bg-blue-100 text-blue-700' : 
-                               ($biaya->jenis == 'TAHUNAN' ? 'bg-emerald-100 text-emerald-700' : 'bg-purple-100 text-purple-700') }}">
+                               ($biaya->jenis == 'TAHUNAN' ? 'bg-primary-100 text-primary-700' : 'bg-purple-100 text-purple-700') }}">
                             {{ $biaya->jenis }}
                         </span>
                     </td>

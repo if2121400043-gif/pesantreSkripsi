@@ -8,9 +8,9 @@
     <meta name="description" content="@yield('meta_description', 'Sistem Manajemen Pondok Pesantren Nurul Furqon')">
 
     {{-- PWA Meta Tags --}}
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#065f46">
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#1e3a5f">
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#022c22">
-    <meta name="theme-color" content="#065f46">
+    <meta name="theme-color" content="#1e3a5f">
     <meta name="application-name" content="PP Nurul Furqon">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,7 +20,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
-    <link rel="mask-icon" href="/icons/icon-192x192-maskable.png" color="#065f46">
+    <link rel="mask-icon" href="/icons/icon-192x192-maskable.png" color="#1e3a5f">
 
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -311,7 +311,7 @@
         <div class="w-full max-w-2xl rounded-2xl bg-white shadow-2xl border border-surface-200 overflow-hidden flex flex-col max-h-[85vh]">
             <div class="flex items-center justify-between px-5 py-3.5 border-b border-surface-100 bg-surface-50/50">
                 <div class="flex items-center gap-2">
-                    <i data-lucide="search" class="w-4 h-4 text-emerald-600"></i>
+                    <i data-lucide="search" class="w-4 h-4 text-primary-600"></i>
                     <p class="text-xs font-bold text-surface-900 font-heading">Pencarian Menu & Modul</p>
                 </div>
                 <button type="button" id="btn-close-search" class="p-1 rounded-lg text-surface-400 hover:bg-surface-200 hover:text-surface-700 transition-colors">
@@ -321,7 +321,7 @@
             <div class="p-4 border-b border-surface-100">
                 <div class="relative">
                     <input id="global-search-input" type="text" autocomplete="off" placeholder="Ketik nama menu (misal: santri, spp, berita, rombel, pegawai)..."
-                           class="w-full pl-4 pr-10 py-2.5 rounded-xl border border-surface-200 text-surface-900 text-xs font-medium focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20" />
+                           class="w-full pl-4 pr-10 py-2.5 rounded-xl border border-surface-200 text-surface-900 text-xs font-medium focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-600/20" />
                     <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[0.65rem] font-bold text-surface-400 bg-surface-100 px-1.5 py-0.5 rounded">ESC</span>
                 </div>
             </div>

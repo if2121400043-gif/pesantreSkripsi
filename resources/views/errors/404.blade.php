@@ -5,11 +5,11 @@
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-surface-50 px-4 py-12">
     <div class="max-w-md w-full text-center space-y-6 bg-white p-8 md:p-10 rounded-3xl border border-surface-200 shadow-xl relative overflow-hidden">
-        <div class="w-20 h-20 bg-emerald-50 text-emerald-700 rounded-3xl flex items-center justify-center mx-auto border border-emerald-100 shadow-sm">
+        <div class="w-20 h-20 bg-primary-50 text-primary-700 rounded-3xl flex items-center justify-center mx-auto border border-primary-100 shadow-sm">
             <i data-lucide="compass" class="w-10 h-10 animate-spin-slow"></i>
         </div>
         <div>
-            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black uppercase tracking-wider mb-2">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-100 text-primary-800 text-xs font-black uppercase tracking-wider mb-2">
                 Error 404
             </div>
             <h1 class="text-2xl md:text-3xl font-extrabold text-surface-900 font-heading">Halaman Tidak Ditemukan</h1>
@@ -18,7 +18,7 @@
             </p>
         </div>
         <div class="pt-4 border-t border-surface-100 flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="{{ url('/') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-emerald-700 text-white font-extrabold text-xs hover:bg-emerald-800 transition-all shadow-md shadow-emerald-700/20">
+            <a href="{{ url('/') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-primary-700 text-white font-extrabold text-xs hover:bg-primary-800 transition-all shadow-md shadow-primary-700/20">
                 <i data-lucide="home" class="w-4 h-4"></i>
                 <span>Kembali ke Beranda</span>
             </a>

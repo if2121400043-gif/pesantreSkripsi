@@ -98,7 +98,7 @@
             <a href="{{ route('guru.penilaian.index') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-success-400 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
                 <div class="absolute -right-8 -top-8 w-28 h-28 bg-success-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
                 <div class="relative z-10">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-success-500 to-emerald-700 text-white flex items-center justify-center shadow-md shadow-success-500/20 mb-4 group-hover:rotate-6 transition-transform">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-success-500 to-primary-700 text-white flex items-center justify-center shadow-md shadow-success-500/20 mb-4 group-hover:rotate-6 transition-transform">
                         <i data-lucide="award" class="w-7 h-7"></i>
                     </div>
                     <h3 class="text-lg font-bold text-surface-900 group-hover:text-success-600 transition-colors">Input Nilai Rapor</h3>

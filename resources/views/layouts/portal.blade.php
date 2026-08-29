@@ -8,7 +8,7 @@
     <meta name="description" content="@yield('meta_description', 'Portal Informasi & Pembayaran Wali Santri PP Nurul Furqon')">
 
     {{-- PWA Meta Tags --}}
-    <meta name="theme-color" content="#065f46">
+    <meta name="theme-color" content="#1e3a5f">
     <meta name="application-name" content="PP Nurul Furqon">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -31,13 +31,13 @@
 </head>
 <body class="min-h-screen bg-surface-50 overflow-x-hidden text-surface-900 font-sans pb-20 md:pb-6">
     {{-- Skip to content (accessibility) --}}
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 bg-emerald-700 text-white px-4 py-2 rounded-lg font-medium">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 bg-primary-700 text-white px-4 py-2 rounded-lg font-medium">
         Langsung ke konten
     </a>
 
     <div class="min-h-screen flex flex-col" id="app-portal-layout">
         {{-- Top Bar (Wali Santri Brand & Profile) --}}
-        <header class="sticky top-0 z-30 shadow-md border-b border-emerald-800" style="background-color: #065f46 !important; color: #ffffff !important;">
+        <header class="sticky top-0 z-30 shadow-md border-b border-primary-800" style="background-color: #1e3a5f !important; color: #ffffff !important;">
             <div class="max-w-screen-xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
                 
                 {{-- Left: Brand Logo & Title --}}
@@ -53,19 +53,19 @@
 
                 {{-- Middle: Desktop Navigation Tabs --}}
                 <nav class="hidden md:flex items-center gap-1.5 p-1 rounded-2xl border border-white/20 text-xs font-bold" style="background-color: rgba(255, 255, 255, 0.15) !important;">
-                    <a href="{{ route('portal.beranda') }}" class="px-3.5 py-1.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 {{ request()->routeIs('portal.beranda') ? 'bg-white text-emerald-900 font-black shadow-md' : 'text-white hover:bg-white/15' }}" style="{{ request()->routeIs('portal.beranda') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
+                    <a href="{{ route('portal.beranda') }}" class="px-3.5 py-1.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 {{ request()->routeIs('portal.beranda') ? 'bg-white text-primary-900 font-black shadow-md' : 'text-white hover:bg-white/15' }}" style="{{ request()->routeIs('portal.beranda') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
                         <i data-lucide="home" class="w-4 h-4"></i>
                         <span>Beranda</span>
                     </a>
-                    <a href="{{ route('portal.tagihan') }}" class="px-3.5 py-1.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 {{ request()->routeIs('portal.tagihan*') ? 'bg-white text-emerald-900 font-black shadow-md' : 'text-white hover:bg-white/15' }}" style="{{ request()->routeIs('portal.tagihan*') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
+                    <a href="{{ route('portal.tagihan') }}" class="px-3.5 py-1.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 {{ request()->routeIs('portal.tagihan*') ? 'bg-white text-primary-900 font-black shadow-md' : 'text-white hover:bg-white/15' }}" style="{{ request()->routeIs('portal.tagihan*') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
                         <i data-lucide="wallet" class="w-4 h-4"></i>
                         <span>Tagihan & Bayar</span>
                     </a>
-                    <a href="{{ route('portal.presensi') }}" class="px-3.5 py-1.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 {{ request()->routeIs('portal.presensi*') ? 'bg-white text-emerald-900 font-black shadow-md' : 'text-white hover:bg-white/15' }}" style="{{ request()->routeIs('portal.presensi*') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
+                    <a href="{{ route('portal.presensi') }}" class="px-3.5 py-1.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 {{ request()->routeIs('portal.presensi*') ? 'bg-white text-primary-900 font-black shadow-md' : 'text-white hover:bg-white/15' }}" style="{{ request()->routeIs('portal.presensi*') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
                         <i data-lucide="calendar-check" class="w-4 h-4"></i>
                         <span>Presensi</span>
                     </a>
-                    <a href="{{ route('portal.kedisiplinan') }}" class="px-3.5 py-1.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 {{ request()->routeIs('portal.kedisiplinan*') ? 'bg-white text-emerald-900 font-black shadow-md' : 'text-white hover:bg-white/15' }}" style="{{ request()->routeIs('portal.kedisiplinan*') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
+                    <a href="{{ route('portal.kedisiplinan') }}" class="px-3.5 py-1.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 {{ request()->routeIs('portal.kedisiplinan*') ? 'bg-white text-primary-900 font-black shadow-md' : 'text-white hover:bg-white/15' }}" style="{{ request()->routeIs('portal.kedisiplinan*') ? 'color: #064e3b !important; background-color: #ffffff !important;' : 'color: #ffffff !important;' }}">
                         <i data-lucide="shield-check" class="w-4 h-4"></i>
                         <span>Kedisiplinan</span>
                     </a>
@@ -125,13 +125,13 @@
             {{-- Tab 1: Beranda --}}
             <a href="{{ route('portal.beranda') }}" class="flex flex-col items-center justify-center h-full w-full py-1 group relative">
                 @if(request()->routeIs('portal.beranda'))
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-700 text-white shadow-md transition-transform duration-200 group-active:scale-95">
+                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-primary-700 text-white shadow-md transition-transform duration-200 group-active:scale-95">
                         <i data-lucide="home" class="w-4 h-4"></i>
                     </div>
-                    <span class="text-[0.65rem] font-extrabold text-emerald-800 mt-1">Beranda</span>
-                    <span class="absolute bottom-1 w-1 h-1 bg-emerald-600 rounded-full"></span>
+                    <span class="text-[0.65rem] font-extrabold text-primary-800 mt-1">Beranda</span>
+                    <span class="absolute bottom-1 w-1 h-1 bg-primary-600 rounded-full"></span>
                 @else
-                    <div class="flex items-center justify-center w-8 h-8 text-surface-400 group-hover:text-emerald-700 transition-colors">
+                    <div class="flex items-center justify-center w-8 h-8 text-surface-400 group-hover:text-primary-700 transition-colors">
                         <i data-lucide="home" class="w-4 h-4"></i>
                     </div>
                     <span class="text-[0.65rem] font-medium text-surface-500">Beranda</span>
@@ -141,13 +141,13 @@
             {{-- Tab 2: Tagihan --}}
             <a href="{{ route('portal.tagihan') }}" class="flex flex-col items-center justify-center h-full w-full py-1 group relative">
                 @if(request()->routeIs('portal.tagihan*'))
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-700 text-white shadow-md transition-transform duration-200 group-active:scale-95">
+                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-primary-700 text-white shadow-md transition-transform duration-200 group-active:scale-95">
                         <i data-lucide="wallet" class="w-4 h-4"></i>
                     </div>
-                    <span class="text-[0.65rem] font-extrabold text-emerald-800 mt-1">Tagihan</span>
-                    <span class="absolute bottom-1 w-1 h-1 bg-emerald-600 rounded-full"></span>
+                    <span class="text-[0.65rem] font-extrabold text-primary-800 mt-1">Tagihan</span>
+                    <span class="absolute bottom-1 w-1 h-1 bg-primary-600 rounded-full"></span>
                 @else
-                    <div class="flex items-center justify-center w-8 h-8 text-surface-400 group-hover:text-emerald-700 transition-colors">
+                    <div class="flex items-center justify-center w-8 h-8 text-surface-400 group-hover:text-primary-700 transition-colors">
                         <i data-lucide="wallet" class="w-4 h-4"></i>
                     </div>
                     <span class="text-[0.65rem] font-medium text-surface-500">Tagihan</span>
@@ -157,13 +157,13 @@
             {{-- Tab 3: Presensi --}}
             <a href="{{ route('portal.presensi') }}" class="flex flex-col items-center justify-center h-full w-full py-1 group relative">
                 @if(request()->routeIs('portal.presensi*'))
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-700 text-white shadow-md transition-transform duration-200 group-active:scale-95">
+                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-primary-700 text-white shadow-md transition-transform duration-200 group-active:scale-95">
                         <i data-lucide="calendar-check" class="w-4 h-4"></i>
                     </div>
-                    <span class="text-[0.65rem] font-extrabold text-emerald-800 mt-1">Presensi</span>
-                    <span class="absolute bottom-1 w-1 h-1 bg-emerald-600 rounded-full"></span>
+                    <span class="text-[0.65rem] font-extrabold text-primary-800 mt-1">Presensi</span>
+                    <span class="absolute bottom-1 w-1 h-1 bg-primary-600 rounded-full"></span>
                 @else
-                    <div class="flex items-center justify-center w-8 h-8 text-surface-400 group-hover:text-emerald-700 transition-colors">
+                    <div class="flex items-center justify-center w-8 h-8 text-surface-400 group-hover:text-primary-700 transition-colors">
                         <i data-lucide="calendar-check" class="w-4 h-4"></i>
                     </div>
                     <span class="text-[0.65rem] font-medium text-surface-500">Presensi</span>
@@ -173,13 +173,13 @@
             {{-- Tab 4: Kedisiplinan --}}
             <a href="{{ route('portal.kedisiplinan') }}" class="flex flex-col items-center justify-center h-full w-full py-1 group relative">
                 @if(request()->routeIs('portal.kedisiplinan*'))
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-700 text-white shadow-md transition-transform duration-200 group-active:scale-95">
+                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-primary-700 text-white shadow-md transition-transform duration-200 group-active:scale-95">
                         <i data-lucide="shield-check" class="w-4 h-4"></i>
                     </div>
-                    <span class="text-[0.65rem] font-extrabold text-emerald-800 mt-1">Poin</span>
-                    <span class="absolute bottom-1 w-1 h-1 bg-emerald-600 rounded-full"></span>
+                    <span class="text-[0.65rem] font-extrabold text-primary-800 mt-1">Poin</span>
+                    <span class="absolute bottom-1 w-1 h-1 bg-primary-600 rounded-full"></span>
                 @else
-                    <div class="flex items-center justify-center w-8 h-8 text-surface-400 group-hover:text-emerald-700 transition-colors">
+                    <div class="flex items-center justify-center w-8 h-8 text-surface-400 group-hover:text-primary-700 transition-colors">
                         <i data-lucide="shield-check" class="w-4 h-4"></i>
                     </div>
                     <span class="text-[0.65rem] font-medium text-surface-500">Poin</span>

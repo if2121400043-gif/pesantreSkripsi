@@ -6,7 +6,7 @@
 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
     <div>
         <div class="flex items-center gap-2 text-xs text-surface-500 mb-1">
-            <span class="hover:text-emerald-700 font-medium">Akademik</span>
+            <span class="hover:text-primary-700 font-medium">Akademik</span>
             <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
             <span class="text-surface-900 font-bold">Jadwal Pelajaran</span>
         </div>
@@ -14,11 +14,11 @@
         <p class="text-xs text-surface-500 mt-0.5">Kelola jam mengajar guru dan alokasi jadwal mata pelajaran per kelas.</p>
     </div>
     <div class="flex flex-wrap items-center gap-2.5 shrink-0">
-        <a href="{{ route('admin.jadwal-pelajaran.export-csv', ['tahun_pelajaran_id' => $tahunId, 'rombel_id' => $rombelId, 'hari' => $hari, 'pegawai_id' => $pegawaiId]) }}" class="inline-flex items-center gap-2 py-2.5 px-4 rounded-2xl bg-emerald-50 text-emerald-800 hover:bg-emerald-700 hover:text-white border border-emerald-300 font-bold text-xs transition-all shadow-xs">
+        <a href="{{ route('admin.jadwal-pelajaran.export-csv', ['tahun_pelajaran_id' => $tahunId, 'rombel_id' => $rombelId, 'hari' => $hari, 'pegawai_id' => $pegawaiId]) }}" class="inline-flex items-center gap-2 py-2.5 px-4 rounded-2xl bg-primary-50 text-primary-800 hover:bg-primary-700 hover:text-white border border-primary-300 font-bold text-xs transition-all shadow-xs">
             <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
             <span>Cetak Roster CSV</span>
         </a>
-        <a href="{{ route('admin.jadwal-pelajaran.create', ['rombel_id' => $rombelId, 'tahun_pelajaran_id' => $tahunId]) }}" class="btn-primary flex items-center gap-2 py-2.5 px-4 rounded-2xl font-bold text-xs shadow-md shadow-emerald-700/20">
+        <a href="{{ route('admin.jadwal-pelajaran.create', ['rombel_id' => $rombelId, 'tahun_pelajaran_id' => $tahunId]) }}" class="btn-primary flex items-center gap-2 py-2.5 px-4 rounded-2xl font-bold text-xs shadow-md shadow-primary-700/20">
             <i data-lucide="plus" class="w-4 h-4"></i>
             <span>+ Tambah Jadwal Baru</span>
         </a>
@@ -35,7 +35,7 @@
             
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-surface-100">
                 <div class="flex items-center gap-2.5 text-surface-900 font-extrabold text-sm">
-                    <div class="w-9 h-9 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 border border-emerald-200">
+                    <div class="w-9 h-9 rounded-2xl bg-primary-100 text-primary-800 flex items-center justify-center shrink-0 border border-primary-200">
                         <i data-lucide="filter" class="w-4 h-4"></i>
                     </div>
                     <div>
@@ -47,7 +47,7 @@
                 {{-- Select Tahun Pelajaran --}}
                 <div class="flex items-center gap-2 shrink-0">
                     <span class="text-xs font-bold text-surface-600 hidden sm:inline">Tahun Ajaran:</span>
-                    <select name="tahun_pelajaran_id" class="px-3.5 py-2 rounded-xl border border-surface-300 bg-surface-50 text-xs font-bold text-surface-800 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" onchange="this.form.submit()">
+                    <select name="tahun_pelajaran_id" class="px-3.5 py-2 rounded-xl border border-surface-300 bg-surface-50 text-xs font-bold text-surface-800 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600" onchange="this.form.submit()">
                         @foreach($tahuns as $t)
                             <option value="{{ $t->id }}" {{ $tahunId == $t->id ? 'selected' : '' }}>{{ $t->nama }}</option>
                         @endforeach
@@ -61,10 +61,10 @@
                 {{-- Filter 1: Hari --}}
                 <div>
                     <label class="block text-xs font-extrabold text-surface-700 mb-1.5 flex items-center gap-1.5">
-                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-600"></i>
+                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-primary-600"></i>
                         <span>1. Filter Hari</span>
                     </label>
-                    <select name="hari" class="w-full px-3.5 py-2.5 rounded-2xl border border-surface-300 bg-white text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all" onchange="this.form.submit()">
+                    <select name="hari" class="w-full px-3.5 py-2.5 rounded-2xl border border-surface-300 bg-white text-xs font-bold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600 transition-all" onchange="this.form.submit()">
                         <option value="">Semua Hari (Senin - Ahad)</option>
                         @foreach($daftarHari as $h)
                             <option value="{{ $h }}" {{ $hari === $h ? 'selected' : '' }}>Hari {{ ucfirst(strtolower($h)) }}</option>
@@ -75,10 +75,10 @@
                 {{-- Filter 2: Kelas / Rombel --}}
                 <div>
                     <label class="block text-xs font-extrabold text-surface-700 mb-1.5 flex items-center gap-1.5">
-                        <i data-lucide="school" class="w-3.5 h-3.5 text-emerald-600"></i>
+                        <i data-lucide="school" class="w-3.5 h-3.5 text-primary-600"></i>
                         <span>2. Filter Kelas</span>
                     </label>
-                    <select name="rombel_id" class="w-full px-3.5 py-2.5 rounded-2xl border border-surface-300 bg-white text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all" onchange="this.form.submit()">
+                    <select name="rombel_id" class="w-full px-3.5 py-2.5 rounded-2xl border border-surface-300 bg-white text-xs font-bold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600 transition-all" onchange="this.form.submit()">
                         <option value="">Semua Kelas / Rombel</option>
                         @foreach($rombels as $r)
                             <option value="{{ $r->id }}" {{ $rombelId == $r->id ? 'selected' : '' }}>
@@ -91,10 +91,10 @@
                 {{-- Filter 3: Guru / Pengajar --}}
                 <div>
                     <label class="block text-xs font-extrabold text-surface-700 mb-1.5 flex items-center gap-1.5">
-                        <i data-lucide="user-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+                        <i data-lucide="user-check" class="w-3.5 h-3.5 text-primary-600"></i>
                         <span>3. Filter Guru Pengajar</span>
                     </label>
-                    <select name="pegawai_id" class="w-full px-3.5 py-2.5 rounded-2xl border border-surface-300 bg-white text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all" onchange="this.form.submit()">
+                    <select name="pegawai_id" class="w-full px-3.5 py-2.5 rounded-2xl border border-surface-300 bg-white text-xs font-bold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600 transition-all" onchange="this.form.submit()">
                         <option value="">Semua Guru Pengajar</option>
                         @foreach($gurus as $g)
                             <option value="{{ $g->id }}" {{ $pegawaiId == $g->id ? 'selected' : '' }}>
@@ -112,7 +112,7 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <span class="text-surface-500 font-medium">Filter aktif:</span>
                     @if($hari)
-                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-[0.7rem]">
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary-100 text-primary-800 font-extrabold text-[0.7rem]">
                             Hari: {{ ucfirst(strtolower($hari)) }}
                         </span>
                     @endif
@@ -141,7 +141,7 @@
     {{-- Results Counter Bar --}}
     <div class="flex items-center justify-between px-1">
         <div class="flex items-center gap-2 text-surface-800 font-extrabold text-sm font-heading">
-            <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-600"></i>
+            <i data-lucide="layout-grid" class="w-4 h-4 text-primary-600"></i>
             <span>Daftar Hasil Jadwal Pelajaran ({{ $jadwals->count() }} Data)</span>
         </div>
     </div>
@@ -150,16 +150,16 @@
     @if($jadwals->count() > 0)
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($jadwals as $j)
-                <div class="bg-white rounded-3xl border border-surface-200 shadow-md hover:shadow-xl hover:border-emerald-400 transition-all duration-300 p-6 relative overflow-hidden flex flex-col justify-between group">
+                <div class="bg-white rounded-3xl border border-surface-200 shadow-md hover:shadow-xl hover:border-primary-400 transition-all duration-300 p-6 relative overflow-hidden flex flex-col justify-between group">
                     
                     {{-- Decorative Top Accent Line --}}
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600"></div>
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary-500 via-teal-500 to-primary-600"></div>
 
                     <div>
                         {{-- Header Row: Hari Badge & Time Slot --}}
                         <div class="flex items-center justify-between gap-2 mb-4">
-                            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-100 text-emerald-900 border border-emerald-200">
-                                <i data-lucide="calendar" class="w-3 h-3 text-emerald-700"></i>
+                            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-primary-100 text-primary-900 border border-primary-200">
+                                <i data-lucide="calendar" class="w-3 h-3 text-primary-700"></i>
                                 <span>{{ ucfirst(strtolower($j->hari)) }}</span>
                             </span>
                             
@@ -172,7 +172,7 @@
 
                         {{-- 1. Nama Mata Pelajaran --}}
                         <div class="mb-4">
-                            <h3 class="text-lg font-extrabold text-surface-900 font-heading leading-snug group-hover:text-emerald-700 transition-colors">
+                            <h3 class="text-lg font-extrabold text-surface-900 font-heading leading-snug group-hover:text-primary-700 transition-colors">
                                 {{ $j->mataPelajaran->nama ?? '-' }}
                             </h3>
                             @if($j->mataPelajaran->kode)
@@ -231,7 +231,7 @@
     @else
         {{-- Empty State Card --}}
         <div class="bg-white rounded-3xl border-2 border-dashed border-surface-200 p-12 text-center shadow-xs">
-            <div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 border border-emerald-100">
+            <div class="w-16 h-16 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center mx-auto mb-4 border border-primary-100">
                 <i data-lucide="calendar-x" class="w-8 h-8"></i>
             </div>
             <h3 class="font-extrabold text-surface-900 text-base mb-1 font-heading">Tidak Ada Jadwal Pelajaran Ditemukan</h3>
@@ -242,7 +242,7 @@
                 <a href="{{ route('admin.jadwal-pelajaran.index', ['tahun_pelajaran_id' => $tahunId]) }}" class="px-4 py-2.5 rounded-2xl bg-surface-100 text-surface-800 font-bold text-xs hover:bg-surface-200 transition-colors border border-surface-200">
                     Reset Filter
                 </a>
-                <a href="{{ route('admin.jadwal-pelajaran.create', ['rombel_id' => $rombelId, 'tahun_pelajaran_id' => $tahunId]) }}" class="px-4 py-2.5 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs transition-colors shadow-md shadow-emerald-700/20">
+                <a href="{{ route('admin.jadwal-pelajaran.create', ['rombel_id' => $rombelId, 'tahun_pelajaran_id' => $tahunId]) }}" class="px-4 py-2.5 rounded-2xl bg-primary-700 hover:bg-primary-800 text-white font-bold text-xs transition-colors shadow-md shadow-primary-700/20">
                     + Tambah Jadwal Baru
                 </a>
             </div>

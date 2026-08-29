@@ -210,6 +210,7 @@
                 </div>
             </details>
 
+            
             {{-- Kedisiplinan --}}
             <details class="group cursor-pointer select-none" {{ request()->is('admin/pelanggaran*', 'admin/prestasi*', 'admin/perizinan*') ? 'open' : '' }}>
                 <summary class="nav-item flex items-center justify-between [&::-webkit-details-marker]:hidden list-none">
@@ -221,37 +222,100 @@
                 </summary>
                 <div class="pl-4 pr-1 py-1 mt-1 space-y-1 ml-4 border-l border-white/10">
                     <a href="{{ url('/admin/pelanggaran') }}"
-                       class="nav-sub-item {{ request()->is('admin/pelanggaran*') ? 'active' : '' }}">
-                        <i data-lucide="alert-triangle" class="nav-icon"></i>
-                        <span>Poin Pelanggaran</span>
+                    class="nav-sub-item {{ request()->is('admin/pelanggaran*') ? 'active' : '' }}">
+                    <i data-lucide="alert-triangle" class="nav-icon"></i>
+                    <span>Poin Pelanggaran</span>
+                </a>
+                <a href="{{ url('/admin/prestasi') }}"
+                class="nav-sub-item {{ request()->is('admin/prestasi*') ? 'active' : '' }}">
+                <i data-lucide="trophy" class="nav-icon"></i>
+                <span>Catatan Prestasi</span>
                     </a>
-                    <a href="{{ url('/admin/prestasi') }}"
-                       class="nav-sub-item {{ request()->is('admin/prestasi*') ? 'active' : '' }}">
-                        <i data-lucide="trophy" class="nav-icon"></i>
-                        <span>Catatan Prestasi</span>
-                    </a>
-                    <a href="{{ url('/admin/perizinan') }}"
-                       class="nav-sub-item {{ request()->is('admin/perizinan*') ? 'active' : '' }}">
+                        <a href="{{ url('/admin/perizinan') }}"
+                        class="nav-sub-item {{ request()->is('admin/perizinan*') ? 'active' : '' }}">
                         <i data-lucide="door-open" class="nav-icon"></i>
                         <span>Perizinan Keluar</span>
                     </a>
                 </div>
             </details>
+            {{-- Laporan & Rekapitulasi --}}
+            <details class="group cursor-pointer select-none" {{ request()->is('admin/laporan*') ? 'open' : '' }}>
+                <summary class="nav-item flex items-center justify-between [&::-webkit-details-marker]:hidden list-none">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="file-bar-chart" class="nav-icon"></i>
+                        <span class="sidebar-text">Laporan & Rekap</span>
+                    </div>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200 group-open:rotate-180 text-primary-300"></i>
+                </summary>
+                <div class="pl-4 pr-1 py-1 mt-1 space-y-1 ml-4 border-l border-white/10">
+                    <a href="{{ url('/admin/laporan') }}"
+                    class="nav-sub-item {{ request()->is('admin/laporan') ? 'active' : '' }}">
+                        <i data-lucide="layout-dashboard" class="nav-icon"></i>
+                        <span>Pusat Laporan</span>
+                    </a>
+                    <a href="{{ url('/admin/laporan/santri') }}"
+                    class="nav-sub-item {{ request()->is('admin/laporan/santri*') ? 'active' : '' }}">
+                        <i data-lucide="users" class="nav-icon"></i>
+                        <span>Laporan Santri</span>
+                    </a>
+                    <a href="{{ url('/admin/laporan/presensi') }}"
+                    class="nav-sub-item {{ request()->is('admin/laporan/presensi*') ? 'active' : '' }}">
+                        <i data-lucide="check-square" class="nav-icon"></i>
+                        <span>Laporan Presensi</span>
+                    </a>
+                    <a href="{{ url('/admin/laporan-keuangan') }}"
+                    class="nav-sub-item {{ request()->is('admin/laporan-keuangan*') ? 'active' : '' }}">
+                        <i data-lucide="wallet" class="nav-icon"></i>
+                        <span>Laporan Keuangan</span>
+                    </a>
+                    <a href="{{ url('/admin/laporan/kedisiplinan') }}"
+                    class="nav-sub-item {{ request()->is('admin/laporan/kedisiplinan*') ? 'active' : '' }}">
+                        <i data-lucide="shield-alert" class="nav-icon"></i>
+                        <span>Laporan Kedisiplinan</span>
+                    </a>
+                    <a href="{{ url('/admin/laporan/psb') }}"
+                    class="nav-sub-item {{ request()->is('admin/laporan/psb*') ? 'active' : '' }}">
+                        <i data-lucide="clipboard-list" class="nav-icon"></i>
+                        <span>Laporan PSB</span>
+                    </a>
+                </div>
+            </details>
 
             {{-- Media & Hubungan --}}
-            <div class="nav-section sidebar-text">Media & Hubungan</div>
-            <a href="{{ url('/admin/berita') }}"
-               class="nav-item {{ request()->is('admin/berita*') ? 'active' : '' }}"
-               id="nav-berita">
-                <i data-lucide="newspaper" class="nav-icon"></i>
-                <span class="sidebar-text">Berita & Kegiatan</span>
-            </a>
-            <a href="{{ url('/admin/broadcast-wa') }}"
-               class="nav-item {{ request()->is('admin/broadcast-wa*') ? 'active' : '' }}"
-               id="nav-broadcast-wa">
-                <svg class="nav-icon w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                <span class="sidebar-text">Broadcast WhatsApp</span>
-            </a>
+            <details class="group cursor-pointer select-none" {{ request()->is('admin/berita*', 'admin/media*', 'admin/broadcast-wa*') ? 'open' : '' }}>
+                <summary class="nav-item flex items-center justify-between [&::-webkit-details-marker]:hidden list-none">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="newspaper" class="nav-icon"></i>
+                        <span class="sidebar-text">Media & Hubungan</span>
+                    </div>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200 group-open:rotate-180 text-primary-300"></i>
+                </summary>
+                <div class="pl-4 pr-1 py-1 mt-1 space-y-1 ml-4 border-l border-white/10">
+                    <a href="{{ url('/admin/berita?tipe=berita') }}"
+                       class="nav-sub-item {{ request()->is('admin/berita*') && request('tipe', '') !== 'pengumuman' ? 'active' : '' }}"
+                       id="nav-berita">
+                        <i data-lucide="file-text" class="nav-icon"></i>
+                        <span>Berita & Kegiatan</span>
+                    </a>
+                    <a href="{{ url('/admin/berita?tipe=pengumuman') }}"
+                       class="nav-sub-item {{ request()->is('admin/berita*') && request('tipe') === 'pengumuman' ? 'active' : '' }}"
+                       id="nav-pengumuman">
+                        <i data-lucide="megaphone" class="nav-icon"></i>
+                        <span>Pengumuman</span>
+                    </a>
+                    <a href="{{ url('/admin/media') }}"
+                       class="nav-sub-item {{ request()->is('admin/media*') ? 'active' : '' }}">
+                        <i data-lucide="image" class="nav-icon"></i>
+                        <span>Galeri Media</span>
+                    </a>
+                    <a href="{{ url('/admin/broadcast-wa') }}"
+                       class="nav-sub-item {{ request()->is('admin/broadcast-wa*') ? 'active' : '' }}"
+                       id="nav-broadcast-wa">
+                        <svg class="nav-icon w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        <span>Broadcast WhatsApp</span>
+                    </a>
+                </div>
+            </details>
 
             {{-- Pengaturan --}}
             <details class="group cursor-pointer select-none" {{ request()->is('admin/users*', 'admin/roles*', 'admin/konfigurasi*') ? 'open' : '' }}>

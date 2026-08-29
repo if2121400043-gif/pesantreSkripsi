@@ -85,7 +85,7 @@
 
                     <div>
                         <label class="block text-sm font-medium text-surface-700 mb-1">NIK (Nomor Induk Kependudukan)</label>
-                        <input type="text" name="nik" placeholder="16 Digit" maxlength="16" class="w-full rounded-lg border border-surface-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        <input type="text" name="nik" placeholder="16 Digit" maxlength="16" inputmode="numeric" pattern="[0-9]{16}" class="w-full rounded-lg border border-surface-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                     </div>
 
                     <div>
@@ -114,7 +114,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-surface-700 mb-1">NIK Ayah</label>
-                        <input type="text" name="nik_ayah" maxlength="16" class="{{ $inputCls }}">
+                        <input type="text" name="nik_ayah" maxlength="16" inputmode="numeric" pattern="[0-9]{16}" class="{{ $inputCls }}">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-surface-700 mb-1">Tahun Lahir</label>
@@ -134,7 +134,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-surface-700 mb-1">No. HP Ayah</label>
-                        <input type="text" name="no_hp_ayah" class="{{ $inputCls }}">
+                        <input type="text" name="no_hp_ayah" inputmode="numeric" pattern="(?:\+62|62|0)[0-9]{8,13}" class="{{ $inputCls }}">
                     </div>
                 </div>
             </x-card>
@@ -147,7 +147,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-surface-700 mb-1">NIK Ibu</label>
-                        <input type="text" name="nik_ibu" maxlength="16" class="{{ $inputCls }}">
+                        <input type="text" name="nik_ibu" maxlength="16" inputmode="numeric" pattern="[0-9]{16}" class="{{ $inputCls }}">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-surface-700 mb-1">Tahun Lahir</label>
@@ -167,7 +167,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-surface-700 mb-1">No. HP Ibu</label>
-                        <input type="text" name="no_hp_ibu" class="{{ $inputCls }}">
+                        <input type="text" name="no_hp_ibu" inputmode="numeric" pattern="(?:\+62|62|0)[0-9]{8,13}" class="{{ $inputCls }}">
                     </div>
                 </div>
             </x-card>
@@ -176,7 +176,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-surface-700 mb-1">No. HP/WhatsApp Aktif <span class="text-danger-500">*</span></label>
-                        <input type="text" name="telepon_wali" required placeholder="08123456789" class="{{ $inputCls }} md:w-full">
+                        <input type="text" name="telepon_wali" required placeholder="08123456789" inputmode="numeric" pattern="(?:\+62|62|0)[0-9]{8,13}" class="{{ $inputCls }} md:w-full">
                         <p class="text-xs text-surface-500 mt-1">Nomor ini akan dihubungi oleh panitia untuk konfirmasi.</p>
                     </div>
                     <div>
@@ -213,7 +213,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-surface-700 mb-1">NIK Wali</label>
-                            <input type="text" name="nik_wali" maxlength="16" class="{{ $inputCls }}">
+                            <input type="text" name="nik_wali" maxlength="16" inputmode="numeric" pattern="[0-9]{16}" class="{{ $inputCls }}">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-surface-700 mb-1">Tahun Lahir</label>
@@ -233,7 +233,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-surface-700 mb-1">No. HP Wali</label>
-                            <input type="text" name="no_hp_wali" class="{{ $inputCls }}">
+                            <input type="text" name="no_hp_wali" inputmode="numeric" pattern="(?:\+62|62|0)[0-9]{8,13}" class="{{ $inputCls }}">
                         </div>
                     </div>
                 </x-card>

@@ -34,12 +34,12 @@
             <div class="relative z-10 p-8 lg:p-12 flex flex-col items-center justify-center text-center min-h-[280px] md:min-h-full">
                 <div class="animate-fade-in animate-delay-100">
                     {{-- Logo --}}
-                    <div class="inline-block p-2 rounded-full bg-white/10 backdrop-blur-sm mb-6 ring-1 ring-white/20 shadow-2xl">
+                    <a href="{{ route('frontend.home') }}" class="inline-block p-2 rounded-full bg-white/10 backdrop-blur-sm mb-6 ring-1 ring-white/20 shadow-2xl hover:bg-white/20 hover:scale-105 transition-all duration-300">
                         <img src="{{ asset('images/logo-pesantren.webp') }}?v={{ time() }}"
                              alt="Logo Pondok Pesantren Nurul Furqon"
                              class="w-28 h-28 lg:w-36 lg:h-36 rounded-full object-cover"
                              id="login-logo">
-                    </div>
+                    </a>
                     
                     {{-- Branding text --}}
                     <h1 class="text-2xl lg:text-3xl font-extrabold text-white font-['Poppins'] leading-tight mb-1">Pondok Pesantren</h1>

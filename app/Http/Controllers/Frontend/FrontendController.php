@@ -16,6 +16,11 @@ use App\Models\Pegawai;
 use App\Models\Lembaga;
 use App\Models\DokumenPsb;
 use App\Models\Media;
+use App\Jobs\SendWhatsAppMessage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class FrontendController extends Controller
 {
@@ -42,14 +47,24 @@ class FrontendController extends Controller
             $q->where('is_active', true);
         })->count();
 
-        $berita_terbaru = Berita::where('is_published', true)
+        $berita_terbaru = Berita::published()
+            ->berita()
+            ->orderBy('is_pinned', 'desc')
             ->orderBy('published_at', 'desc')
             ->take(3)
+            ->get();
+
+        // Pengumuman terbaru untuk banner
+        $pengumuman_terbaru = Berita::published()
+            ->pengumuman()
+            ->orderBy('is_pinned', 'desc')
+            ->orderBy('published_at', 'desc')
+            ->take(5)
             ->get();
             
         $lembagas = Lembaga::where('is_active', true)->orderBy('urutan')->get();
 
-        return view('frontend.home', compact('pesantren', 'totalSantri', 'totalPegawai', 'totalRombel', 'berita_terbaru', 'lembagas', 'isPsbBuka'));
+        return view('frontend.home', compact('pesantren', 'totalSantri', 'totalPegawai', 'totalRombel', 'berita_terbaru', 'pengumuman_terbaru', 'lembagas', 'isPsbBuka'));
     }
 
     // ── Halaman Profil Pesantren ──
@@ -59,15 +74,41 @@ class FrontendController extends Controller
         return view('frontend.profil', compact('pesantren'));
     }
 
-    // ── Halaman Daftar Berita ──
-    public function berita()
+    // ── Halaman Publikasi (Berita & Pengumuman) ──
+    public function publikasi(Request $request)
     {
         $pesantren = Pesantren::first();
-        $beritas = Berita::where('is_published', true)
+
+        // Pencarian
+        $searchQuery = $request->filled('q') ? $request->q : null;
+
+        // Query Berita
+        $beritaQuery = Berita::published()->berita();
+        if ($searchQuery) {
+            $beritaQuery->where(function($q) use ($searchQuery) {
+                $q->where('judul', 'like', '%' . $searchQuery . '%')
+                  ->orWhere('ringkasan', 'like', '%' . $searchQuery . '%');
+            });
+        }
+        $beritas = $beritaQuery->orderBy('is_pinned', 'desc')
             ->orderBy('published_at', 'desc')
-            ->paginate(9);
+            ->paginate(4, ['*'], 'berita_page')
+            ->withQueryString();
+
+        // Query Pengumuman
+        $pengumumanQuery = Berita::published()->pengumuman();
+        if ($searchQuery) {
+            $pengumumanQuery->where(function($q) use ($searchQuery) {
+                $q->where('judul', 'like', '%' . $searchQuery . '%')
+                  ->orWhere('ringkasan', 'like', '%' . $searchQuery . '%');
+            });
+        }
+        $pengumumans = $pengumumanQuery->orderBy('is_pinned', 'desc')
+            ->orderBy('published_at', 'desc')
+            ->paginate(4, ['*'], 'pengumuman_page')
+            ->withQueryString();
             
-        return view('frontend.berita.index', compact('pesantren', 'beritas'));
+        return view('frontend.berita.index', compact('pesantren', 'beritas', 'pengumumans'));
     }
 
     // ── Halaman Detail Berita ──
@@ -134,9 +175,10 @@ class FrontendController extends Controller
             return redirect()->route('frontend.psb')->with('error', 'Pendaftaran saat ini sedang ditutup.');
         }
 
-        $captcha_num1 = rand(1, 10);
-        $captcha_num2 = rand(1, 10);
+        $captcha_num1 = random_int(10, 99);
+        $captcha_num2 = random_int(10, 99);
         session(['captcha_answer' => $captcha_num1 + $captcha_num2]);
+        session(['captcha_created_at' => now()->timestamp]);
 
         $lembagas = Lembaga::where('is_active', true)->orderBy('urutan')->get();
 
@@ -146,18 +188,30 @@ class FrontendController extends Controller
     // ── KODE YANG DIUBAH (PERBAIKAN LOGIKA) ──
     public function storePsb(Request $request)
     {
+        $rateLimitKey = 'psb-registration|' . $request->ip();
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 5)) {
+            return back()->with('error', 'Terlalu banyak percobaan pendaftaran. Silakan coba lagi dalam beberapa menit.')
+                ->withInput();
+        }
+        RateLimiter::hit($rateLimitKey, 60);
+
         if (!empty($request->website_url_website)) {
             return redirect()->route('frontend.psb')->with('success', 'Pendaftaran berhasil disubmit!');
         }
 
-        if ((int)$request->captcha_answer !== session('captcha_answer')) {
-            return back()->with('error', 'Jawaban keamanan matematika tidak tepat. Silakan coba lagi.')->withInput();
+        if (
+            !session('captcha_created_at')
+            || now()->timestamp - (int) session('captcha_created_at') > 600
+            || !hash_equals((string) session('captcha_answer'), (string) $request->captcha_answer)
+        ) {
+            return back()->with('error', 'Jawaban keamanan matematika tidak tepat atau sudah kedaluwarsa. Silakan muat ulang formulir.')
+                ->withInput();
         }
 
-        $request->validate([
+        $validated = $request->validate([
             'gelombang_id' => 'required|exists:gelombang_psb,id',
-            'nik' => 'required|string|size:16|unique:calon_santri,nik|unique:orang,nik', 
-            'kk' => 'nullable|string|max:20',
+            'nik' => 'required|digits:16|unique:calon_santri,nik|unique:orang,nik',
+            'kk' => 'required|digits:16',
             'nama_lengkap' => 'required|string|max:255',
             'jenis_kelamin' => 'required|in:L,P',
             'tempat_lahir' => 'required|string|max:100',
@@ -166,80 +220,90 @@ class FrontendController extends Controller
             'alamat' => 'nullable|string',
             // Data Ayah
             'nama_ayah' => 'nullable|string|max:150',
-            'nik_ayah' => 'nullable|string|max:20',
+            'nik_ayah' => 'nullable|digits:16',
             'tahun_lahir_ayah' => 'nullable|string|max:4',
             'pendidikan_ayah' => 'nullable|string|max:50',
             'pekerjaan_ayah' => 'nullable|string|max:100',
             'penghasilan_ayah' => 'nullable|string|max:50',
-            'no_hp_ayah' => 'nullable|string|max:20',
+            'no_hp_ayah' => ['nullable', 'regex:/^(?:\+62|62|0)[0-9]{8,13}$/'],
             // Data Ibu
             'nama_ibu' => 'nullable|string|max:150',
-            'nik_ibu' => 'nullable|string|max:20',
+            'nik_ibu' => 'nullable|digits:16',
             'tahun_lahir_ibu' => 'nullable|string|max:4',
             'pendidikan_ibu' => 'nullable|string|max:50',
             'pekerjaan_ibu' => 'nullable|string|max:100',
             'penghasilan_ibu' => 'nullable|string|max:50',
-            'no_hp_ibu' => 'nullable|string|max:20',
+            'no_hp_ibu' => ['nullable', 'regex:/^(?:\+62|62|0)[0-9]{8,13}$/'],
             // Wali & Kontak
-            'telepon_wali' => 'required|string|max:20',
+            'telepon_wali' => ['required', 'regex:/^(?:\+62|62|0)[0-9]{8,13}$/'],
             'tinggal_bersama' => 'nullable|string|max:50',
             'nama_wali' => 'nullable|string|max:150',
-            'nik_wali' => 'nullable|string|max:20',
+            'nik_wali' => 'nullable|digits:16',
             'tahun_lahir_wali' => 'nullable|string|max:4',
             'pendidikan_wali' => 'nullable|string|max:50',
             'pekerjaan_wali' => 'nullable|string|max:100',
             'penghasilan_wali' => 'nullable|string|max:50',
-            'no_hp_wali' => 'nullable|string|max:20',
+            'no_hp_wali' => ['nullable', 'regex:/^(?:\+62|62|0)[0-9]{8,13}$/'],
             'hubungan_wali' => 'nullable|string|max:50',
             'lembaga_tujuan_id' => 'nullable|exists:lembaga,id',
+        ], [
+            'nik.unique' => 'NIK calon santri sudah terdaftar. Gunakan NIK yang berbeda atau hubungi panitia.',
+            'nik.digits' => 'NIK calon santri harus terdiri dari tepat 16 digit angka.',
+            'kk.digits' => 'Nomor KK harus terdiri dari tepat 16 digit angka.',
+            '*.digits' => 'Nomor identitas harus terdiri dari tepat 16 digit angka.',
+            '*.regex' => 'Nomor telepon harus menggunakan format Indonesia yang valid, misalnya 081234567890.',
         ]);
 
         try {
-            $calonSantri = CalonSantri::create([
-                'gelombang_id' => $request->gelombang_id,
-                'lembaga_tujuan_id' => $request->lembaga_tujuan_id,
-                'nama_lengkap' => $request->nama_lengkap, 
-                'jenis_kelamin' => $request->jenis_kelamin,
-                'tempat_lahir' => $request->tempat_lahir,
-                'tanggal_lahir' => $request->tanggal_lahir,
-                'nik' => $request->nik,
-                'no_kk' => $request->kk,
-                'asal_sekolah' => $request->asal_sekolah,
-                'alamat' => $request->alamat,
-                // Data Ayah
-                'nama_ayah' => $request->nama_ayah,
-                'nik_ayah' => $request->nik_ayah,
-                'tahun_lahir_ayah' => $request->tahun_lahir_ayah,
-                'pendidikan_ayah' => $request->pendidikan_ayah,
-                'pekerjaan_ayah' => $request->pekerjaan_ayah,
-                'penghasilan_ayah' => $request->penghasilan_ayah,
-                'no_hp_ayah' => $request->no_hp_ayah,
-                // Data Ibu
-                'nama_ibu' => $request->nama_ibu,
-                'nik_ibu' => $request->nik_ibu,
-                'tahun_lahir_ibu' => $request->tahun_lahir_ibu,
-                'pendidikan_ibu' => $request->pendidikan_ibu,
-                'pekerjaan_ibu' => $request->pekerjaan_ibu,
-                'penghasilan_ibu' => $request->penghasilan_ibu,
-                'no_hp_ibu' => $request->no_hp_ibu,
-                // Wali & Kontak
-                'telepon_wali' => $request->telepon_wali,
-                'tinggal_bersama' => $request->tinggal_bersama,
-                'nama_wali' => $request->nama_wali,
-                'nik_wali' => $request->nik_wali,
-                'tahun_lahir_wali' => $request->tahun_lahir_wali,
-                'pendidikan_wali' => $request->pendidikan_wali,
-                'pekerjaan_wali' => $request->pekerjaan_wali,
-                'penghasilan_wali' => $request->penghasilan_wali,
-                'no_hp_wali' => $request->no_hp_wali,
-                'hubungan_wali' => $request->hubungan_wali,
-            ]);
+            $calonSantri = DB::transaction(function () use ($validated) {
+                $gelombang = GelombangPsb::whereKey($validated['gelombang_id'])
+                    ->where('is_active', true)
+                    ->whereDate('tanggal_buka', '<=', today())
+                    ->whereDate('tanggal_tutup', '>=', today())
+                    ->lockForUpdate()
+                    ->first();
+
+                if (!$gelombang) {
+                    throw new \RuntimeException('Pendaftaran untuk gelombang ini sudah ditutup.');
+                }
+
+                if ($gelombang->kuota > 0 && $gelombang->pendaftar()->count() >= $gelombang->kuota) {
+                    throw new \RuntimeException('Kuota pendaftaran untuk gelombang ini sudah penuh.');
+                }
+
+                if (
+                    CalonSantri::where('nik', $validated['nik'])->lockForUpdate()->exists()
+                    || Orang::where('nik', $validated['nik'])->lockForUpdate()->exists()
+                ) {
+                    throw new \RuntimeException('NIK calon santri sudah terdaftar. Gunakan NIK yang berbeda atau hubungi panitia.');
+                }
+
+                $data = $validated;
+                $data['no_kk'] = $data['kk'] ?? null;
+                unset($data['kk']);
+                $data['status_workflow'] = 'DRAFT';
+
+                return CalonSantri::create($data);
+            });
+            session()->forget(['captcha_answer', 'captcha_created_at']);
+
+            if ($calonSantri->telepon_wali) {
+                SendWhatsAppMessage::dispatch('registration_received', $calonSantri->telepon_wali, [
+                    'santri_nama' => $calonSantri->nama_lengkap,
+                    'no_pendaftaran' => $calonSantri->no_pendaftaran,
+                    'status' => 'Draft',
+                    'status_url' => route('frontend.psb.status', ['no_pendaftaran' => $calonSantri->no_pendaftaran]),
+                ]);
+            }
 
             return redirect()->route('frontend.psb.upload', ['no_pendaftaran' => $calonSantri->no_pendaftaran])
                 ->with('success', 'Formulir berhasil disimpan. Silakan lanjutkan dengan mengunggah berkas persyaratan.');
 
-        } catch (\Exception $e) {
-            return back()->with('error', 'Terjadi kesalahan saat mendaftar: ' . $e->getMessage())->withInput();
+        } catch (\RuntimeException $e) {
+            return back()->with('error', $e->getMessage())->withInput();
+        } catch (\Throwable $e) {
+            Log::error('PSB registration failed', ['exception' => $e]);
+            return back()->with('error', 'Terjadi kesalahan saat mendaftar. Silakan coba lagi atau hubungi panitia.')->withInput();
         }
     }
     // ───────────────────────────────────────
@@ -267,43 +331,27 @@ class FrontendController extends Controller
         ]);
 
         $berkasTypes = ['kartu_keluarga', 'akta_kelahiran', 'ijazah', 'pas_foto', 'ktp_orangtua'];
+        DB::transaction(function () use ($request, $calonSantri, $berkasTypes) {
+            foreach ($berkasTypes as $jenis) {
+                if (!$request->hasFile($jenis)) {
+                    continue;
+                }
 
-        foreach ($berkasTypes as $jenis) {
-            if ($request->hasFile($jenis)) {
-                // Cari dokumen lama terlebih dahulu
                 $existingDoc = DokumenPsb::where('calon_santri_id', $calonSantri->id)
                     ->where('jenis_dokumen', $jenis)
                     ->first();
-
-                $file = $request->file($jenis);
-                // Store on private 'local' disk instead of 'public' disk
-                $path = $file->store('psb/dokumen/' . date('Y/m'), 'local');
+                $path = $request->file($jenis)->store('psb/dokumen/' . date('Y/m'), 'local');
 
                 if ($existingDoc) {
-                    // Hapus file lama dari disk
                     if ($existingDoc->file_path) {
-                        // Check if old file exists on local or public disk and delete it
-                        if (\Illuminate\Support\Facades\Storage::disk('local')->exists($existingDoc->file_path)) {
-                            \Illuminate\Support\Facades\Storage::disk('local')->delete($existingDoc->file_path);
-                        } elseif (\Illuminate\Support\Facades\Storage::disk('public')->exists($existingDoc->file_path)) {
-                            \Illuminate\Support\Facades\Storage::disk('public')->delete($existingDoc->file_path);
-                        } else {
-                            // Fallback for legacy database paths starting with 'public/'
-                            if (str_starts_with($existingDoc->file_path, 'public/')) {
-                                \Illuminate\Support\Facades\Storage::disk('local')->delete($existingDoc->file_path);
-                            } else {
-                                \Illuminate\Support\Facades\Storage::disk('public')->delete($existingDoc->file_path);
-                            }
+                        if (Storage::disk('local')->exists($existingDoc->file_path)) {
+                            Storage::disk('local')->delete($existingDoc->file_path);
+                        } elseif (Storage::disk('public')->exists($existingDoc->file_path)) {
+                            Storage::disk('public')->delete($existingDoc->file_path);
                         }
                     }
-                    
-                    // Update data
-                    $existingDoc->update([
-                        'file_path' => $path,
-                        'is_verified' => false, // Reset verifikasi jika upload ulang
-                    ]);
+                    $existingDoc->update(['file_path' => $path, 'is_verified' => false]);
                 } else {
-                    // Buat dokumen baru
                     DokumenPsb::create([
                         'calon_santri_id' => $calonSantri->id,
                         'jenis_dokumen' => $jenis,
@@ -312,9 +360,41 @@ class FrontendController extends Controller
                     ]);
                 }
             }
+
+            $uploadedTypes = $calonSantri->dokumen()->pluck('jenis_dokumen')->all();
+            $isComplete = !array_diff($berkasTypes, $uploadedTypes);
+            $calonSantri->update([
+                'status_workflow' => $isComplete ? 'MENUNGGU_VERIFIKASI' : 'TIDAK_LENGKAP',
+            ]);
+        });
+
+        $calonSantri->refresh();
+        if ($calonSantri->workflow_status === 'MENUNGGU_VERIFIKASI' && $calonSantri->telepon_wali) {
+            SendWhatsAppMessage::dispatch('registration_received', $calonSantri->telepon_wali, [
+                'santri_nama' => $calonSantri->nama_lengkap,
+                'no_pendaftaran' => $calonSantri->no_pendaftaran,
+                'status_url' => route('frontend.psb.status', ['no_pendaftaran' => $calonSantri->no_pendaftaran]),
+            ]);
         }
 
         return redirect()->route('frontend.psb.selesai', ['no_pendaftaran' => $calonSantri->no_pendaftaran]);
+    }
+
+    public function status(Request $request)
+    {
+        $result = null;
+        if ($request->filled('no_pendaftaran') && $request->filled('nik')) {
+            $validated = $request->validate([
+                'no_pendaftaran' => 'required|string|max:30',
+                'nik' => 'required|digits:16',
+            ]);
+
+            $result = CalonSantri::where('no_pendaftaran', $validated['no_pendaftaran'])
+                ->where('nik', $validated['nik'])
+                ->first();
+        }
+
+        return view('frontend.psb.status', compact('result'));
     }
 
     // ── KODE YANG DIUBAH ──

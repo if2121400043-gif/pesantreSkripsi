@@ -53,9 +53,16 @@
                         window.scrollTo({top: document.getElementById('form-header').offsetTop - 20, behavior: 'smooth'});
                     }
                 }" 
-                action="{{ route('frontend.psb.store') }}" method="POST" class="p-8 md:p-12">
+                action="{{ route('frontend.psb.store') }}" method="POST" novalidate class="p-8 md:p-12">
                 @csrf
                 <input type="hidden" name="gelombang_id" value="{{ $gelombangAktif->id }}">
+
+                <div id="client-validation-notice" role="alert" class="hidden bg-danger-50 dark:bg-danger-500/10 text-danger-700 dark:text-danger-400 p-4 rounded-xl border border-danger-200 dark:border-danger-500/20 mb-8">
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="alert-circle" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+                        <p id="client-validation-message" class="text-sm font-medium"></p>
+                    </div>
+                </div>
 
                 @if($errors->any())
                     <div class="bg-danger-50 dark:bg-danger-500/10 text-danger-700 dark:text-danger-400 p-4 rounded-xl border border-danger-200 dark:border-danger-500/20 mb-8">
@@ -76,6 +83,7 @@
                         </div>
                         <div class="hidden sm:block">
                             <p class="text-sm font-bold" :class="step >= 1 ? 'text-surface-900 dark:text-white' : 'text-surface-500'">Identitas Santri</p>
+                            <span id="step-1-completeness" class="text-xs text-surface-500">0/6 {{ __('lengkap') }}</span>
                             <p class="text-xs text-surface-500">Data diri & sekolah</p>
                         </div>
                     </div>
@@ -85,6 +93,7 @@
                     <div class="flex items-center gap-3">
                         <div class="hidden sm:block text-right">
                             <p class="text-sm font-bold" :class="step === 2 ? 'text-surface-900 dark:text-white' : 'text-surface-500'">Data Keluarga</p>
+                            <span id="step-2-completeness" class="text-xs text-surface-500">0/2 {{ __('lengkap') }}</span>
                             <p class="text-xs text-surface-500">Orang tua & wali</p>
                         </div>
                         <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold transition-colors"
@@ -104,12 +113,11 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-semibold text-surface-700 dark:text-surface-300 mb-1.5">{{ __('NIK (Nomor Induk Kependudukan)') }} <span class="text-danger-500">*</span></label>
-                                <input type="text" name="nik" value="{{ old('nik') }}" class="w-full rounded-xl border-surface-300 dark:border-surface-700 bg-white dark:bg-surface-800 text-surface-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring focus:ring-primary-500/20 placeholder:text-surface-400 dark:placeholder:text-surface-500 transition-colors" maxlength="16" required>
+                                <input type="text" name="nik" value="{{ old('nik') }}" inputmode="numeric" pattern="[0-9]{16}" class="w-full rounded-xl border-surface-300 dark:border-surface-700 bg-white dark:bg-surface-800 text-surface-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring focus:ring-primary-500/20 placeholder:text-surface-400 dark:placeholder:text-surface-500 transition-colors" maxlength="16" required>
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-surface-700 dark:text-surface-300 mb-1.5">{{ __('Nomor Kartu Keluarga (KK)') }} <span class="text-danger-500">*</span></label>
-                                {{-- PERHATIKAN: Kolom KK tidak masuk database di controller, tapi tetap diwajibkan isi untuk syarat administrasi --}}
-                                <input type="text" name="kk" value="{{ old('kk') }}" class="w-full rounded-xl border-surface-300 dark:border-surface-700 bg-white dark:bg-surface-800 text-surface-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring focus:ring-primary-500/20 placeholder:text-surface-400 dark:placeholder:text-surface-500 transition-colors" maxlength="16" required>
+                                <input type="text" name="kk" value="{{ old('kk') }}" inputmode="numeric" pattern="[0-9]{16}" class="w-full rounded-xl border-surface-300 dark:border-surface-700 bg-white dark:bg-surface-800 text-surface-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring focus:ring-primary-500/20 placeholder:text-surface-400 dark:placeholder:text-surface-500 transition-colors" maxlength="16" required>
                             </div>
                             <div class="md:col-span-2">
                                 <label class="block text-sm font-semibold text-surface-700 dark:text-surface-300 mb-1.5">{{ __('Nama Lengkap') }} <span class="text-danger-500">*</span></label>
@@ -209,3 +217,121 @@
     </div>
 </section>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form[action="{{ route('frontend.psb.store') }}"]');
+    if (!form) return;
+
+    const notice = document.getElementById('client-validation-notice');
+    const noticeMessage = document.getElementById('client-validation-message');
+    const serverErrorFields = @json($errors->keys());
+    const draftKey = 'psb-draft-{{ $gelombangAktif->id }}';
+    const draftFields = [...form.querySelectorAll('input:not([type="file"]):not([type="hidden"]), select, textarea')]
+        .filter((field) => !['captcha_answer', 'website_url_website'].includes(field.name));
+
+    try {
+        const savedDraft = JSON.parse(localStorage.getItem(draftKey) || '{}');
+        draftFields.forEach((field) => {
+            if (!field.value && savedDraft[field.name] !== undefined) field.value = savedDraft[field.name];
+        });
+    } catch (_) {}
+
+    const saveDraft = () => {
+        const draft = {};
+        draftFields.forEach((field) => { draft[field.name] = field.value; });
+        try { localStorage.setItem(draftKey, JSON.stringify(draft)); } catch (_) {}
+        updateCompleteness();
+    };
+
+    const updateCompleteness = () => {
+        const count = (selector) => {
+            const fields = [...form.querySelectorAll(selector)];
+            return `${fields.filter((field) => field.value.trim()).length}/${fields.length}`;
+        };
+        document.getElementById('step-1-completeness').textContent = `${count('#step-1-container input[required], #step-1-container select[required]')} lengkap`;
+        document.getElementById('step-2-completeness').textContent = `${count('#step-2-container input[required], #step-2-container select[required]')} lengkap`;
+    };
+    draftFields.forEach((field) => field.addEventListener('input', saveDraft));
+    updateCompleteness();
+
+    const getFieldLabel = (field) => {
+        const label = form.querySelector(`label[for="${field.id}"]`)
+            || field.closest('div')?.querySelector('label');
+        return label?.textContent.replace('*', '').trim() || field.name.replaceAll('_', ' ');
+    };
+
+    const showValidationError = (field, message) => {
+        form.querySelectorAll('.psb-field-error').forEach((error) => error.remove());
+        form.querySelectorAll('[aria-invalid="true"]').forEach((input) => input.removeAttribute('aria-invalid'));
+
+        field.setAttribute('aria-invalid', 'true');
+        const error = document.createElement('p');
+        error.className = 'psb-field-error text-danger-600 dark:text-danger-400 text-xs font-medium mt-1.5';
+        error.textContent = message;
+        field.insertAdjacentElement('afterend', error);
+
+        noticeMessage.textContent = message;
+        notice.classList.remove('hidden');
+        notice.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        field.focus({ preventScroll: true });
+        field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+
+    const activateFieldStep = (field) => {
+        const stepContainer = field.closest('#step-1-container, #step-2-container');
+        if (!stepContainer || !window.Alpine) return;
+
+        const alpineData = Alpine.$data(form);
+        if (alpineData) {
+            alpineData.step = stepContainer.id === 'step-1-container' ? 1 : 2;
+        }
+    };
+
+    form.addEventListener('submit', (event) => {
+        if (!window.confirm('Pastikan seluruh data dan dokumen yang akan dikirim sudah benar. Lanjutkan pendaftaran?')) {
+            event.preventDefault();
+            return;
+        }
+
+        const invalidField = [...form.querySelectorAll('[required]')].find((field) => {
+            if (field.disabled || field.type === 'hidden') return false;
+            return !field.value.trim() || !field.checkValidity();
+        });
+
+        if (!invalidField) {
+            try { localStorage.removeItem(draftKey); } catch (_) {}
+            return;
+        }
+
+        event.preventDefault();
+        activateFieldStep(invalidField);
+        window.setTimeout(() => {
+            showValidationError(
+                invalidField,
+                invalidField.value.trim()
+                    ? `${getFieldLabel(invalidField)} belum menggunakan format yang valid.`
+                    : `${getFieldLabel(invalidField)} harus diisi.`
+            );
+        }, 50);
+    });
+
+    if (serverErrorFields.length > 0) {
+        const firstInvalidField = serverErrorFields
+            .map((name) => form.querySelector(`[name="${name}"]`))
+            .find(Boolean);
+
+        if (firstInvalidField) {
+            activateFieldStep(firstInvalidField);
+            window.setTimeout(() => {
+                showValidationError(
+                    firstInvalidField,
+                    `Periksa kembali kolom ${getFieldLabel(firstInvalidField)}.`
+                );
+            }, 100);
+        }
+    }
+});
+</script>
+@endpush

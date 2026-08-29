@@ -61,7 +61,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <label class="relative flex items-center justify-between p-4 rounded-xl border border-surface-200 bg-white hover:border-primary-500 cursor-pointer transition-all duration-200">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                                <div class="w-10 h-10 rounded-lg bg-primary-50 text-primary-600 flex items-center justify-center">
                                     <i data-lucide="home" class="w-5 h-5"></i>
                                 </div>
                                 <div>
@@ -157,7 +157,7 @@
             <div class="space-y-4">
                 <div class="p-4 rounded-xl bg-surface-50 border border-surface-100">
                     <div class="flex items-start gap-3">
-                        <div class="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                        <div class="w-9 h-9 rounded-lg bg-primary-100 text-primary-700 flex items-center justify-center shrink-0">
                             <i data-lucide="home" class="w-5 h-5"></i>
                         </div>
                         <div>

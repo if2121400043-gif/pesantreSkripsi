@@ -49,16 +49,16 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
             Kembali
         </a>
-        <button onclick="window.print()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition-colors flex items-center gap-2">
+        <button onclick="window.print()" class="px-4 py-2 bg-primary-600 text-white rounded-lg shadow hover:bg-primary-700 transition-colors flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
             Cetak Kuitansi
         </button>
     </div>
 
-    <div class="receipt-container border-t-8 border-emerald-600">
+    <div class="receipt-container border-t-8 border-primary-600">
         
         <!-- Header -->
-        <div class="flex justify-between items-start border-b-2 border-emerald-100 pb-6 mb-6">
+        <div class="flex justify-between items-start border-b-2 border-primary-100 pb-6 mb-6">
             <div class="flex items-center gap-4">
                 @if($pesantren && $pesantren->logo)
                     <img src="{{ Storage::url($pesantren->logo) }}" alt="Logo" class="w-16 h-16 object-contain">
@@ -81,7 +81,7 @@
                 </div>
             </div>
             <div class="text-right">
-                <h2 class="text-3xl font-bold text-emerald-600 tracking-tight">KUITANSI</h2>
+                <h2 class="text-3xl font-bold text-primary-600 tracking-tight">KUITANSI</h2>
                 <p class="text-sm font-medium text-gray-500 mt-1">No: {{ $pembayaran->no_transaksi }}</p>
             </div>
         </div>
@@ -113,11 +113,11 @@
         </div>
 
         <!-- Nominal Box -->
-        <div class="flex justify-between items-end border-b-2 border-emerald-100 pb-6 mb-6">
+        <div class="flex justify-between items-end border-b-2 border-primary-100 pb-6 mb-6">
             <div>
                 <p class="text-sm text-gray-500 italic mb-1">Terbilang:</p>
-                <div class="bg-emerald-50 px-4 py-2 rounded-lg border border-emerald-100 inline-block">
-                    <p class="font-medium text-emerald-800 capitalize">
+                <div class="bg-primary-50 px-4 py-2 rounded-lg border border-primary-100 inline-block">
+                    <p class="font-medium text-primary-800 capitalize">
                         # {{ terbilang($pembayaran->jumlah) }} Rupiah #
                     </p>
                 </div>

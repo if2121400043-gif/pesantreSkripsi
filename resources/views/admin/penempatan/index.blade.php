@@ -15,7 +15,7 @@
 }">
 
     {{-- Hero Header Banner --}}
-    <div class="rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #047857, #065f46) !important; color: #ffffff !important;">
+    <div class="rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #047857, #1e3a5f) !important; color: #ffffff !important;">
         <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
         <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
@@ -43,7 +43,7 @@
         <form action="{{ route('admin.penempatan.index') }}" method="GET" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
                 <label class="block text-xs font-bold text-surface-700 mb-1">1. Lembaga Pendidikan <span class="text-rose-500">*</span></label>
-                <select name="lembaga_id" required class="w-full px-3.5 py-2 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                <select name="lembaga_id" required class="w-full px-3.5 py-2 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                     <option value="" disabled selected>Pilih Lembaga (SMP / SMA / Madin)...</option>
                     @foreach($lembagas as $lembaga)
                         <option value="{{ $lembaga->id }}" {{ $lembagaId == $lembaga->id ? 'selected' : '' }}>
@@ -55,7 +55,7 @@
 
             <div>
                 <label class="block text-xs font-bold text-surface-700 mb-1">2. Tahun Pelajaran <span class="text-rose-500">*</span></label>
-                <select name="tahun_pelajaran_id" required class="w-full px-3.5 py-2 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                <select name="tahun_pelajaran_id" required class="w-full px-3.5 py-2 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                     <option value="" disabled selected>Pilih Tahun Ajaran...</option>
                     @foreach($tahuns as $tahun)
                         <option value="{{ $tahun->id }}" {{ $tahunId == $tahun->id ? 'selected' : ($loop->first && !$tahunId ? 'selected' : '') }}>
@@ -68,7 +68,7 @@
             <div class="flex items-end gap-2">
                 <div class="flex-1">
                     <label class="block text-xs font-bold text-surface-700 mb-1">3. Tingkat (Opsional)</label>
-                    <select name="tingkat" class="w-full px-3.5 py-2 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                    <select name="tingkat" class="w-full px-3.5 py-2 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                         <option value="">Semua Tingkat</option>
                         @for($i=1; $i<=15; $i++)
                             <option value="{{ $i }}" {{ $tingkat == $i ? 'selected' : '' }}>Tingkat {{ $i }}</option>
@@ -94,14 +94,14 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                         <div>
                             <h3 class="font-extrabold text-surface-900 text-base flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-lg bg-emerald-700 text-white font-black text-xs flex items-center justify-center shrink-0" style="background-color: #047857 !important; color: #ffffff !important;">1</span>
+                                <span class="w-6 h-6 rounded-lg bg-primary-700 text-white font-black text-xs flex items-center justify-center shrink-0" style="background-color: #047857 !important; color: #ffffff !important;">1</span>
                                 Pilih Kelas Tujuan (Klik Kartu / Lingkaran Radio)
                             </h3>
                             <p class="text-xs text-surface-500 mt-0.5">Pilih salah satu kelas di bawah ini sebagai kelas target penempatan santri.</p>
                         </div>
 
                         <div class="text-xs text-surface-600 font-bold bg-surface-50 px-3 py-1.5 rounded-xl border border-surface-200 shrink-0">
-                            Kelas Terpilih: <strong x-text="selectedRombelName" class="text-emerald-800 font-extrabold ml-1"></strong>
+                            Kelas Terpilih: <strong x-text="selectedRombelName" class="text-primary-800 font-extrabold ml-1"></strong>
                         </div>
                     </div>
 
@@ -117,11 +117,11 @@
                                 @endphp
 
                                 <div @click="selectRombel('{{ $rombel->id }}', '{{ addslashes($rName) }}')"
-                                     :class="(selectedRombelId !== '' && String(selectedRombelId) === '{{ (string)$rombel->id }}') ? 'border-2 border-emerald-600 bg-emerald-50 shadow-md ring-2 ring-emerald-500/20' : 'border border-surface-200 bg-white hover:border-emerald-300 hover:shadow-2xs'"
+                                     :class="(selectedRombelId !== '' && String(selectedRombelId) === '{{ (string)$rombel->id }}') ? 'border-2 border-primary-600 bg-primary-50 shadow-md ring-2 ring-primary-500/20' : 'border border-surface-200 bg-white hover:border-primary-300 hover:shadow-2xs'"
                                      class="p-3.5 rounded-2xl cursor-pointer transition-all relative overflow-hidden group">
                                     
                                     <div class="flex items-start justify-between gap-2 mb-1.5">
-                                        <h4 class="font-extrabold text-surface-900 text-xs leading-snug group-hover:text-emerald-700 transition-colors">
+                                        <h4 class="font-extrabold text-surface-900 text-xs leading-snug group-hover:text-primary-700 transition-colors">
                                             {{ $rName }}
                                         </h4>
                                         
@@ -133,7 +133,7 @@
                                                    value="{{ $rombel->id }}" 
                                                    @change="selectRombel('{{ $rombel->id }}', '{{ addslashes($rName) }}')"
                                                    :checked="selectedRombelId !== '' && String(selectedRombelId) === '{{ (string)$rombel->id }}'"
-                                                   class="w-4 h-4 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                                   class="w-4 h-4 text-primary-600 focus:ring-primary-500 cursor-pointer">
                                         </div>
                                     </div>
 
@@ -141,11 +141,11 @@
                                         <span class="px-1.5 py-0.5 rounded text-[0.6rem] font-extrabold uppercase {{ $rombel->gender_target === 'PUTRA' ? 'bg-blue-100 text-blue-800' : ($rombel->gender_target === 'PUTRI' ? 'bg-pink-100 text-pink-800' : 'bg-surface-100 text-surface-700') }}">
                                             {{ $rombel->gender_target }}
                                         </span>
-                                        <span class="font-bold {{ $rFull ? 'text-rose-600' : 'text-emerald-700' }}">{{ $rFilled }}/{{ $rombel->kapasitas }} ({{ $rPct }}%)</span>
+                                        <span class="font-bold {{ $rFull ? 'text-rose-600' : 'text-primary-700' }}">{{ $rFilled }}/{{ $rombel->kapasitas }} ({{ $rPct }}%)</span>
                                     </div>
 
                                     <div class="w-full bg-surface-200 rounded-full h-1.5 overflow-hidden">
-                                        <div class="h-1.5 rounded-full {{ $rFull ? 'bg-rose-500' : ($rPct >= 80 ? 'bg-amber-500' : 'bg-emerald-600') }}" style="width: {{ $rPct }}%"></div>
+                                        <div class="h-1.5 rounded-full {{ $rFull ? 'bg-rose-500' : ($rPct >= 80 ? 'bg-amber-500' : 'bg-primary-600') }}" style="width: {{ $rPct }}%"></div>
                                     </div>
                                 </div>
                             @endforeach
@@ -153,7 +153,7 @@
                     @else
                         <div class="p-6 text-center bg-surface-50 rounded-2xl border border-surface-200 border-dashed">
                             <p class="text-xs text-surface-500">Belum ada rombel/kelas di lembaga ini.</p>
-                            <a href="{{ route('admin.rombel.create') }}" class="text-emerald-700 font-bold text-xs mt-1 inline-block hover:underline">Buat Kelas Baru</a>
+                            <a href="{{ route('admin.rombel.create') }}" class="text-primary-700 font-bold text-xs mt-1 inline-block hover:underline">Buat Kelas Baru</a>
                         </div>
                     @endif
                 </div>
@@ -170,7 +170,7 @@
                         <div class="flex items-center gap-2 text-xs overflow-x-auto">
                             <span class="text-surface-500 font-bold shrink-0">Filter Gender:</span>
                             <div class="inline-flex rounded-xl p-1 bg-surface-100 border border-surface-200 shrink-0">
-                                <button type="button" id="btn-filter-all" data-gender="ALL" class="gender-filter-btn px-3 py-1 rounded-lg text-xs font-bold bg-white text-emerald-800 shadow-2xs transition-all">
+                                <button type="button" id="btn-filter-all" data-gender="ALL" class="gender-filter-btn px-3 py-1 rounded-lg text-xs font-bold bg-white text-primary-800 shadow-2xs transition-all">
                                     Semua
                                 </button>
                                 <button type="button" id="btn-filter-l" data-gender="L" class="gender-filter-btn px-3 py-1 rounded-lg text-xs font-semibold text-surface-600 hover:text-surface-900 transition-all">
@@ -189,7 +189,7 @@
                             <i data-lucide="search" class="w-4 h-4"></i>
                         </div>
                         <input type="text" id="live-search-santri" placeholder="Cari nama santri, NIUP, atau NISN..." 
-                               class="w-full pr-4 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors"
+                               class="w-full pr-4 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-colors"
                                style="padding-left: 2.75rem !important;">
                     </div>
 
@@ -200,7 +200,7 @@
                                 <thead class="bg-surface-100/80 text-surface-600 border-b border-surface-200 font-bold uppercase text-[0.65rem]">
                                     <tr>
                                         <th class="px-4 py-3 text-center" style="width: 5%;">
-                                            <input type="checkbox" id="check-all" class="rounded border-surface-300 text-emerald-600 focus:ring-emerald-500 w-4 h-4 cursor-pointer">
+                                            <input type="checkbox" id="check-all" class="rounded border-surface-300 text-primary-600 focus:ring-primary-500 w-4 h-4 cursor-pointer">
                                         </th>
                                         <th class="px-4 py-3" style="width: 35%;">Identitas Santri</th>
                                         <th class="px-4 py-3" style="width: 20%;">NIS / NISN</th>
@@ -213,9 +213,9 @@
                                         @php
                                             $lastRombel = $peserta->riwayatRombel->first()?->rombel;
                                         @endphp
-                                        <tr class="hover:bg-emerald-50/50 transition-colors cursor-pointer row-clickable santri-row" data-name="{{ strtolower($peserta->orang->nama_lengkap) }}" data-niup="{{ strtolower($peserta->orang->niup) }}" data-nis="{{ strtolower($peserta->nis ?? '') }}" data-nisn="{{ strtolower($peserta->nisn ?? '') }}" data-gender="{{ $peserta->orang->jenis_kelamin }}">
+                                        <tr class="hover:bg-primary-50/50 transition-colors cursor-pointer row-clickable santri-row" data-name="{{ strtolower($peserta->orang->nama_lengkap) }}" data-niup="{{ strtolower($peserta->orang->niup) }}" data-nis="{{ strtolower($peserta->nis ?? '') }}" data-nisn="{{ strtolower($peserta->nisn ?? '') }}" data-gender="{{ $peserta->orang->jenis_kelamin }}">
                                             <td class="px-4 py-3 text-center">
-                                                <input type="checkbox" name="peserta_ids[]" value="{{ $peserta->id }}" class="peserta-checkbox rounded border-surface-300 text-emerald-600 focus:ring-emerald-500 w-4 h-4 cursor-pointer">
+                                                <input type="checkbox" name="peserta_ids[]" value="{{ $peserta->id }}" class="peserta-checkbox rounded border-surface-300 text-primary-600 focus:ring-primary-500 w-4 h-4 cursor-pointer">
                                             </td>
                                             <td class="px-4 py-3">
                                                 <div class="flex items-center gap-3">
@@ -224,7 +224,7 @@
                                                     </div>
                                                     <div>
                                                         <div class="font-extrabold text-surface-900 text-xs">{{ $peserta->orang->nama_lengkap }}</div>
-                                                        <div class="text-[0.68rem] text-emerald-700 font-mono">NIUP: {{ $peserta->orang->niup }}</div>
+                                                        <div class="text-[0.68rem] text-primary-700 font-mono">NIUP: {{ $peserta->orang->niup }}</div>
                                                     </div>
                                                 </div>
                                             </td>
@@ -239,8 +239,8 @@
                                                         Ex: {{ $lastRombel->nama }}
                                                     </span>
                                                 @else
-                                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-[0.68rem] font-bold">
-                                                        <i data-lucide="sparkles" class="w-3 h-3 text-emerald-600"></i>
+                                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-primary-50 text-primary-800 border border-primary-200 text-[0.68rem] font-bold">
+                                                        <i data-lucide="sparkles" class="w-3 h-3 text-primary-600"></i>
                                                         Santri Baru
                                                     </span>
                                                 @endif
@@ -254,7 +254,7 @@
                                     @empty
                                         <tr id="empty-db-row">
                                             <td colspan="5" class="px-4 py-10 text-center text-surface-500">
-                                                <i data-lucide="check-circle" class="w-10 h-10 text-emerald-500 mx-auto mb-2"></i>
+                                                <i data-lucide="check-circle" class="w-10 h-10 text-primary-500 mx-auto mb-2"></i>
                                                 <p class="font-bold text-surface-900 text-sm mb-0.5">Semua Santri Sudah Memiliki Kelas!</p>
                                                 <p class="text-xs text-surface-450">Tidak ada daftar santri aktif yang belum ditempatkan.</p>
                                             </td>
@@ -272,10 +272,10 @@
                             </div>
 
                             <div class="flex items-center gap-2">
-                                <button type="button" id="btn-prev-page" class="px-3.5 py-1.5 rounded-xl bg-white border border-surface-300 font-bold text-surface-700 hover:bg-emerald-50 hover:text-emerald-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-2xs">
+                                <button type="button" id="btn-prev-page" class="px-3.5 py-1.5 rounded-xl bg-white border border-surface-300 font-bold text-surface-700 hover:bg-primary-50 hover:text-primary-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-2xs">
                                     ← Previous
                                 </button>
-                                <button type="button" id="btn-next-page" class="px-3.5 py-1.5 rounded-xl bg-white border border-surface-300 font-bold text-surface-700 hover:bg-emerald-50 hover:text-emerald-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-2xs">
+                                <button type="button" id="btn-next-page" class="px-3.5 py-1.5 rounded-xl bg-white border border-surface-300 font-bold text-surface-700 hover:bg-primary-50 hover:text-primary-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-2xs">
                                     Next →
                                 </button>
                             </div>
@@ -299,7 +299,7 @@
         </form>
     @else
         <div class="bg-white rounded-3xl p-12 text-center border border-surface-200 shadow-sm space-y-3 max-w-lg mx-auto">
-            <div class="w-16 h-16 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center mx-auto mb-2 border border-emerald-100">
+            <div class="w-16 h-16 bg-primary-50 text-primary-700 rounded-2xl flex items-center justify-center mx-auto mb-2 border border-primary-100">
                 <i data-lucide="filter" class="w-8 h-8"></i>
             </div>
             <h3 class="text-lg font-extrabold text-surface-900">Silakan Pilih Lembaga & Tahun Pelajaran</h3>
@@ -406,10 +406,10 @@
         genderBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 genderBtns.forEach(b => {
-                    b.classList.remove('bg-white', 'text-emerald-800', 'shadow-2xs', 'font-bold');
+                    b.classList.remove('bg-white', 'text-primary-800', 'shadow-2xs', 'font-bold');
                     b.classList.add('text-surface-600', 'font-semibold');
                 });
-                this.classList.add('bg-white', 'text-emerald-800', 'shadow-2xs', 'font-bold');
+                this.classList.add('bg-white', 'text-primary-800', 'shadow-2xs', 'font-bold');
                 this.classList.remove('text-surface-600', 'font-semibold');
                 currentGenderFilter = this.getAttribute('data-gender');
                 currentPage = 1;

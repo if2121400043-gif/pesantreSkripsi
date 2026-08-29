@@ -6,7 +6,7 @@
 <div class="space-y-6">
 
     {{-- Hero Header Banner --}}
-    <div class="rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #047857, #065f46) !important; color: #ffffff !important;">
+    <div class="rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #047857, #1e3a5f) !important; color: #ffffff !important;">
         <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
         <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
@@ -49,7 +49,7 @@
         {{-- Card 1: Pilih Identitas Induk --}}
         <div class="bg-white rounded-3xl p-6 md:p-8 border border-surface-200 shadow-sm space-y-4">
             <h3 class="font-extrabold text-surface-900 text-base flex items-center gap-2 pb-3 border-b border-surface-100">
-                <i data-lucide="user-check" class="w-5 h-5 text-emerald-700"></i>
+                <i data-lucide="user-check" class="w-5 h-5 text-primary-700"></i>
                 1. Pilih Identitas Induk (Orang)
             </h3>
             <p class="text-xs text-surface-500">Pegawai harus terdaftar di sistem identitas induk (NIUP) terlebih dahulu sebelum bisa didaftarkan secara kepegawaian.</p>
@@ -87,7 +87,7 @@
                 
                 <label class="block text-xs font-extrabold text-surface-700 mb-1.5">Pilih Orang / Pengajar <span class="text-rose-500">*</span></label>
                 
-                <div @click="open = !open" class="w-full px-4 py-3 rounded-2xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 cursor-pointer flex items-center justify-between shadow-2xs hover:border-emerald-500 transition-colors">
+                <div @click="open = !open" class="w-full px-4 py-3 rounded-2xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 cursor-pointer flex items-center justify-between shadow-2xs hover:border-primary-500 transition-colors">
                     <span x-text="selectedText || 'Klik untuk mencari nama atau NIUP...'" :class="selectedText ? 'text-surface-900 font-bold' : 'text-surface-400'"></span>
                     <i data-lucide="chevron-down" class="w-4 h-4 text-surface-400"></i>
                 </div>
@@ -95,18 +95,18 @@
                 {{-- Dropdown Popup --}}
                 <div x-show="open" @click.away="open = false" transition class="absolute z-50 left-0 right-0 mt-2 bg-white rounded-2xl border border-surface-200 shadow-2xl p-3 max-h-72 flex flex-col gap-2">
                     <div class="relative">
-                        <input type="text" x-model="search" placeholder="Ketik nama atau NIUP untuk memfilter..." class="w-full pl-9 pr-3 py-2 rounded-xl border border-surface-300 text-xs font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                        <input type="text" x-model="search" placeholder="Ketik nama atau NIUP untuk memfilter..." class="w-full pl-9 pr-3 py-2 rounded-xl border border-surface-300 text-xs font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                         <i data-lucide="search" class="w-4 h-4 text-surface-400 absolute left-3 top-2.5"></i>
                     </div>
                     
                     <div class="overflow-y-auto divide-y divide-surface-100 flex-1">
                         <template x-for="item in filteredItems" :key="item.id">
-                            <div @click="select(item)" class="p-2.5 hover:bg-emerald-50 rounded-xl cursor-pointer transition-colors flex items-center justify-between">
+                            <div @click="select(item)" class="p-2.5 hover:bg-primary-50 rounded-xl cursor-pointer transition-colors flex items-center justify-between">
                                 <div>
                                     <div class="font-bold text-surface-900 text-xs" x-text="item.nama"></div>
-                                    <div class="text-[0.68rem] text-emerald-700 font-mono" x-text="item.niup"></div>
+                                    <div class="text-[0.68rem] text-primary-700 font-mono" x-text="item.niup"></div>
                                 </div>
-                                <i x-show="selectedId == item.id" data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
+                                <i x-show="selectedId == item.id" data-lucide="check" class="w-4 h-4 text-primary-600"></i>
                             </div>
                         </template>
                         <div x-show="filteredItems.length === 0" class="p-4 text-center text-xs text-surface-400">
@@ -117,34 +117,34 @@
             </div>
 
             <div class="mt-2 text-xs text-surface-500 flex items-center gap-1.5">
-                <i data-lucide="info" class="w-3.5 h-3.5 text-emerald-600"></i>
+                <i data-lucide="info" class="w-3.5 h-3.5 text-primary-600"></i>
                 <span>Tidak menemukan nama?</span>
-                <a href="{{ route('admin.orang.create') }}" class="text-emerald-700 font-extrabold hover:underline">Buat Identitas Induk Baru</a>
+                <a href="{{ route('admin.orang.create') }}" class="text-primary-700 font-extrabold hover:underline">Buat Identitas Induk Baru</a>
             </div>
         </div>
 
         {{-- Card 2: Data Kepegawaian (SDM) --}}
         <div class="bg-white rounded-3xl p-6 md:p-8 border border-surface-200 shadow-sm space-y-5">
             <h3 class="font-extrabold text-surface-900 text-base flex items-center gap-2 pb-3 border-b border-surface-100">
-                <i data-lucide="briefcase" class="w-5 h-5 text-emerald-700"></i>
+                <i data-lucide="briefcase" class="w-5 h-5 text-primary-700"></i>
                 2. Data Spesifik Kepegawaian
             </h3>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-surface-700 mb-1">NIP (Nomor Induk Pegawai)</label>
-                    <input type="text" name="nip" value="{{ old('nip') }}" placeholder="Kosongkan jika belum ada NIP" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                    <input type="text" name="nip" value="{{ old('nip') }}" placeholder="Kosongkan jika belum ada NIP" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-surface-700 mb-1">NUPTK (Nasional)</label>
-                    <input type="text" name="nuptk" value="{{ old('nuptk') }}" placeholder="16 Digit Angka" maxlength="16" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                    <input type="text" name="nuptk" value="{{ old('nuptk') }}" placeholder="16 Digit Angka" maxlength="16" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-extrabold text-surface-700 mb-1">Jenis Pegawai Pokok <span class="text-rose-500">*</span></label>
-                    <select name="jenis_pegawai" required class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                    <select name="jenis_pegawai" required class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                         <option value="" disabled selected>Pilih Jenis SDM...</option>
                         <option value="GURU" {{ old('jenis_pegawai') === 'GURU' ? 'selected' : '' }}>GURU / PENGAJAR</option>
                         <option value="USTADZ" {{ old('jenis_pegawai') === 'USTADZ' ? 'selected' : '' }}>USTADZ ASRAMA (Musyrif)</option>
@@ -157,18 +157,18 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-surface-700 mb-1">Jabatan Spesifik (Struktural)</label>
-                    <input type="text" name="jabatan" value="{{ old('jabatan') }}" placeholder="Contoh: Kepala Sekolah, Waka Kurikulum" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                    <input type="text" name="jabatan" value="{{ old('jabatan') }}" placeholder="Contoh: Kepala Sekolah, Waka Kurikulum" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-surface-700 mb-1">Tanggal Mulai Bekerja</label>
-                    <input type="date" name="tanggal_masuk" value="{{ old('tanggal_masuk', date('Y-m-d')) }}" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                    <input type="date" name="tanggal_masuk" value="{{ old('tanggal_masuk', date('Y-m-d')) }}" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                 </div>
                 <div>
                     <label class="block text-xs font-extrabold text-surface-700 mb-1">Status Kepegawaian <span class="text-rose-500">*</span></label>
-                    <select name="status_kepegawaian" required class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                    <select name="status_kepegawaian" required class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                         <option value="TETAP" {{ old('status_kepegawaian') === 'TETAP' ? 'selected' : '' }}>TETAP (GTY/PTY)</option>
                         <option value="KONTRAK" {{ old('status_kepegawaian') === 'KONTRAK' ? 'selected' : '' }}>KONTRAK / PKWT</option>
                         <option value="HONORER" {{ old('status_kepegawaian') === 'HONORER' ? 'selected' : '' }}>HONORER</option>
@@ -180,7 +180,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-surface-700 mb-1">Pendidikan Terakhir</label>
-                    <select name="pendidikan_terakhir" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                    <select name="pendidikan_terakhir" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                         <option value="">Pilih Pendidikan...</option>
                         <option value="SD">SD/Sederajat</option>
                         <option value="SMP">SMP/Sederajat</option>
@@ -195,17 +195,17 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-surface-700 mb-1">Program Studi / Jurusan</label>
-                    <input type="text" name="jurusan_pendidikan" value="{{ old('jurusan_pendidikan') }}" placeholder="Contoh: Pendidikan Agama Islam" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                    <input type="text" name="jurusan_pendidikan" value="{{ old('jurusan_pendidikan') }}" placeholder="Contoh: Pendidikan Agama Islam" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                 </div>
             </div>
 
             <div>
                 <label class="block text-xs font-bold text-surface-700 mb-1">Catatan Kepegawaian</label>
-                <textarea name="catatan" rows="3" placeholder="Catatan tambahan mengenai tugas atau status pegawai..." class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">{{ old('catatan') }}</textarea>
+                <textarea name="catatan" rows="3" placeholder="Catatan tambahan mengenai tugas atau status pegawai..." class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-medium text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">{{ old('catatan') }}</textarea>
             </div>
 
             <div class="flex items-center gap-2 pt-2">
-                <input type="checkbox" name="is_active" id="is_active" value="1" checked class="rounded border-surface-300 text-emerald-600 focus:ring-emerald-500 w-4 h-4">
+                <input type="checkbox" name="is_active" id="is_active" value="1" checked class="rounded border-surface-300 text-primary-600 focus:ring-primary-500 w-4 h-4">
                 <label for="is_active" class="text-xs font-extrabold text-surface-800">Pegawai Aktif Bekerja</label>
             </div>
 
@@ -214,7 +214,7 @@
                 <a href="{{ route('admin.pegawai.index') }}" class="px-5 py-2.5 rounded-2xl bg-surface-100 text-surface-700 font-bold text-xs hover:bg-surface-200 transition-colors">
                     Batal
                 </a>
-                <button type="submit" class="px-6 py-2.5 rounded-2xl text-white font-extrabold text-xs shadow-lg shadow-emerald-700/20 hover:scale-102 transition-all" style="color: #ffffff !important; background-color: #047857 !important;">
+                <button type="submit" class="px-6 py-2.5 rounded-2xl text-white font-extrabold text-xs shadow-lg shadow-primary-700/20 hover:scale-102 transition-all" style="color: #ffffff !important; background-color: #047857 !important;">
                     Simpan Data Pegawai
                 </button>
             </div>

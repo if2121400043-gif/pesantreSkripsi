@@ -45,13 +45,13 @@
 
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-surface-200 shadow-sm space-y-6">
             
-            <div class="flex items-center gap-3.5 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl">
-                <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0 shadow-sm" style="background-color: #047857 !important; color: #ffffff !important;">
+            <div class="flex items-center gap-3.5 p-4 bg-primary-50 border border-primary-200 rounded-2xl">
+                <div class="w-10 h-10 rounded-xl bg-primary-600 text-white flex items-center justify-center font-bold shrink-0 shadow-sm" style="background-color: #047857 !important; color: #ffffff !important;">
                     <i data-lucide="user-cog" class="w-5 h-5"></i>
                 </div>
                 <div>
-                    <div class="text-[0.68rem] text-emerald-800 font-extrabold uppercase tracking-wider">NIUP / Kode Wali</div>
-                    <div class="text-sm font-extrabold text-emerald-950 font-mono">{{ $orang->niup ?? '-' }}</div>
+                    <div class="text-[0.68rem] text-primary-800 font-extrabold uppercase tracking-wider">NIUP / Kode Wali</div>
+                    <div class="text-sm font-extrabold text-primary-950 font-mono">{{ $orang->niup ?? '-' }}</div>
                 </div>
             </div>
 

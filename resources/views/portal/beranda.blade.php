@@ -6,7 +6,7 @@
 <div class="space-y-6">
 
     {{-- Merged Single Unified Hero Banner for Wali Santri (100% Mobile Responsive) --}}
-    <div class="rounded-3xl p-5 sm:p-7 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #065f46, #022c22) !important; color: #ffffff !important;">
+    <div class="rounded-3xl p-5 sm:p-7 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #1e3a5f, #022c22) !important; color: #ffffff !important;">
         <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
         <div class="relative z-10 space-y-4">
             
@@ -46,8 +46,8 @@
             {{-- Bottom Row: Selected Child Academic & Dormitory Details --}}
             @if($activeAnak)
                 <div class="space-y-2 pt-1">
-                    <div class="text-[0.7rem] sm:text-xs text-emerald-200 uppercase tracking-wider font-extrabold flex items-center gap-1.5">
-                        <i data-lucide="user-check" class="w-4 h-4 text-emerald-300 shrink-0"></i>
+                    <div class="text-[0.7rem] sm:text-xs text-primary-200 uppercase tracking-wider font-extrabold flex items-center gap-1.5">
+                        <i data-lucide="user-check" class="w-4 h-4 text-primary-300 shrink-0"></i>
                         <span>MEMANTAU SANTRI:</span>
                     </div>
 
@@ -55,7 +55,7 @@
                         <h2 class="text-lg sm:text-xl font-black text-white leading-snug">
                             {{ $activeAnak->orang->nama_lengkap }}
                         </h2>
-                        <span class="text-xs font-mono font-bold text-emerald-200">
+                        <span class="text-xs font-mono font-bold text-primary-200">
                             (NIUP: {{ $activeAnak->orang->niup ?? '-' }})
                         </span>
                     </div>
@@ -63,25 +63,25 @@
                     {{-- Academic Grid Pills (Stacked on Mobile, Horizontal on Desktop) --}}
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 text-xs pt-1">
                         <div class="bg-white/10 rounded-xl px-3 py-2 border border-white/15 flex items-center gap-2">
-                            <i data-lucide="building" class="w-4 h-4 text-emerald-300 shrink-0"></i>
+                            <i data-lucide="building" class="w-4 h-4 text-primary-300 shrink-0"></i>
                             <div class="truncate">
-                                <span class="text-[0.65rem] text-emerald-200 block">Lembaga</span>
+                                <span class="text-[0.65rem] text-primary-200 block">Lembaga</span>
                                 <strong class="text-white font-bold text-xs truncate block">{{ $activeAnak->lembaga->nama ?? '-' }}</strong>
                             </div>
                         </div>
 
                         <div class="bg-white/10 rounded-xl px-3 py-2 border border-white/15 flex items-center gap-2">
-                            <i data-lucide="book-open" class="w-4 h-4 text-emerald-300 shrink-0"></i>
+                            <i data-lucide="book-open" class="w-4 h-4 text-primary-300 shrink-0"></i>
                             <div class="truncate">
-                                <span class="text-[0.65rem] text-emerald-200 block">Kelas / Rombel</span>
+                                <span class="text-[0.65rem] text-primary-200 block">Kelas / Rombel</span>
                                 <strong class="text-white font-bold text-xs truncate block">{{ $activeAnak->rombelAktif->nama ?? '-' }}</strong>
                             </div>
                         </div>
 
                         <div class="bg-white/10 rounded-xl px-3 py-2 border border-white/15 flex items-center gap-2">
-                            <i data-lucide="home" class="w-4 h-4 text-emerald-300 shrink-0"></i>
+                            <i data-lucide="home" class="w-4 h-4 text-primary-300 shrink-0"></i>
                             <div class="truncate">
-                                <span class="text-[0.65rem] text-emerald-200 block">Kamar & Asrama</span>
+                                <span class="text-[0.65rem] text-primary-200 block">Kamar & Asrama</span>
                                 <strong class="text-white font-bold text-xs truncate block">{{ $activeAnak->kamarAktif->asrama->nama ?? '-' }} ({{ $activeAnak->kamarAktif->nama ?? '-' }})</strong>
                             </div>
                         </div>
@@ -93,6 +93,54 @@
     </div>
 
 <div class="space-y-6 animate-fade-in-up">
+
+    {{-- Pengumuman Terbaru --}}
+    @if(isset($pengumuman_terbaru) && $pengumuman_terbaru->count() > 0)
+    <div class="bg-white rounded-2xl shadow-sm border border-surface-200 overflow-hidden">
+        <div class="flex items-center justify-between px-5 py-3.5 bg-gradient-to-r from-warning-50 to-accent-50 border-b border-warning-100">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-warning-500 flex items-center justify-center shadow-sm">
+                    <i data-lucide="megaphone" class="w-4 h-4 text-white"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-surface-900">Pengumuman & Info Terbaru</h3>
+                    <p class="text-[0.65rem] text-surface-500">Informasi penting dari pesantren</p>
+                </div>
+            </div>
+            <a href="{{ route('frontend.publikasi') }}" class="text-xs font-bold text-warning-600 hover:text-warning-700 flex items-center gap-1 transition-colors">
+                Lihat Semua <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </a>
+        </div>
+        <div class="divide-y divide-surface-100">
+            @foreach($pengumuman_terbaru->take(3) as $pengumuman)
+            <a href="{{ route('frontend.berita.show', $pengumuman->slug) }}" class="flex items-center gap-3 px-5 py-3.5 hover:bg-surface-50 transition-colors group">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 {{ $pengumuman->tipe === 'pengumuman' ? 'bg-warning-100 text-warning-600' : 'bg-info-100 text-info-600' }}">
+                    @if($pengumuman->is_pinned)
+                        <i data-lucide="pin" class="w-4 h-4"></i>
+                    @else
+                        <i data-lucide="{{ $pengumuman->tipe === 'pengumuman' ? 'bell' : 'newspaper' }}" class="w-4 h-4"></i>
+                    @endif
+                </div>
+                <div class="flex-grow min-w-0">
+                    <p class="text-sm font-semibold text-surface-900 truncate group-hover:text-primary-600 transition-colors">{{ $pengumuman->judul }}</p>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span class="text-[0.65rem] text-surface-400 flex items-center gap-1">
+                            <i data-lucide="calendar" class="w-3 h-3"></i> {{ $pengumuman->tanggal_format }}
+                        </span>
+                        @if($pengumuman->is_pinned)
+                            <span class="text-[0.65rem] text-warning-500 font-bold">📌 Disematkan</span>
+                        @endif
+                        <span class="px-1.5 py-0.5 rounded text-[0.6rem] font-bold {{ $pengumuman->tipe === 'pengumuman' ? 'bg-warning-100 text-warning-700' : 'bg-info-100 text-info-700' }}">
+                            {{ $pengumuman->tipe_label }}
+                        </span>
+                    </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-surface-300 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all flex-shrink-0"></i>
+            </a>
+            @endforeach
+        </div>
+    </div>
+    @endif
 
     {{-- Three Summary Cards --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -174,12 +222,12 @@
                 @endphp
 
                 @if($firstUnpaid)
-                <a href="{{ route('portal.payment.show', $firstUnpaid) }}" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg shadow-sm transition-colors">
+                <a href="{{ route('portal.payment.show', $firstUnpaid) }}" class="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg shadow-sm transition-colors">
                     <i data-lucide="credit-card" class="w-4 h-4"></i>
                     Bayar Sekarang
                 </a>
                 @else
-                <a href="{{ route('portal.tagihan') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg shadow-sm transition-colors">
+                <a href="{{ route('portal.tagihan') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg shadow-sm transition-colors">
                     <i data-lucide="credit-card" class="w-4 h-4"></i>
                     Lihat Tagihan
                 </a>
@@ -360,7 +408,7 @@
                                 <td class="px-6 py-3.5 text-surface-500">{{ $t->jatuh_tempo ? $t->jatuh_tempo->isoFormat('D MMMM YYYY') : '-' }}</td>
                                 <td class="px-6 py-3.5 text-center">
                                     @if($sisa > 0)
-                                    <a href="{{ route('portal.payment.show', $t) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors shadow-sm">
+                                    <a href="{{ route('portal.payment.show', $t) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors shadow-sm">
                                         <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
                                         Bayar Online
                                     </a>

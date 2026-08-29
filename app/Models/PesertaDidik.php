@@ -117,10 +117,13 @@ class PesertaDidik extends Model
         $hubungan = null;
 
         // Check if relation is loaded to prevent N+1 query
-        if ($this->relationLoaded('orang') && $this->orang->relationLoaded('keluarga')) {
-            $hubungan = $this->orang->keluarga->first(function($h) {
+        if ($this->relationLoaded('orang')) {
+            $orang = $this->orang;
+            $hubungan = $orang?->relationLoaded('keluarga')
+                ? $orang->keluarga->first(function($h) {
                 return $h->is_wali_utama;
-            });
+                })
+                : null;
         } else {
             $hubungan = HubunganKeluarga::where('orang_id', $this->orang_id)
                 ->where('is_wali_utama', true)
@@ -179,4 +182,3 @@ class PesertaDidik extends Model
         return $this->rombelAktif ? $this->rombelAktif->lembaga : null;
     }
 }
-

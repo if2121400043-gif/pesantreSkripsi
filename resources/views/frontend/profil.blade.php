@@ -1,143 +1,201 @@
 @extends('frontend.layouts.app')
 
-@section('title', __('Profil Pesantren'))
+@section('title', __('Tentang Kami'))
+
+@push('styles')
+<style>
+    .about-page { background: #fafafa; }
+    .about-shell { max-width: 1440px; margin: 0 auto; padding: 44px 24px 72px; }
+    .about-grid { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 32px; align-items: start; }
+    .about-card { background: #fff; border: 1px solid #e0e3e6; border-radius: 28px; }
+    .about-muted { color: #68717b; }
+    .about-kicker { color: #315b91; letter-spacing: .12em; font-size: .72rem; font-weight: 800; text-transform: uppercase; }
+    .about-sidebar { position: sticky; top: 104px; }
+    .about-hero { min-height: 245px; overflow: hidden; position: relative; background: linear-gradient(135deg, #193b69, #315b91); }
+    .about-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(19,48,85,.95), rgba(19,48,85,.25)); }
+    .about-hero img { width: 100%; height: 100%; min-height: 245px; object-fit: cover; opacity: .65; }
+    .about-hero-content { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; justify-content: center; padding: 36px; color: white; }
+    .about-section { padding: 32px; }
+    .about-section + .about-section { margin-top: 24px; }
+    .about-title { color: #292e33; font-size: clamp(1.65rem, 3vw, 2.65rem); line-height: 1.1; font-weight: 800; letter-spacing: -.04em; }
+    .about-heading { color: #292e33; font-size: 1.25rem; font-weight: 800; }
+    .about-rule { width: 52px; height: 4px; border-radius: 99px; background: #d6a63c; margin-top: 14px; }
+    .about-info { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid #edf0f2; }
+    .about-info:last-child { border-bottom: 0; }
+    .about-icon { width: 38px; height: 38px; flex: 0 0 auto; border-radius: 12px; display: grid; place-items: center; background: #eef4fb; color: #315b91; }
+    .about-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+    .about-item { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 16px; background: #f5f7f8; color: #4e5862; }
+    .about-number { width: 28px; height: 28px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; background: #315b91; color: #fff; font-size: .8rem; font-weight: 800; }
+    .about-table { width: 100%; border-collapse: collapse; }
+    .about-table th, .about-table td { padding: 14px 16px; border-bottom: 1px solid #edf0f2; text-align: left; }
+    .about-table th { color: #68717b; font-size: .76rem; text-transform: uppercase; letter-spacing: .08em; }
+    .about-table td:first-child { width: 34%; color: #315b91; font-weight: 800; white-space: nowrap; }
+    .about-people { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .about-person { padding: 18px 12px; text-align: center; border: 1px solid #e7eaed; border-radius: 18px; }
+    .about-person-avatar { width: 76px; height: 76px; margin: 0 auto 12px; border-radius: 50%; display: grid; place-items: center; background: #eef4fb; color: #315b91; }
+    @media (max-width: 900px) {
+        .about-grid { grid-template-columns: 1fr; }
+        .about-sidebar { position: static; }
+        .about-people { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 600px) {
+        .about-shell { padding: 24px 16px 48px; }
+        .about-section { padding: 22px; }
+        .about-hero-content { padding: 24px; }
+        .about-table th, .about-table td { padding: 11px 9px; font-size: .82rem; }
+        .about-table td:first-child { white-space: normal; }
+    }
+</style>
+@endpush
 
 @section('content')
-{{-- ═══ HERO HEADER ═══ --}}
-<section class="relative overflow-hidden bg-gradient-to-br from-primary-900 via-primary-800 to-surface-900 dark:from-surface-950 dark:via-surface-900 dark:to-surface-950 text-white transition-colors duration-300">
-    <div class="absolute inset-0 opacity-[0.05] dark:opacity-[0.02]" style="background-image:url('data:image/svg+xml,%3Csvg width=60 height=60 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%221%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')"></div>
-    <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary-500/15 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20 md:py-28 text-center">
-        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 dark:bg-surface-800/50 border border-white/20 dark:border-surface-700 text-primary-200 dark:text-primary-400 text-xs font-bold tracking-widest uppercase mb-6 backdrop-blur-sm">
-            <i data-lucide="building" class="w-3.5 h-3.5"></i> {{ __('Tentang Kami') }}
-        </span>
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 tracking-tight text-white">{{ __('Profil Pesantren') }}</h1>
-        <p class="text-primary-100/80 dark:text-surface-400 text-lg max-w-2xl mx-auto leading-relaxed">{{ __('Mengenal lebih dekat') }} {{ $pesantren?->nama ?? 'Pesantren Nurul Furqon' }}, {{ __('sejarah, visi, dan misi kami.') }}</p>
-    </div>
-    <div class="absolute bottom-0 left-0 right-0">
-        <svg class="w-full h-16 sm:h-20 text-surface-50 dark:text-surface-950 fill-current" viewBox="0 0 1440 120" preserveAspectRatio="none">
-            <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
-        </svg>
-    </div>
-</section>
+@php
+    $jadwalSantri = [
+        ['waktu' => '03.30 - 04.30', 'kegiatan' => 'Isi jadwal kegiatan santri'],
+        ['waktu' => '04.30 - 06.00', 'kegiatan' => 'Isi jadwal kegiatan santri'],
+        ['waktu' => '06.00 - 07.00', 'kegiatan' => 'Isi jadwal kegiatan santri'],
+        ['waktu' => '07.00 - 12.00', 'kegiatan' => 'Isi jadwal kegiatan santri'],
+        ['waktu' => '12.00 - 13.00', 'kegiatan' => 'Isi jadwal kegiatan santri'],
+        ['waktu' => '13.00 - 15.00', 'kegiatan' => 'Isi jadwal kegiatan santri'],
+        ['waktu' => '15.00 - 18.00', 'kegiatan' => 'Isi jadwal kegiatan santri'],
+        ['waktu' => '18.00 - 20.00', 'kegiatan' => 'Isi jadwal kegiatan santri'],
+        ['waktu' => '20.00 - 21.30', 'kegiatan' => 'Isi jadwal kegiatan santri'],
+        ['waktu' => '21.30 - 03.30', 'kegiatan' => 'Istirahat malam'],
+    ];
+    $fasilitasPesantren = ['Isi nama fasilitas yang tersedia', 'Isi nama fasilitas yang tersedia', 'Isi nama fasilitas yang tersedia', 'Isi nama fasilitas yang tersedia'];
+    $strukturPesantren = [
+        ['foto' => null, 'nama' => 'Isi nama', 'jabatan' => 'Isi jabatan'],
+        ['foto' => null, 'nama' => 'Isi nama', 'jabatan' => 'Isi jabatan'],
+        ['foto' => null, 'nama' => 'Isi nama', 'jabatan' => 'Isi jabatan'],
+        ['foto' => null, 'nama' => 'Isi nama', 'jabatan' => 'Isi jabatan'],
+    ];
+    $trilogi = [
+        ['judul' => 'Menjalankan ibadah wajib', 'isi' => 'Menjalankan ibadah wajib yang menjadi tanggungan utama seorang Muslim secara istiqamah.'],
+        ['judul' => 'Tidak melakukan dosa besar', 'isi' => 'Menjauhi perbuatan maksiat atau dosa besar yang dapat merusak akidah dan akhlak.'],
+        ['judul' => 'Berbaik adab (akhlak)', 'isi' => 'Menjaga etika dan keluhuran budi kepada Allah SWT, sesama makhluk, serta lingkungan.'],
+    ];
+    $panca = [
+        ['judul' => 'Kesadaran Beragama', 'isi' => 'Memahami dan mengamalkan ajaran agama secara benar.'],
+        ['judul' => 'Kesadaran Berilmu', 'isi' => 'Menyadari pentingnya mencari dan mengembangkan ilmu.'],
+        ['judul' => 'Kesadaran Bermasyarakat', 'isi' => 'Peduli dan memberi manfaat bagi masyarakat luas.'],
+        ['judul' => 'Kesadaran Berbangsa dan Bernegara', 'isi' => 'Setia pada tanah air serta taat pada aturan kehidupan berbangsa.'],
+        ['judul' => 'Kesadaran Berorganisasi', 'isi' => 'Mampu bekerja sama, memimpin, dan mengelola organisasi.'],
+    ];
+@endphp
 
-{{-- ═══ INFO CARDS ═══ --}}
-<section class="py-16 bg-surface-50 dark:bg-surface-950 transition-colors duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-            {{-- Sidebar Info Card --}}
-            <div class="lg:col-span-1">
-                <div class="bg-white dark:bg-surface-900 rounded-3xl shadow-lg shadow-surface-200/40 dark:shadow-none border border-surface-100 dark:border-surface-800 p-8 sticky top-24 transition-colors duration-300">
-                    <div class="flex items-center gap-4 mb-6">
-                        <img src="{{ asset('images/logo-pesantren.webp') }}?v={{ time() }}" alt="Logo" class="w-16 h-16 object-contain bg-white dark:bg-surface-800 rounded-2xl shadow-md p-1 border border-surface-100 dark:border-surface-700">
-                        <div>
-                            <h2 class="text-lg font-bold text-surface-900 dark:text-white">{{ $pesantren?->nama ?? 'Pesantren Nurul Furqon' }}</h2>
-                            <p class="text-surface-400 dark:text-surface-500 text-xs font-bold uppercase tracking-wider">NSPP: {{ $pesantren?->nspp ?? '-' }}</p>
-                        </div>
+<div class="about-page">
+    <div class="about-shell">
+        <div class="about-grid">
+            <div>
+                <section class="about-card about-hero">
+                    <img src="{{ asset('images/kegiatan-pesantren-1200.webp') }}" alt="{{ __('Kegiatan pesantren') }}">
+                    <div class="about-hero-content">
+                        <span class="about-kicker" style="color:#f5d98a">{{ __('Tentang Kami') }}</span>
+                        <h1 class="about-title" style="color:#fff; max-width:560px; margin-top:12px">{{ $pesantren?->nama ?? 'Pesantren Nurul Furqon' }}</h1>
+                        <p style="max-width:590px; margin-top:14px; color:rgba(255,255,255,.82)">{{ __('Mengenal lebih dekat perjalanan, nilai, dan lingkungan pendidikan pesantren kami.') }}</p>
                     </div>
+                </section>
 
-                    <div class="space-y-5 divide-y divide-surface-100 dark:divide-surface-800">
-                        <div class="pt-4 first:pt-0">
-                            <h3 class="text-[11px] font-bold uppercase tracking-widest text-surface-400 dark:text-surface-500 mb-2">{{ __('Pimpinan') }}</h3>
-                            <p class="font-semibold text-surface-900 dark:text-white text-sm">{{ $pesantren?->nama_pimpinan ?? '-' }}</p>
-                        </div>
-                        <div class="pt-4">
-                            <h3 class="text-[11px] font-bold uppercase tracking-widest text-surface-400 dark:text-surface-500 mb-3">{{ __('Kontak') }}</h3>
-                            <ul class="space-y-3">
-                                @if($pesantren?->telepon)
-                                <li class="flex items-center gap-3 text-sm">
-                                    <div class="w-9 h-9 rounded-xl bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 flex items-center justify-center flex-shrink-0"><i data-lucide="phone" class="w-4 h-4"></i></div>
-                                    <span class="font-medium text-surface-700 dark:text-surface-300">{{ $pesantren?->telepon }}</span>
-                                </li>
-                                @endif
-                                @if($pesantren?->email)
-                                <li class="flex items-center gap-3 text-sm">
-                                    <div class="w-9 h-9 rounded-xl bg-info-50 dark:bg-info-500/10 text-info-500 flex items-center justify-center flex-shrink-0"><i data-lucide="mail" class="w-4 h-4"></i></div>
-                                    <span class="font-medium text-surface-700 dark:text-surface-300">{{ $pesantren?->email }}</span>
-                                </li>
-                                @endif
-                                @if($pesantren?->website)
-                                <li class="flex items-center gap-3 text-sm">
-                                    <div class="w-9 h-9 rounded-xl bg-success-50 dark:bg-success-500/10 text-success-500 flex items-center justify-center flex-shrink-0"><i data-lucide="globe" class="w-4 h-4"></i></div>
-                                    <span class="font-medium text-surface-700 dark:text-surface-300">{{ $pesantren?->website }}</span>
-                                </li>
-                                @endif
-                            </ul>
-                        </div>
-                        <div class="pt-4">
-                            <h3 class="text-[11px] font-bold uppercase tracking-widest text-surface-400 dark:text-surface-500 mb-3">{{ __('Alamat') }}</h3>
-                            <div class="flex items-start gap-3 text-sm">
-                                <div class="w-9 h-9 rounded-xl bg-accent-50 dark:bg-accent-500/10 text-accent-600 dark:text-accent-400 flex items-center justify-center flex-shrink-0 mt-0.5"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
-                                <p class="text-surface-700 dark:text-surface-300 leading-relaxed">
-                                    {{ $pesantren?->alamat ?? '-' }}
-                                    @if($pesantren?->kode_pos) Kode Pos: {{ $pesantren?->kode_pos }} @endif
-                                </p>
-                            </div>
-                        </div>
+                <section class="about-card about-section" style="margin-top:24px">
+                    <span class="about-kicker">{{ __('Cerita Kami') }}</span>
+                    <h2 class="about-title" style="font-size:2rem; margin-top:10px">{{ __('Membangun generasi berilmu dan berakhlak') }}</h2>
+                    <div class="about-rule"></div>
+                    <div class="about-muted prose max-w-none" style="margin-top:24px; line-height:1.85">
+                        {!! $pesantren?->sejarah ?? '<p>' . __('Belum ada informasi sejarah pesantren.') . '</p>' !!}
                     </div>
+                </section>
+
+                <div class="grid md:grid-cols-2 gap-6" style="margin-top:24px">
+                    <section class="about-card about-section">
+                        <span class="about-kicker">{{ __('Arah Pendidikan') }}</span>
+                        <h2 class="about-heading" style="margin-top:10px">{{ __('Visi') }}</h2>
+                        <div class="about-rule"></div>
+                        <div class="about-muted prose prose-sm max-w-none" style="margin-top:18px; line-height:1.8">
+                            {!! $pesantren?->visi ?? '<p>' . __('Belum diisi.') . '</p>' !!}
+                        </div>
+                    </section>
+                    <section class="about-card about-section">
+                        <span class="about-kicker">{{ __('Langkah Kami') }}</span>
+                        <h2 class="about-heading" style="margin-top:10px">{{ __('Misi') }}</h2>
+                        <div class="about-rule"></div>
+                        <div class="about-muted prose prose-sm max-w-none" style="margin-top:18px; line-height:1.8">
+                            {!! $pesantren?->misi ?? '<p>' . __('Belum diisi.') . '</p>' !!}
+                        </div>
+                    </section>
                 </div>
+
+                <section class="about-card about-section" style="margin-top:24px">
+                    <span class="about-kicker">{{ __('Kehidupan Santri') }}</span>
+                    <h2 class="about-heading" style="margin-top:10px">{{ __('Jadwal Kegiatan Santri') }}</h2>
+                    <p class="about-muted" style="margin-top:8px">{{ __('Gambaran aktivitas santri selama 24 jam') }}</p>
+                    <div style="overflow-x:auto; margin-top:20px">
+                        <table class="about-table">
+                            <thead><tr><th>{{ __('Waktu') }}</th><th>{{ __('Kegiatan') }}</th></tr></thead>
+                            <tbody>
+                                @foreach($jadwalSantri as $jadwal)
+                                    <tr><td>{{ $jadwal['waktu'] }}</td><td class="about-muted">{{ $jadwal['kegiatan'] }}</td></tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="about-card about-section" style="margin-top:24px">
+                    <span class="about-kicker">{{ __('Lingkungan Belajar') }}</span>
+                    <h2 class="about-heading" style="margin-top:10px">{{ __('Fasilitas Pesantren') }}</h2>
+                    <div class="about-list" style="margin-top:20px">
+                        @foreach($fasilitasPesantren as $fasilitas)
+                            <div class="about-item"><span class="about-number"><i data-lucide="check" style="width:15px"></i></span><span>{{ $fasilitas }}</span></div>
+                        @endforeach
+                    </div>
+                </section>
             </div>
 
-            {{-- Main Content --}}
-            <div class="lg:col-span-2 space-y-8">
+            <aside class="about-sidebar">
+                <section class="about-card about-section">
+                    <img src="{{ asset('images/logo-pesantren.webp') }}" alt="Logo" style="width:78px;height:78px;object-fit:contain;margin-bottom:20px">
+                    <span class="about-kicker">{{ __('Identitas Pesantren') }}</span>
+                    <h2 class="about-heading" style="font-size:1.4rem; margin-top:10px">{{ $pesantren?->nama ?? 'Pesantren Nurul Furqon' }}</h2>
+                    <p class="about-muted" style="font-size:.8rem; margin-top:6px">NSPP: {{ $pesantren?->nspp ?? '-' }}</p>
+                    <div style="margin-top:22px">
+                        @if($pesantren?->telepon)<div class="about-info"><span class="about-icon"><i data-lucide="phone" style="width:17px"></i></span><span class="about-muted" style="font-size:.88rem; overflow-wrap:anywhere">{{ $pesantren->telepon }}</span></div>@endif
+                        @if($pesantren?->email)<div class="about-info"><span class="about-icon"><i data-lucide="mail" style="width:17px"></i></span><span class="about-muted" style="font-size:.88rem; overflow-wrap:anywhere">{{ $pesantren->email }}</span></div>@endif
+                        @if($pesantren?->website)<div class="about-info"><span class="about-icon"><i data-lucide="globe" style="width:17px"></i></span><span class="about-muted" style="font-size:.88rem; overflow-wrap:anywhere">{{ $pesantren->website }}</span></div>@endif
+                        <div class="about-info"><span class="about-icon"><i data-lucide="map-pin" style="width:17px"></i></span><span class="about-muted" style="font-size:.88rem; line-height:1.6">{{ $pesantren?->alamat ?? '-' }}@if($pesantren?->kode_pos), {{ $pesantren->kode_pos }}@endif</span></div>
+                    </div>
+                </section>
 
-                {{-- Sejarah --}}
-                <div class="bg-white dark:bg-surface-900 rounded-3xl shadow-sm dark:shadow-none border border-surface-100 dark:border-surface-800 p-8 md:p-10 transition-colors duration-300">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="w-11 h-11 rounded-2xl bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 flex items-center justify-center"><i data-lucide="book-open" class="w-5 h-5"></i></div>
-                        <h2 class="text-xl font-bold text-surface-900 dark:text-white">{{ __('Sejarah Berdiri') }}</h2>
+                <section class="about-card about-section" style="margin-top:24px">
+                    <span class="about-kicker">{{ __('Nilai Santri') }}</span>
+                    <h2 class="about-heading" style="margin-top:10px">{{ __('Trilogi Santri') }}</h2>
+                    <div class="about-list" style="margin-top:20px">
+                        @foreach($trilogi as $item)<div class="about-item"><span class="about-number">{{ $loop->iteration }}</span><span><strong style="display:block;color:#292e33">{{ __($item['judul']) }}</strong><small class="about-muted" style="display:block;margin-top:5px;line-height:1.55">{{ __($item['isi']) }}</small></span></div>@endforeach
                     </div>
-                    <div class="prose prose-surface dark:prose-invert max-w-none text-surface-600 dark:text-surface-300 leading-relaxed text-[15px]">
-                        {!! $pesantren?->sejarah ?? '<p class="text-surface-400 dark:text-surface-500 italic">' . __('Belum ada informasi sejarah pesantren.') . '</p>' !!}
-                    </div>
-                </div>
-
-                {{-- Visi & Misi --}}
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-white dark:bg-surface-900 rounded-3xl shadow-sm dark:shadow-none border border-surface-100 dark:border-surface-800 p-8 relative overflow-hidden group hover:border-primary-300 dark:hover:border-primary-700 transition-all duration-300">
-                        <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-primary-50 dark:bg-primary-900/20 rounded-full opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"></div>
-                        <div class="relative z-10">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="w-11 h-11 rounded-2xl bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 flex items-center justify-center"><i data-lucide="eye" class="w-5 h-5"></i></div>
-                                <h3 class="text-lg font-bold text-surface-900 dark:text-white">{{ __('Visi') }}</h3>
-                            </div>
-                            <div class="prose prose-sm dark:prose-invert text-surface-600 dark:text-surface-300 leading-relaxed">
-                                {!! $pesantren?->visi ?? '<p class="text-surface-400 dark:text-surface-500 italic">' . __('Belum diisi.') . '</p>' !!}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white dark:bg-surface-900 rounded-3xl shadow-sm dark:shadow-none border border-surface-100 dark:border-surface-800 p-8 relative overflow-hidden group hover:border-secondary-300 dark:hover:border-secondary-700 transition-all duration-300">
-                        <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-secondary-50 dark:bg-secondary-900/20 rounded-full opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"></div>
-                        <div class="relative z-10">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="w-11 h-11 rounded-2xl bg-secondary-50 dark:bg-secondary-900/30 text-secondary-600 dark:text-secondary-400 flex items-center justify-center"><i data-lucide="target" class="w-5 h-5"></i></div>
-                                <h3 class="text-lg font-bold text-surface-900 dark:text-white">{{ __('Misi') }}</h3>
-                            </div>
-                            <div class="prose prose-sm dark:prose-invert text-surface-600 dark:text-surface-300 leading-relaxed">
-                                {!! $pesantren?->misi ?? '<p class="text-surface-400 dark:text-surface-500 italic">' . __('Belum diisi.') . '</p>' !!}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Tahun Berdiri Badge --}}
-                @if($pesantren?->tahun_berdiri)
-                <div class="bg-gradient-to-r from-primary-600 to-secondary-600 rounded-3xl p-8 text-white flex items-center gap-6 shadow-xl shadow-primary-600/20 border border-white/10 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-xl pointer-events-none -translate-y-1/2 translate-x-1/4"></div>
-                    <div class="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center flex-shrink-0 border border-white/10">
-                        <i data-lucide="landmark" class="w-8 h-8"></i>
-                    </div>
-                    <div class="relative z-10">
-                        <p class="text-primary-100 text-sm font-bold uppercase tracking-widest">{{ __('Berdiri Sejak') }}</p>
-                        <p class="text-4xl font-extrabold mt-1">{{ $pesantren?->tahun_berdiri }}</p>
-                        <p class="text-primary-100/80 text-sm mt-1 font-medium">{{ $pesantren?->tahun_berdiri ? date('Y') - $pesantren->tahun_berdiri : 0 }} {{ __('tahun mengabdi untuk pendidikan Islam') }}</p>
-                    </div>
-                </div>
-                @endif
-            </div>
+                </section>
+            </aside>
         </div>
+
+        <section class="about-card about-section" style="margin-top:24px">
+            <span class="about-kicker">{{ __('Karakter dan Kesadaran') }}</span>
+            <h2 class="about-heading" style="margin-top:10px">{{ __('Panca Kesadaran Santri') }}</h2>
+            <div class="about-list" style="margin-top:20px; display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+                @foreach($panca as $item)<div class="about-item"><span class="about-number">{{ $loop->iteration }}</span><span><strong style="display:block;color:#292e33">{{ __($item['judul']) }}</strong><small class="about-muted" style="display:block;margin-top:5px;line-height:1.55">{{ __($item['isi']) }}</small></span></div>@endforeach
+            </div>
+        </section>
+
+        <section class="about-card about-section" style="margin-top:24px">
+            <span class="about-kicker">{{ __('Pengelola') }}</span>
+            <h2 class="about-heading" style="margin-top:10px">{{ __('Struktur Pesantren') }}</h2>
+            <div class="about-people" style="margin-top:20px">
+                @foreach($strukturPesantren as $anggota)
+                    <div class="about-person">
+                        @if($anggota['foto']) <img src="{{ asset($anggota['foto']) }}" alt="{{ $anggota['nama'] }}" class="about-person-avatar" style="object-fit:cover">@else <div class="about-person-avatar"><i data-lucide="user-round"></i></div>@endif
+                        <strong style="display:block;color:#292e33;font-size:.9rem">{{ $anggota['nama'] }}</strong>
+                        <small style="display:block;color:#315b91;margin-top:5px">{{ $anggota['jabatan'] }}</small>
+                    </div>
+                @endforeach
+            </div>
+        </section>
     </div>
-</section>
+</div>
 @endsection

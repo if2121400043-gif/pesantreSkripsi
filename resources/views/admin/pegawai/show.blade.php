@@ -6,7 +6,7 @@
 <div class="space-y-6">
 
     {{-- Hero Profile Cover Header Banner --}}
-    <div class="rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #047857, #065f46) !important; color: #ffffff !important;">
+    <div class="rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #047857, #1e3a5f) !important; color: #ffffff !important;">
         <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
         <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             
@@ -30,7 +30,7 @@
                         <span>•</span>
                         @if($pegawai->is_active)
                             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold shadow-sm border" style="background-color: #ffffff !important; color: #047857 !important; border-color: #a7f3d0 !important;">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span class="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></span>
                                 Aktif Bekerja
                             </span>
                         @else
@@ -63,19 +63,19 @@
         <div class="bg-white rounded-3xl p-6 md:p-8 border border-surface-200 shadow-sm space-y-6">
             <div class="flex items-center justify-between pb-4 border-b border-surface-100">
                 <h3 class="font-extrabold text-surface-900 text-lg flex items-center gap-2">
-                    <i data-lucide="book-open" class="w-6 h-6 text-emerald-700"></i>
+                    <i data-lucide="book-open" class="w-6 h-6 text-primary-700"></i>
                     Beban Tugas Mengajar & Pengasuhan
                 </h3>
-                <span class="text-xs font-extrabold px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                <span class="text-xs font-extrabold px-4 py-1.5 rounded-full bg-primary-50 text-primary-800 border border-primary-200">
                     {{ $totalSesiMingguan }} Sesi / Minggu
                 </span>
             </div>
 
             {{-- 3 Stat Metrics --}}
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="p-5 rounded-2xl bg-emerald-50/80 border border-emerald-200">
-                    <div class="text-[0.68rem] font-bold text-emerald-800 uppercase tracking-wider">Total Beban Mengajar</div>
-                    <div class="text-2xl font-extrabold text-emerald-900 mt-1">{{ $totalSesiMingguan }} <span class="text-xs font-semibold text-emerald-700">Sesi/Minggu</span></div>
+                <div class="p-5 rounded-2xl bg-primary-50/80 border border-primary-200">
+                    <div class="text-[0.68rem] font-bold text-primary-800 uppercase tracking-wider">Total Beban Mengajar</div>
+                    <div class="text-2xl font-extrabold text-primary-900 mt-1">{{ $totalSesiMingguan }} <span class="text-xs font-semibold text-primary-700">Sesi/Minggu</span></div>
                 </div>
 
                 <div class="p-5 rounded-2xl bg-blue-50/80 border border-blue-200">
@@ -101,8 +101,8 @@
                 @if($mapelDiampu->count() > 0)
                     <div class="flex flex-wrap gap-2">
                         @foreach($mapelDiampu as $mapelName)
-                            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 font-extrabold text-xs border border-emerald-200 shadow-2xs">
-                                <i data-lucide="book" class="w-3.5 h-3.5 text-emerald-600"></i>
+                            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-primary-50 text-primary-800 font-extrabold text-xs border border-primary-200 shadow-2xs">
+                                <i data-lucide="book" class="w-3.5 h-3.5 text-primary-600"></i>
                                 {{ $mapelName }}
                             </span>
                         @endforeach
@@ -115,7 +115,7 @@
             {{-- Tabel Jadwal Mengajar Mingguan (Per Hari) --}}
             <div>
                 <h4 class="text-xs font-bold text-surface-500 uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <i data-lucide="calendar" class="w-4 h-4 text-emerald-700"></i>
+                    <i data-lucide="calendar" class="w-4 h-4 text-primary-700"></i>
                     Rincian Jadwal Mengajar Mingguan (Terurut Pagi → Malam)
                 </h4>
 
@@ -131,7 +131,7 @@
                                             <span class="inline-flex items-center justify-center px-3 py-1 rounded-xl text-xs font-black text-white shadow-xs" style="background-color: #047857 !important; color: #ffffff !important;">
                                                 {{ $hari }}
                                             </span>
-                                            <span class="text-xs font-bold text-emerald-900">
+                                            <span class="text-xs font-bold text-primary-900">
                                                 {{ $jadwalGrouped[$hari]->count() }} Sesi Mengajar
                                             </span>
                                         </div>
@@ -153,8 +153,8 @@
                                                     <tr class="hover:bg-surface-50/80 transition-colors">
                                                         <td class="px-4 py-3 text-center font-bold text-surface-400">{{ $globalNomor++ }}</td>
                                                         <td class="px-4 py-3 text-center font-mono font-bold">
-                                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs shadow-2xs">
-                                                                <i data-lucide="clock" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-primary-50 text-primary-800 border border-primary-200 text-xs shadow-2xs">
+                                                                <i data-lucide="clock" class="w-3.5 h-3.5 text-primary-600"></i>
                                                                 {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} – {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}
                                                             </span>
                                                         </td>
@@ -219,7 +219,7 @@
         <div class="bg-white rounded-3xl p-6 border border-surface-200 shadow-sm space-y-5 flex flex-col justify-between">
             <div>
                 <h3 class="font-extrabold text-surface-900 text-base flex items-center gap-2 pb-3 border-b border-surface-100">
-                    <i data-lucide="shield-check" class="w-5 h-5 text-emerald-700"></i>
+                    <i data-lucide="shield-check" class="w-5 h-5 text-primary-700"></i>
                     Informasi & Status Kepegawaian
                 </h3>
 
@@ -253,9 +253,9 @@
             </div>
 
             <div class="pt-4 border-t border-surface-100">
-                <a href="{{ route('admin.orang.show', $pegawai->orang_id) }}" class="inline-flex items-center justify-between w-full p-3 rounded-2xl bg-surface-50 hover:bg-emerald-50 text-emerald-800 font-bold text-xs border border-surface-200 hover:border-emerald-300 transition-all">
+                <a href="{{ route('admin.orang.show', $pegawai->orang_id) }}" class="inline-flex items-center justify-between w-full p-3 rounded-2xl bg-surface-50 hover:bg-primary-50 text-primary-800 font-bold text-xs border border-surface-200 hover:border-primary-300 transition-all">
                     <span class="flex items-center gap-2">
-                        <i data-lucide="user" class="w-4 h-4 text-emerald-600"></i>
+                        <i data-lucide="user" class="w-4 h-4 text-primary-600"></i>
                         Biodata Induk Orang
                     </span>
                     <i data-lucide="chevron-right" class="w-4 h-4"></i>
@@ -275,13 +275,13 @@
                     <div class="relative border-l-2 border-surface-200 ml-3 py-2 space-y-5">
                         @foreach($pegawai->riwayatJabatan as $rj)
                             <div class="relative pl-6">
-                                <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-2 border-emerald-600"></div>
+                                <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-2 border-primary-600"></div>
                                 <div>
                                     <div class="flex items-center gap-2">
                                         <h4 class="font-bold text-surface-900 text-sm">{{ $rj->jabatan }}</h4>
                                         <span class="px-2 py-0.5 rounded text-[0.65rem] font-bold bg-blue-100 text-blue-800 uppercase">{{ $rj->jenis_pegawai }}</span>
                                         @if(is_null($rj->tanggal_selesai))
-                                            <span class="px-2 py-0.5 rounded text-[0.65rem] font-bold bg-emerald-100 text-emerald-800">Aktif Saat Ini</span>
+                                            <span class="px-2 py-0.5 rounded text-[0.65rem] font-bold bg-primary-100 text-primary-800">Aktif Saat Ini</span>
                                         @endif
                                     </div>
                                     <p class="text-xs text-surface-500 mt-1">

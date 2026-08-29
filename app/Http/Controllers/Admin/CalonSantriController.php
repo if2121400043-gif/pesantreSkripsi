@@ -25,7 +25,10 @@ class CalonSantriController extends Controller
         }
         
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+            $query->where(function ($statusQuery) use ($request) {
+                $statusQuery->where('status', $request->status)
+                    ->orWhere('status_workflow', $request->status);
+            });
         }
 
         if ($request->filled('search')) {
@@ -61,36 +64,36 @@ class CalonSantriController extends Controller
             'jenis_kelamin' => 'required|in:L,P',
             'tempat_lahir' => 'nullable|string|max:100',
             'tanggal_lahir' => 'nullable|date',
-            'nik' => 'nullable|string|max:20|unique:calon_santri,nik|unique:orang,nik',
+            'nik' => 'nullable|digits:16|unique:calon_santri,nik|unique:orang,nik',
             'asal_sekolah' => 'nullable|string|max:200',
             'nisn' => 'nullable|string|max:20',
             'alamat' => 'nullable|string',
             // Data Ayah
             'nama_ayah' => 'nullable|string|max:150',
-            'nik_ayah' => 'nullable|string|max:20',
+            'nik_ayah' => 'nullable|digits:16',
             'tahun_lahir_ayah' => 'nullable|string|max:4',
             'pendidikan_ayah' => 'nullable|string|max:50',
             'pekerjaan_ayah' => 'nullable|string|max:100',
             'penghasilan_ayah' => 'nullable|string|max:50',
-            'no_hp_ayah' => 'nullable|string|max:20',
+            'no_hp_ayah' => ['nullable', 'regex:/^(?:\+62|62|0)[0-9]{8,13}$/'],
             // Data Ibu
             'nama_ibu' => 'nullable|string|max:150',
-            'nik_ibu' => 'nullable|string|max:20',
+            'nik_ibu' => 'nullable|digits:16',
             'tahun_lahir_ibu' => 'nullable|string|max:4',
             'pendidikan_ibu' => 'nullable|string|max:50',
             'pekerjaan_ibu' => 'nullable|string|max:100',
             'penghasilan_ibu' => 'nullable|string|max:50',
-            'no_hp_ibu' => 'nullable|string|max:20',
+            'no_hp_ibu' => ['nullable', 'regex:/^(?:\+62|62|0)[0-9]{8,13}$/'],
             // Wali & Kontak
-            'telepon_wali' => 'nullable|string|max:20',
+            'telepon_wali' => ['nullable', 'regex:/^(?:\+62|62|0)[0-9]{8,13}$/'],
             'tinggal_bersama' => 'nullable|string|max:50',
             'nama_wali' => 'nullable|string|max:150',
-            'nik_wali' => 'nullable|string|max:20',
+            'nik_wali' => 'nullable|digits:16',
             'tahun_lahir_wali' => 'nullable|string|max:4',
             'pendidikan_wali' => 'nullable|string|max:50',
             'pekerjaan_wali' => 'nullable|string|max:100',
             'penghasilan_wali' => 'nullable|string|max:50',
-            'no_hp_wali' => 'nullable|string|max:20',
+            'no_hp_wali' => ['nullable', 'regex:/^(?:\+62|62|0)[0-9]{8,13}$/'],
             'hubungan_wali' => 'nullable|string|max:50',
             'lembaga_tujuan_id' => 'nullable|exists:lembaga,id',
         ]);
@@ -118,6 +121,11 @@ class CalonSantriController extends Controller
         DB::beginTransaction();
         try {
             $calonSantri->status = $request->status;
+            $calonSantri->status_workflow = match ($request->status) {
+                'DITERIMA' => 'DITERIMA',
+                'TIDAK_LULUS', 'DIBATALKAN' => 'DITOLAK',
+                default => 'MENUNGGU_VERIFIKASI',
+            };
             $calonSantri->catatan_verifikasi = $request->catatan_verifikasi;
             $calonSantri->diverifikasi_oleh = auth()->id();
             $calonSantri->tanggal_verifikasi = now();

@@ -85,7 +85,7 @@
 
                     <div>
                         <label class="block text-sm font-medium text-surface-700 mb-1">NIK (Nomor Induk Kependudukan)</label>
-                        <input type="text" name="nik" placeholder="16 Digit" maxlength="16" class="w-full rounded-lg border border-surface-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+                        <input type="text" name="nik" placeholder="16 Digit" maxlength="16" inputmode="numeric" pattern="[0-9]{16}" class="w-full rounded-lg border border-surface-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                     </div>
 
                     <div>
@@ -109,24 +109,24 @@
                 @endphp
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div><label class="block text-sm font-medium text-surface-700 mb-1">Nama Ayah</label><input type="text" name="nama_ayah" class="{{ $inputCls }}"></div>
-                    <div><label class="block text-sm font-medium text-surface-700 mb-1">NIK Ayah</label><input type="text" name="nik_ayah" maxlength="16" class="{{ $inputCls }}"></div>
+                    <div><label class="block text-sm font-medium text-surface-700 mb-1">NIK Ayah</label><input type="text" name="nik_ayah" maxlength="16" inputmode="numeric" pattern="[0-9]{16}" class="{{ $inputCls }}"></div>
                     <div><label class="block text-sm font-medium text-surface-700 mb-1">Tahun Lahir</label><input type="text" name="tahun_lahir_ayah" maxlength="4" placeholder="1975" class="{{ $inputCls }}"></div>
                     <div><label class="block text-sm font-medium text-surface-700 mb-1">Pendidikan</label><select name="pendidikan_ayah" class="{{ $inputCls }}"><option value="">-- Pilih --</option>@foreach($opsiPendidikan as $o)<option value="{{ $o }}">{{ $o }}</option>@endforeach</select></div>
                     <div><label class="block text-sm font-medium text-surface-700 mb-1">Pekerjaan</label><select name="pekerjaan_ayah" class="{{ $inputCls }}"><option value="">-- Pilih --</option>@foreach($opsiPekerjaan as $o)<option value="{{ $o }}">{{ $o }}</option>@endforeach</select></div>
                     <div><label class="block text-sm font-medium text-surface-700 mb-1">Penghasilan</label><select name="penghasilan_ayah" class="{{ $inputCls }}"><option value="">-- Pilih --</option>@foreach($opsiPenghasilan as $o)<option value="{{ $o }}">{{ $o }}</option>@endforeach</select></div>
-                    <div><label class="block text-sm font-medium text-surface-700 mb-1">No. HP Ayah</label><input type="text" name="no_hp_ayah" class="{{ $inputCls }}"></div>
+                    <div><label class="block text-sm font-medium text-surface-700 mb-1">No. HP Ayah</label><input type="text" name="no_hp_ayah" inputmode="numeric" pattern="(?:\+62|62|0)[0-9]{8,13}" class="{{ $inputCls }}"></div>
                 </div>
             </x-card>
 
             <x-card title="Data Ibu Kandung">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div><label class="block text-sm font-medium text-surface-700 mb-1">Nama Ibu</label><input type="text" name="nama_ibu" class="{{ $inputCls }}"></div>
-                    <div><label class="block text-sm font-medium text-surface-700 mb-1">NIK Ibu</label><input type="text" name="nik_ibu" maxlength="16" class="{{ $inputCls }}"></div>
+                    <div><label class="block text-sm font-medium text-surface-700 mb-1">NIK Ibu</label><input type="text" name="nik_ibu" maxlength="16" inputmode="numeric" pattern="[0-9]{16}" class="{{ $inputCls }}"></div>
                     <div><label class="block text-sm font-medium text-surface-700 mb-1">Tahun Lahir</label><input type="text" name="tahun_lahir_ibu" maxlength="4" placeholder="1980" class="{{ $inputCls }}"></div>
                     <div><label class="block text-sm font-medium text-surface-700 mb-1">Pendidikan</label><select name="pendidikan_ibu" class="{{ $inputCls }}"><option value="">-- Pilih --</option>@foreach($opsiPendidikan as $o)<option value="{{ $o }}">{{ $o }}</option>@endforeach</select></div>
                     <div><label class="block text-sm font-medium text-surface-700 mb-1">Pekerjaan</label><select name="pekerjaan_ibu" class="{{ $inputCls }}"><option value="">-- Pilih --</option>@foreach($opsiPekerjaan as $o)<option value="{{ $o }}">{{ $o }}</option>@endforeach</select></div>
                     <div><label class="block text-sm font-medium text-surface-700 mb-1">Penghasilan</label><select name="penghasilan_ibu" class="{{ $inputCls }}"><option value="">-- Pilih --</option>@foreach($opsiPenghasilan as $o)<option value="{{ $o }}">{{ $o }}</option>@endforeach</select></div>
-                    <div><label class="block text-sm font-medium text-surface-700 mb-1">No. HP Ibu</label><input type="text" name="no_hp_ibu" class="{{ $inputCls }}"></div>
+                    <div><label class="block text-sm font-medium text-surface-700 mb-1">No. HP Ibu</label><input type="text" name="no_hp_ibu" inputmode="numeric" pattern="(?:\+62|62|0)[0-9]{8,13}" class="{{ $inputCls }}"></div>
                 </div>
             </x-card>
 
@@ -134,7 +134,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-surface-700 mb-1">No. HP/WhatsApp Aktif <span class="text-danger-500">*</span></label>
-                        <input type="text" name="telepon_wali" required placeholder="08123456789" class="{{ $inputCls }} md:w-full">
+                        <input type="text" name="telepon_wali" required placeholder="08123456789" inputmode="numeric" pattern="(?:\+62|62|0)[0-9]{8,13}" class="{{ $inputCls }} md:w-full">
                         <p class="text-xs text-surface-500 mt-1">Nomor ini akan dihubungi oleh panitia untuk konfirmasi.</p>
                     </div>
                     <div>
@@ -166,12 +166,12 @@
                                 <option value="Lainnya">Lainnya</option>
                             </select>
                         </div>
-                        <div><label class="block text-sm font-medium text-surface-700 mb-1">NIK Wali</label><input type="text" name="nik_wali" maxlength="16" class="{{ $inputCls }}"></div>
+                        <div><label class="block text-sm font-medium text-surface-700 mb-1">NIK Wali</label><input type="text" name="nik_wali" maxlength="16" inputmode="numeric" pattern="[0-9]{16}" class="{{ $inputCls }}"></div>
                         <div><label class="block text-sm font-medium text-surface-700 mb-1">Tahun Lahir</label><input type="text" name="tahun_lahir_wali" maxlength="4" placeholder="1970" class="{{ $inputCls }}"></div>
                         <div><label class="block text-sm font-medium text-surface-700 mb-1">Pendidikan</label><select name="pendidikan_wali" class="{{ $inputCls }}"><option value="">-- Pilih --</option>@foreach($opsiPendidikan as $o)<option value="{{ $o }}">{{ $o }}</option>@endforeach</select></div>
                         <div><label class="block text-sm font-medium text-surface-700 mb-1">Pekerjaan</label><select name="pekerjaan_wali" class="{{ $inputCls }}"><option value="">-- Pilih --</option>@foreach($opsiPekerjaan as $o)<option value="{{ $o }}">{{ $o }}</option>@endforeach</select></div>
                         <div><label class="block text-sm font-medium text-surface-700 mb-1">Penghasilan</label><select name="penghasilan_wali" class="{{ $inputCls }}"><option value="">-- Pilih --</option>@foreach($opsiPenghasilan as $o)<option value="{{ $o }}">{{ $o }}</option>@endforeach</select></div>
-                        <div><label class="block text-sm font-medium text-surface-700 mb-1">No. HP Wali</label><input type="text" name="no_hp_wali" class="{{ $inputCls }}"></div>
+                        <div><label class="block text-sm font-medium text-surface-700 mb-1">No. HP Wali</label><input type="text" name="no_hp_wali" inputmode="numeric" pattern="(?:\+62|62|0)[0-9]{8,13}" class="{{ $inputCls }}"></div>
                     </div>
                 </x-card>
             </div>

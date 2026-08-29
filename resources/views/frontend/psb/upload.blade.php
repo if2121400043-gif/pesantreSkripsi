@@ -61,7 +61,8 @@
                     <div class="space-y-2">
                         <label class="block text-sm font-bold text-surface-900 dark:text-white">{{ __('Kartu Keluarga (KK)') }}</label>
                         <div class="relative group">
-                            <input type="file" name="kartu_keluarga" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-sm text-surface-500 dark:text-surface-400 file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary-50 dark:file:bg-primary-900/30 file:text-primary-700 dark:file:text-primary-400 hover:file:bg-primary-100 dark:hover:file:bg-primary-900/50 transition-colors border border-surface-200 dark:border-surface-700 rounded-xl bg-surface-50 dark:bg-surface-800/50 cursor-pointer">
+                            <input type="file" name="kartu_keluarga" accept=".jpg,.jpeg,.png,.pdf" data-preview="preview-kartu_keluarga" class="psb-file block w-full text-sm text-surface-500 dark:text-surface-400 file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary-50 dark:file:bg-primary-900/30 file:text-primary-700 dark:file:text-primary-400 hover:file:bg-primary-100 dark:hover:file:bg-primary-900/50 transition-colors border border-surface-200 dark:border-surface-700 rounded-xl bg-surface-50 dark:bg-surface-800/50 cursor-pointer">
+                            <div id="preview-kartu_keluarga" class="mt-2 text-xs text-surface-500"></div>
                         </div>
                     </div>
 
@@ -69,7 +70,8 @@
                     <div class="space-y-2">
                         <label class="block text-sm font-bold text-surface-900 dark:text-white">{{ __('Akta Kelahiran') }}</label>
                         <div class="relative group">
-                            <input type="file" name="akta_kelahiran" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-sm text-surface-500 dark:text-surface-400 file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary-50 dark:file:bg-primary-900/30 file:text-primary-700 dark:file:text-primary-400 hover:file:bg-primary-100 dark:hover:file:bg-primary-900/50 transition-colors border border-surface-200 dark:border-surface-700 rounded-xl bg-surface-50 dark:bg-surface-800/50 cursor-pointer">
+                            <input type="file" name="akta_kelahiran" accept=".jpg,.jpeg,.png,.pdf" data-preview="preview-akta_kelahiran" class="psb-file block w-full text-sm text-surface-500 dark:text-surface-400 file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary-50 dark:file:bg-primary-900/30 file:text-primary-700 dark:file:text-primary-400 hover:file:bg-primary-100 dark:hover:file:bg-primary-900/50 transition-colors border border-surface-200 dark:border-surface-700 rounded-xl bg-surface-50 dark:bg-surface-800/50 cursor-pointer">
+                            <div id="preview-akta_kelahiran" class="mt-2 text-xs text-surface-500"></div>
                         </div>
                     </div>
 
@@ -77,7 +79,8 @@
                     <div class="space-y-2">
                         <label class="block text-sm font-bold text-surface-900 dark:text-white">{{ __('Ijazah / SKHUN / SKL') }}</label>
                         <div class="relative group">
-                            <input type="file" name="ijazah" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-sm text-surface-500 dark:text-surface-400 file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary-50 dark:file:bg-primary-900/30 file:text-primary-700 dark:file:text-primary-400 hover:file:bg-primary-100 dark:hover:file:bg-primary-900/50 transition-colors border border-surface-200 dark:border-surface-700 rounded-xl bg-surface-50 dark:bg-surface-800/50 cursor-pointer">
+                            <input type="file" name="ijazah" accept=".jpg,.jpeg,.png,.pdf" data-preview="preview-ijazah" class="psb-file block w-full text-sm text-surface-500 dark:text-surface-400 file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary-50 dark:file:bg-primary-900/30 file:text-primary-700 dark:file:text-primary-400 hover:file:bg-primary-100 dark:hover:file:bg-primary-900/50 transition-colors border border-surface-200 dark:border-surface-700 rounded-xl bg-surface-50 dark:bg-surface-800/50 cursor-pointer">
+                            <div id="preview-ijazah" class="mt-2 text-xs text-surface-500"></div>
                         </div>
                     </div>
 
@@ -85,7 +88,8 @@
                     <div class="space-y-2">
                         <label class="block text-sm font-bold text-surface-900 dark:text-white">{{ __('Pas Foto (3x4)') }}</label>
                         <div class="relative group">
-                            <input type="file" name="pas_foto" accept=".jpg,.jpeg,.png" class="block w-full text-sm text-surface-500 dark:text-surface-400 file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary-50 dark:file:bg-primary-900/30 file:text-primary-700 dark:file:text-primary-400 hover:file:bg-primary-100 dark:hover:file:bg-primary-900/50 transition-colors border border-surface-200 dark:border-surface-700 rounded-xl bg-surface-50 dark:bg-surface-800/50 cursor-pointer">
+                            <input type="file" name="pas_foto" accept=".jpg,.jpeg,.png" data-preview="preview-pas_foto" class="psb-file block w-full text-sm text-surface-500 dark:text-surface-400 file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary-50 dark:file:bg-primary-900/30 file:text-primary-700 dark:file:text-primary-400 hover:file:bg-primary-100 dark:hover:file:bg-primary-900/50 transition-colors border border-surface-200 dark:border-surface-700 rounded-xl bg-surface-50 dark:bg-surface-800/50 cursor-pointer">
+                            <div id="preview-pas_foto" class="mt-2 text-xs text-surface-500"></div>
                         </div>
                     </div>
 
@@ -93,14 +97,15 @@
                     <div class="space-y-2">
                         <label class="block text-sm font-bold text-surface-900 dark:text-white">{{ __('KTP Orang Tua / Wali') }}</label>
                         <div class="relative group">
-                            <input type="file" name="ktp_orangtua" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-sm text-surface-500 dark:text-surface-400 file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary-50 dark:file:bg-primary-900/30 file:text-primary-700 dark:file:text-primary-400 hover:file:bg-primary-100 dark:hover:file:bg-primary-900/50 transition-colors border border-surface-200 dark:border-surface-700 rounded-xl bg-surface-50 dark:bg-surface-800/50 cursor-pointer">
+                            <input type="file" name="ktp_orangtua" accept=".jpg,.jpeg,.png,.pdf" data-preview="preview-ktp_orangtua" class="psb-file block w-full text-sm text-surface-500 dark:text-surface-400 file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary-50 dark:file:bg-primary-900/30 file:text-primary-700 dark:file:text-primary-400 hover:file:bg-primary-100 dark:hover:file:bg-primary-900/50 transition-colors border border-surface-200 dark:border-surface-700 rounded-xl bg-surface-50 dark:bg-surface-800/50 cursor-pointer">
+                            <div id="preview-ktp_orangtua" class="mt-2 text-xs text-surface-500"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-10 p-4 bg-warning-50 dark:bg-warning-500/10 border border-warning-200 dark:border-warning-500/20 rounded-xl text-sm text-warning-700 dark:text-warning-400 flex gap-3">
                     <i data-lucide="info" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
-                    <p>{{ __('Anda dapat mengunggah berkas yang belum siap di lain waktu dengan menghubungi admin.') }}</p>
+                    <p>{{ __('Format JPG, PNG, atau PDF dan ukuran maksimal 2MB per berkas. Semua berkas wajib diunggah untuk dikirim ke verifikasi.') }}</p>
                 </div>
 
                 <div class="mt-10 pt-6 border-t border-surface-200 dark:border-surface-800 flex justify-end">
@@ -114,3 +119,42 @@
     </div>
 </section>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const maxSize = 2 * 1024 * 1024;
+    const allowed = ['application/pdf', 'image/jpeg', 'image/png'];
+
+    document.querySelectorAll('.psb-file').forEach((input) => input.addEventListener('change', () => {
+        const file = input.files[0];
+        const preview = document.getElementById(input.dataset.preview);
+        preview.replaceChildren();
+        if (!file) return;
+
+        const valid = file.size <= maxSize && allowed.includes(file.type)
+            && (input.name !== 'pas_foto' || file.type !== 'application/pdf');
+        if (!valid) {
+            preview.textContent = 'Berkas harus JPG/PNG/PDF (pas foto JPG/PNG) dan maksimal 2MB.';
+            preview.className = 'mt-2 text-xs text-danger-600';
+            input.value = '';
+            return;
+        }
+
+        preview.className = 'mt-2 text-xs text-success-600';
+        preview.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+        if (file.type.startsWith('image/')) {
+            const image = document.createElement('img');
+            image.className = 'mt-2 h-20 w-20 rounded-lg object-cover border';
+            image.alt = 'Pratinjau berkas';
+            image.src = URL.createObjectURL(file);
+            preview.appendChild(image);
+        }
+    }));
+
+    document.querySelector('form[enctype="multipart/form-data"]')?.addEventListener('submit', (event) => {
+        if (!window.confirm('Periksa kembali berkas sebelum dikirim. Lanjutkan unggah?')) event.preventDefault();
+    });
+});
+</script>
+@endpush

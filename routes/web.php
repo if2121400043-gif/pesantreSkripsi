@@ -128,6 +128,19 @@ Route::middleware('auth')->group(function () {
         Route::get('laporan-keuangan', [\App\Http\Controllers\Bendahara\LaporanController::class, 'index'])->name('laporan-keuangan.index');
         Route::get('laporan-keuangan/export', [\App\Http\Controllers\Bendahara\LaporanController::class, 'export'])->name('laporan-keuangan.export');
         
+        // Laporan & Rekapitulasi
+        Route::prefix('laporan')->name('laporan.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\LaporanController::class, 'index'])->name('index');
+            Route::get('/santri', [\App\Http\Controllers\Admin\LaporanController::class, 'santri'])->name('santri');
+            Route::get('/santri/export', [\App\Http\Controllers\Admin\LaporanController::class, 'exportSantri'])->name('santri.export');
+            Route::get('/presensi', [\App\Http\Controllers\Admin\LaporanController::class, 'presensi'])->name('presensi');
+            Route::get('/presensi/export', [\App\Http\Controllers\Admin\LaporanController::class, 'exportPresensi'])->name('presensi.export');
+            Route::get('/kedisiplinan', [\App\Http\Controllers\Admin\LaporanController::class, 'kedisiplinan'])->name('kedisiplinan');
+            Route::get('/kedisiplinan/export', [\App\Http\Controllers\Admin\LaporanController::class, 'exportKedisiplinan'])->name('kedisiplinan.export');
+            Route::get('/psb', [\App\Http\Controllers\Admin\LaporanController::class, 'psb'])->name('psb');
+            Route::get('/psb/export', [\App\Http\Controllers\Admin\LaporanController::class, 'exportPsb'])->name('psb.export');
+        });
+        
         // WhatsApp Notification
         Route::post('tagihan/{tagihan}/wa-reminder', [\App\Http\Controllers\Admin\TagihanController::class, 'sendWaReminder'])->name('tagihan.wa-reminder');
         Route::post('tagihan-blast-reminder', [\App\Http\Controllers\Admin\TagihanController::class, 'blastWaReminder'])->name('tagihan.blast-reminder');
@@ -152,6 +165,8 @@ Route::middleware('auth')->group(function () {
         
         // Konten Website
         Route::resource('berita', \App\Http\Controllers\Admin\BeritaController::class)->except(['show']);
+        Route::patch('berita/{beritum}/toggle-publish', [\App\Http\Controllers\Admin\BeritaController::class, 'togglePublish'])->name('berita.toggle-publish');
+        Route::patch('berita/{beritum}/toggle-pin', [\App\Http\Controllers\Admin\BeritaController::class, 'togglePin'])->name('berita.toggle-pin');
         Route::resource('media', \App\Http\Controllers\Admin\MediaController::class)->except(['show']);
         
         // Pengaturan
@@ -266,7 +281,7 @@ Route::post('/midtrans/webhook', [\App\Http\Controllers\Portal\PaymentController
 Route::controller(FrontendController::class)->group(function () {
     Route::get('/', 'index')->name('frontend.home');
     Route::get('/profil', 'profil')->name('frontend.profil');
-    Route::get('/berita', 'berita')->name('frontend.berita');
+    Route::get('/publikasi', 'publikasi')->name('frontend.publikasi');
     Route::get('/berita/{slug}', 'showBerita')->name('frontend.berita.show');
     Route::get('/galeri', 'media')->name('frontend.media');
 
@@ -275,6 +290,7 @@ Route::controller(FrontendController::class)->group(function () {
         Route::get('/', 'psb');
         Route::get('/daftar', 'daftar')->name('.daftar');
         Route::post('/daftar', 'storePsb')->middleware('throttle:5,1')->name('.store');
+        Route::get('/status', 'status')->name('.status');
         Route::get('/upload/{no_pendaftaran}', 'uploadBerkas')->name('.upload');
         Route::post('/upload/{no_pendaftaran}', 'storeBerkas')->name('.store-berkas');
         Route::get('/selesai/{no_pendaftaran}', 'selesai')->name('.selesai');

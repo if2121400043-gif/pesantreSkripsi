@@ -8,7 +8,7 @@
     <meta name="description" content="@yield('meta_description', 'Sistem Manajemen Pondok Pesantren Nurul Furqon')">
 
     {{-- PWA Meta Tags --}}
-    <meta name="theme-color" content="#065f46">
+    <meta name="theme-color" content="#1e3a5f">
     <meta name="application-name" content="PP Nurul Furqon">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,7 +17,7 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
     <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
-    <link rel="mask-icon" href="/icons/icon-192x192.png" color="#065f46">
+    <link rel="mask-icon" href="/icons/icon-192x192.png" color="#1e3a5f">
 
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">

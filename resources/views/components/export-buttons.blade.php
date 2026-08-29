@@ -14,8 +14,8 @@
     @endif
 
     @if($routeExcel !== '#')
-    <a href="{{ $routeExcel }}" class="px-2.5 py-1.5 rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-xs font-semibold flex items-center gap-1.5 transition-all" title="Export Excel">
-        <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-emerald-600"></i>
+    <a href="{{ $routeExcel }}" class="px-2.5 py-1.5 rounded-lg border border-primary-200 bg-primary-50 text-primary-700 hover:bg-primary-100 text-xs font-semibold flex items-center gap-1.5 transition-all" title="Export Excel">
+        <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-primary-600"></i>
         <span class="hidden sm:inline">Excel</span>
     </a>
     @endif

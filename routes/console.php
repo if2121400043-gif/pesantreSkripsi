@@ -102,7 +102,7 @@ Artisan::command('app:clean-psb-drafts', function () {
     $this->info('Membersihkan data draf PSB yang tidak lengkap...');
     
     $expiredDate = now()->subDays(30);
-    $deleted = \App\Models\CalonSantri::where('status', 'DRAFT')
+    $deleted = \App\Models\CalonSantri::where('status_workflow', 'DRAFT')
         ->where('created_at', '<', $expiredDate)
         ->delete();
         

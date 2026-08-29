@@ -11,10 +11,20 @@
         <nav class="flex text-sm text-primary-200/70 dark:text-surface-500 mb-6" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-2">
                 <li><a href="{{ route('frontend.home') }}" class="hover:text-white dark:hover:text-primary-400 transition-colors">{{ __('Beranda') }}</a></li>
-                <li><div class="flex items-center"><i data-lucide="chevron-right" class="w-3.5 h-3.5 mx-1"></i><a href="{{ route('frontend.berita') }}" class="hover:text-white dark:hover:text-primary-400 transition-colors">{{ __('Berita') }}</a></div></li>
+                <li><div class="flex items-center"><i data-lucide="chevron-right" class="w-3.5 h-3.5 mx-1"></i><a href="{{ route('frontend.publikasi') }}" class="hover:text-white dark:hover:text-primary-400 transition-colors">{{ __('Publikasi') }}</a></div></li>
                 <li aria-current="page"><div class="flex items-center"><i data-lucide="chevron-right" class="w-3.5 h-3.5 mx-1"></i><span class="text-white/80 dark:text-surface-300 font-medium truncate max-w-[200px]">{{ $berita->judul }}</span></div></li>
             </ol>
         </nav>
+        {{-- Tipe Badge --}}
+        <div class="mb-4">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold {{ $berita->tipe === 'pengumuman' ? 'bg-warning-500/20 text-warning-300 border border-warning-400/30' : 'bg-info-500/20 text-info-300 border border-info-400/30' }}">
+                <i data-lucide="{{ $berita->tipe === 'pengumuman' ? 'megaphone' : 'newspaper' }}" class="w-3.5 h-3.5"></i>
+                {{ $berita->tipe_label }}
+                @if($berita->is_pinned)
+                    <span class="ml-1">• 📌 {{ __('Disematkan') }}</span>
+                @endif
+            </span>
+        </div>
         <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight text-white">{{ $berita->judul }}</h1>
         <div class="flex flex-wrap items-center gap-4 mt-6 text-sm text-primary-200/80 dark:text-surface-400">
             <div class="flex items-center gap-2">
@@ -51,15 +61,19 @@
                 </div>
 
                 {{-- Share options --}}
+                @php $shareUrl = urlencode(request()->url()); $shareTitle = urlencode($berita->judul); @endphp
                 <div class="mt-12 pt-6 border-t border-surface-100 dark:border-surface-800 flex items-center gap-4">
                     <span class="text-sm font-bold text-surface-900 dark:text-white">{{ __('Bagikan') }}:</span>
-                    <button class="w-10 h-10 rounded-full bg-surface-100 dark:bg-surface-800 text-surface-600 dark:text-surface-400 flex items-center justify-center hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-surface-100 dark:bg-surface-800 text-surface-600 dark:text-surface-400 flex items-center justify-center hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 transition-colors" title="Facebook">
                         <i data-lucide="facebook" class="w-5 h-5"></i>
-                    </button>
-                    <button class="w-10 h-10 rounded-full bg-surface-100 dark:bg-surface-800 text-surface-600 dark:text-surface-400 flex items-center justify-center hover:bg-info-50 dark:hover:bg-info-500/10 hover:text-info-500 transition-colors">
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?url={{ $shareUrl }}&text={{ $shareTitle }}" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-surface-100 dark:bg-surface-800 text-surface-600 dark:text-surface-400 flex items-center justify-center hover:bg-info-50 dark:hover:bg-info-500/10 hover:text-info-500 transition-colors" title="X (Twitter)">
                         <i data-lucide="twitter" class="w-5 h-5"></i>
-                    </button>
-                    <button class="w-10 h-10 rounded-full bg-surface-100 dark:bg-surface-800 text-surface-600 dark:text-surface-400 flex items-center justify-center hover:bg-success-50 dark:hover:bg-success-500/10 hover:text-success-500 transition-colors" onclick="navigator.clipboard.writeText(window.location.href); alert('{{ __('Tautan disalin!') }}')">
+                    </a>
+                    <a href="https://api.whatsapp.com/send?text={{ $shareTitle }}%20{{ $shareUrl }}" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-surface-100 dark:bg-surface-800 text-surface-600 dark:text-surface-400 flex items-center justify-center hover:bg-success-50 dark:hover:bg-success-500/10 hover:text-success-500 transition-colors" title="WhatsApp">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.49l4.604-1.48A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.16 0-4.162-.68-5.804-1.837l-.416-.271-2.732.879.864-2.653-.297-.432A9.713 9.713 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/></svg>
+                    </a>
+                    <button class="w-10 h-10 rounded-full bg-surface-100 dark:bg-surface-800 text-surface-600 dark:text-surface-400 flex items-center justify-center hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 transition-colors" onclick="navigator.clipboard.writeText(window.location.href).then(() => { this.innerHTML = '<i data-lucide=\"check\" class=\"w-5 h-5 text-success-500\"></i>'; lucide.createIcons(); setTimeout(() => { this.innerHTML = '<i data-lucide=\"link\" class=\"w-5 h-5\"></i>'; lucide.createIcons(); }, 2000); })" title="{{ __('Salin Tautan') }}">
                         <i data-lucide="link" class="w-5 h-5"></i>
                     </button>
                 </div>

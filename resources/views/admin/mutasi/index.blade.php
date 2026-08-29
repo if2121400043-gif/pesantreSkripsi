@@ -89,7 +89,7 @@
                     </td>
                     <td class="px-6 py-4">
                         @if($m->jenis_mutasi === 'ASRAMA')
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-semibold bg-primary-50 text-primary-700 border border-primary-200">
                                 <i data-lucide="home" class="w-3.5 h-3.5"></i>
                                 Kamar Asrama
                             </span>
@@ -107,7 +107,7 @@
                         </div>
                     </td>
                     <td class="px-6 py-4">
-                        <div class="text-sm font-semibold text-emerald-600 flex items-center gap-1.5">
+                        <div class="text-sm font-semibold text-primary-600 flex items-center gap-1.5">
                             <i data-lucide="log-in" class="w-3.5 h-3.5"></i>
                             {{ $m->ke_posisi }}
                         </div>

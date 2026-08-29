@@ -30,7 +30,7 @@ $labelHari = [
         </div>
 
         <div class="flex flex-wrap items-center gap-2 shrink-0">
-            <a href="{{ route('guru.presensi.rekap') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs rounded-xl transition-all shadow-md cursor-pointer" style="background-color: #047857 !important; color: #ffffff !important;">
+            <a href="{{ route('guru.presensi.rekap') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary-700 hover:bg-primary-800 text-white font-extrabold text-xs rounded-xl transition-all shadow-md cursor-pointer" style="background-color: #047857 !important; color: #ffffff !important;">
                 <i data-lucide="printer" class="w-4 h-4 text-white" style="color: #ffffff !important;"></i>
                 <span>Rekap & Cetak Laporan</span>
             </a>
@@ -112,8 +112,8 @@ $labelHari = [
                                     <span>Waktu Input Presensi Terakhir:</span>
                                 </div>
                                 @if($lastInputAt)
-                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 font-extrabold text-[0.72rem] border border-emerald-200 w-fit">
-                                        <i data-lucide="calendar-check-2" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-primary-50 text-primary-800 font-extrabold text-[0.72rem] border border-primary-200 w-fit">
+                                        <i data-lucide="calendar-check-2" class="w-3.5 h-3.5 text-primary-600"></i>
                                         <span>{{ \Carbon\Carbon::parse($lastInputAt)->locale('id')->isoFormat('D MMM YYYY, HH:mm') }} WITA</span>
                                     </div>
                                 @else
@@ -127,7 +127,7 @@ $labelHari = [
 
                         {{-- Action Button --}}
                         <div class="mt-5 pt-3 border-t border-surface-100">
-                            <a href="{{ route('guru.presensi.create', $jadwal->id) }}" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary-700 hover:bg-primary-800 text-white font-bold text-xs shadow-md transition-all cursor-pointer" style="color: #ffffff !important; background-color: #065f46 !important;">
+                            <a href="{{ route('guru.presensi.create', $jadwal->id) }}" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary-700 hover:bg-primary-800 text-white font-bold text-xs shadow-md transition-all cursor-pointer" style="color: #ffffff !important; background-color: #1e3a5f !important;">
                                 <i data-lucide="{{ $lastInputAt ? 'edit-3' : 'check-square' }}" class="w-4 h-4 text-white" style="color: #ffffff !important;"></i>
                                 <span style="color: #ffffff !important;">{{ $lastInputAt ? 'Edit / Perbarui Presensi' : 'Isi Presensi Santri' }}</span>
                             </a>

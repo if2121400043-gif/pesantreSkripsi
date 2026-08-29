@@ -253,6 +253,9 @@
     {{-- Action & Verification Box --}}
     <div class="xl:col-span-1 space-y-6">
         <x-card title="Panel Verifikasi & Keputusan" class="border-t-4 {{ $calonSantri->status === 'DITERIMA' ? 'border-t-success-500' : ($calonSantri->status === 'TIDAK_LULUS' ? 'border-t-danger-500' : ($calonSantri->status === 'HADIR_TES' ? 'border-t-warning-500' : ($calonSantri->status === 'DIBATALKAN' ? 'border-t-surface-400' : 'border-t-primary-500'))) }}">
+            <div class="mb-4 rounded-lg bg-info-50 px-4 py-3 text-sm text-info-800">
+                Status workflow: <strong>{{ $calonSantri->workflow_status_label }}</strong>
+            </div>
             <div class="mb-4">
                 <p class="text-xs font-bold text-surface-400 uppercase tracking-wider mb-1">Status Saat Ini</p>
                 @if($calonSantri->status === 'DITERIMA')
@@ -342,4 +345,3 @@
     </div>
 </div>
 @endsection
-

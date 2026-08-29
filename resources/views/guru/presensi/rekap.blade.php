@@ -8,7 +8,7 @@
     {{-- Page Header --}}
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-3xl border border-surface-200 shadow-sm">
         <div class="flex items-center gap-3.5">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold shrink-0">
+            <div class="w-12 h-12 rounded-2xl bg-primary-100 text-primary-800 flex items-center justify-center font-bold shrink-0">
                 <i data-lucide="printer" class="w-6 h-6"></i>
             </div>
             <div>
@@ -31,7 +31,7 @@
                 {{-- Pilih Kelas & Mapel --}}
                 <div class="md:col-span-5">
                     <label class="block text-xs font-bold text-surface-700 mb-1.5">Pilih Kelas & Mata Pelajaran <span class="text-rose-500">*</span></label>
-                    <select name="jadwal_id" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                    <select name="jadwal_id" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                         @foreach($jadwals as $j)
                             <option value="{{ $j->id }}" {{ $selectedJadwalId == $j->id ? 'selected' : '' }}>
                                 {{ str_starts_with(strtolower($j->rombel->nama ?? ''), 'kelas') ? $j->rombel->nama : 'Kelas ' . ($j->rombel->nama ?? '-') }} — {{ $j->mataPelajaran->nama }} (Hari {{ ucfirst(strtolower($j->hari)) }})
@@ -43,7 +43,7 @@
                 {{-- Mode Filter (Hari, Minggu, Bulan) --}}
                 <div class="md:col-span-3">
                     <label class="block text-xs font-bold text-surface-700 mb-1.5">Periode Laporan <span class="text-rose-500">*</span></label>
-                    <select name="filter_mode" id="filter_mode" onchange="this.form.submit()" class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                    <select name="filter_mode" id="filter_mode" onchange="this.form.submit()" class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                         <option value="bulan" {{ $filterMode === 'bulan' ? 'selected' : '' }}>🗓️ Bulanan (Per Bulan)</option>
                         <option value="minggu" {{ $filterMode === 'minggu' ? 'selected' : '' }}>📅 Mingguan (Rentang Tanggal)</option>
                         <option value="hari" {{ $filterMode === 'hari' ? 'selected' : '' }}>📆 Harian (Per Tanggal)</option>
@@ -110,7 +110,7 @@
                             'tanggal_end' => $tanggalEnd,
                             'bulan' => $bulan,
                             'tahun' => $tahun
-                        ]) }}" target="_blank" class="px-5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs rounded-xl transition-all shadow-md flex items-center gap-2 cursor-pointer" style="background-color: #047857 !important; color: #ffffff !important;">
+                        ]) }}" target="_blank" class="px-5 py-2 bg-primary-700 hover:bg-primary-800 text-white font-extrabold text-xs rounded-xl transition-all shadow-md flex items-center gap-2 cursor-pointer" style="background-color: #047857 !important; color: #ffffff !important;">
                             <i data-lucide="printer" class="w-4 h-4 text-white" style="color: #ffffff !important;"></i>
                             <span>Cetak Laporan / PDF</span>
                         </a>
@@ -126,11 +126,11 @@
         <div class="bg-white p-6 rounded-3xl border border-surface-200 shadow-sm space-y-6">
             
             {{-- Header Details Preview --}}
-            <div class="bg-emerald-900 text-white p-5 rounded-2xl border border-emerald-800 flex flex-col md:flex-row md:items-center justify-between gap-4" style="background-color: #064e3b !important; color: #ffffff !important;">
+            <div class="bg-primary-900 text-white p-5 rounded-2xl border border-primary-800 flex flex-col md:flex-row md:items-center justify-between gap-4" style="background-color: #064e3b !important; color: #ffffff !important;">
                 <div class="space-y-1">
-                    <div class="text-[0.68rem] font-bold text-emerald-200 uppercase tracking-wider">Laporan Rekapitulasi Presensi Santri</div>
+                    <div class="text-[0.68rem] font-bold text-primary-200 uppercase tracking-wider">Laporan Rekapitulasi Presensi Santri</div>
                     <h2 class="text-lg font-black text-white">{{ $selectedJadwal->mataPelajaran->nama }}</h2>
-                    <div class="flex flex-wrap items-center gap-3 text-xs font-semibold text-emerald-100 pt-0.5">
+                    <div class="flex flex-wrap items-center gap-3 text-xs font-semibold text-primary-100 pt-0.5">
                         <span>🏫 {{ str_starts_with(strtolower($selectedJadwal->rombel->nama ?? ''), 'kelas') ? $selectedJadwal->rombel->nama : 'Kelas ' . ($selectedJadwal->rombel->nama ?? '-') }}</span>
                         <span>•</span>
                         <span>👨‍🏫 {{ $selectedJadwal->guru->orang->nama_lengkap ?? $pegawai->orang->nama_lengkap ?? '-' }}</span>
@@ -150,7 +150,7 @@
                         <tr>
                             <th class="px-4 py-3 w-10 text-center">No</th>
                             <th class="px-4 py-3 min-w-[180px]">Nama Santri & NISN</th>
-                            <th class="px-3 py-3 text-center w-14 bg-emerald-50 text-emerald-800">H</th>
+                            <th class="px-3 py-3 text-center w-14 bg-primary-50 text-primary-800">H</th>
                             <th class="px-3 py-3 text-center w-14 bg-sky-50 text-sky-800">S</th>
                             <th class="px-3 py-3 text-center w-14 bg-amber-50 text-amber-800">I</th>
                             <th class="px-3 py-3 text-center w-14 bg-rose-50 text-rose-800">A</th>
@@ -187,12 +187,12 @@
                                     <div class="font-extrabold text-surface-900">{{ $peserta->orang->nama ?? '-' }}</div>
                                     <div class="text-[0.68rem] text-surface-500">NISN: {{ $peserta->nisn ?? '-' }}</div>
                                 </td>
-                                <td class="px-3 py-3 text-center font-black text-emerald-700 bg-emerald-50/40">{{ $hCount }}</td>
+                                <td class="px-3 py-3 text-center font-black text-primary-700 bg-primary-50/40">{{ $hCount }}</td>
                                 <td class="px-3 py-3 text-center font-black text-sky-700 bg-sky-50/40">{{ $sCount }}</td>
                                 <td class="px-3 py-3 text-center font-black text-amber-700 bg-amber-50/40">{{ $iCount }}</td>
                                 <td class="px-3 py-3 text-center font-black text-rose-700 bg-rose-50/40">{{ $aCount }}</td>
                                 <td class="px-4 py-3 text-center font-extrabold">
-                                    <span class="px-2 py-0.5 rounded-md text-[0.68rem] {{ $persen >= 85 ? 'bg-emerald-100 text-emerald-800' : ($persen >= 70 ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800') }}">
+                                    <span class="px-2 py-0.5 rounded-md text-[0.68rem] {{ $persen >= 85 ? 'bg-primary-100 text-primary-800' : ($persen >= 70 ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800') }}">
                                         {{ $persen }}%
                                     </span>
                                 </td>
@@ -204,7 +204,7 @@
                                         @endphp
                                         <td class="px-2 py-3 text-center font-black text-[11px]">
                                             @if($st === 'HADIR')
-                                                <span class="text-emerald-700" title="Hadir">H</span>
+                                                <span class="text-primary-700" title="Hadir">H</span>
                                             @elseif($st === 'SAKIT')
                                                 <span class="text-sky-700" title="Sakit">S</span>
                                             @elseif($st === 'IZIN')

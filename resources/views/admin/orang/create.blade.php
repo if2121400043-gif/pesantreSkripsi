@@ -6,7 +6,7 @@
 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
     <div>
         <div class="flex items-center gap-2 text-xs text-surface-500 mb-1.5">
-            <a href="{{ route('admin.orang.index') }}" class="hover:text-emerald-700 transition-colors font-medium">Data Induk Identitas</a>
+            <a href="{{ route('admin.orang.index') }}" class="hover:text-primary-700 transition-colors font-medium">Data Induk Identitas</a>
             <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
             <span class="text-surface-900 font-bold">Registrasi NIUP Baru</span>
         </div>
@@ -48,7 +48,7 @@
             {{-- Card 1: Informasi Pribadi --}}
             <div class="bg-white rounded-3xl p-6 border border-surface-200 shadow-sm relative overflow-hidden">
                 <div class="flex items-center gap-3 mb-5 pb-3 border-b border-surface-100">
-                    <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold shrink-0 border border-emerald-100">
+                    <div class="w-10 h-10 rounded-2xl bg-primary-50 text-primary-700 flex items-center justify-center font-bold shrink-0 border border-primary-100">
                         <i data-lucide="user" class="w-5 h-5"></i>
                     </div>
                     <div>
@@ -61,29 +61,29 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">Nama Lengkap (Sesuai Ijazah/Akte) <span class="text-rose-500">*</span></label>
-                            <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required placeholder="Ketik nama lengkap..." class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                            <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required placeholder="Ketik nama lengkap..." class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">Nama Panggilan</label>
-                            <input type="text" name="nama_panggilan" value="{{ old('nama_panggilan') }}" placeholder="Nama panggilan..." class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                            <input type="text" name="nama_panggilan" value="{{ old('nama_panggilan') }}" placeholder="Nama panggilan..." class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">NIK (KTP/KIA)</label>
-                            <input type="text" name="nik" value="{{ old('nik') }}" maxlength="16" placeholder="16 Digit NIK..." class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                            <input type="text" name="nik" value="{{ old('nik') }}" maxlength="16" placeholder="16 Digit NIK..." class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm font-mono focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">Nomor Kartu Keluarga</label>
-                            <input type="text" name="no_kk" value="{{ old('no_kk') }}" maxlength="16" placeholder="16 Digit No. KK..." class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                            <input type="text" name="no_kk" value="{{ old('no_kk') }}" maxlength="16" placeholder="16 Digit No. KK..." class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm font-mono focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">Jenis Kelamin <span class="text-rose-500">*</span></label>
-                            <select name="jenis_kelamin" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-sm font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                            <select name="jenis_kelamin" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-sm font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                                 <option value="" disabled {{ old('jenis_kelamin') ? '' : 'selected' }}>Pilih...</option>
                                 <option value="L" {{ old('jenis_kelamin') === 'L' ? 'selected' : '' }}>Laki-laki (Putra)</option>
                                 <option value="P" {{ old('jenis_kelamin') === 'P' ? 'selected' : '' }}>Perempuan (Putri)</option>
@@ -104,7 +104,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">Golongan Darah</label>
-                            <select name="golongan_darah" class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-sm font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                            <select name="golongan_darah" class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-sm font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                                 <option value="" {{ !old('golongan_darah') ? 'selected' : '' }}>Tidak Tahu</option>
                                 <option value="A" {{ old('golongan_darah') === 'A' ? 'selected' : '' }}>A</option>
                                 <option value="B" {{ old('golongan_darah') === 'B' ? 'selected' : '' }}>B</option>
@@ -115,18 +115,18 @@
 
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">Kewarganegaraan <span class="text-rose-500">*</span></label>
-                            <input type="text" name="kewarganegaraan" value="{{ old('kewarganegaraan', 'Indonesia') }}" required class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                            <input type="text" name="kewarganegaraan" value="{{ old('kewarganegaraan', 'Indonesia') }}" required class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                         </div>
 
                         <div class="grid grid-cols-2 gap-2">
                             <div>
                                 <label class="block text-xs font-bold text-surface-700 mb-1">Anak Ke</label>
-                                <input type="number" name="anak_ke" min="1" value="{{ old('anak_ke') }}" placeholder="1" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm text-center focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                                <input type="number" name="anak_ke" min="1" value="{{ old('anak_ke') }}" placeholder="1" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm text-center focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                             </div>
 
                             <div>
                                 <label class="block text-xs font-bold text-surface-700 mb-1">Saudara</label>
-                                <input type="number" name="jumlah_saudara" min="0" value="{{ old('jumlah_saudara') }}" placeholder="0" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm text-center focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                                <input type="number" name="jumlah_saudara" min="0" value="{{ old('jumlah_saudara') }}" placeholder="0" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm text-center focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                             </div>
                         </div>
                     </div>
@@ -148,23 +148,23 @@
                 <div class="space-y-4">
                     <div>
                         <label class="block text-xs font-bold text-surface-700 mb-1">Jalan / Dusun / Rincian Alamat Rumah</label>
-                        <textarea name="alamat_lengkap" rows="2" placeholder="Nama jalan, RT/RW, nomor rumah..." class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">{{ old('alamat_lengkap') }}</textarea>
+                        <textarea name="alamat_lengkap" rows="2" placeholder="Nama jalan, RT/RW, nomor rumah..." class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">{{ old('alamat_lengkap') }}</textarea>
                     </div>
 
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">RT</label>
-                            <input type="text" name="rt" value="{{ old('rt') }}" placeholder="001" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm font-mono text-center focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                            <input type="text" name="rt" value="{{ old('rt') }}" placeholder="001" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm font-mono text-center focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">RW</label>
-                            <input type="text" name="rw" value="{{ old('rw') }}" placeholder="002" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm font-mono text-center focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                            <input type="text" name="rw" value="{{ old('rw') }}" placeholder="002" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm font-mono text-center focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                         </div>
 
                         <div class="col-span-2">
                             <label class="block text-xs font-bold text-surface-700 mb-1">Kode Pos</label>
-                            <input type="text" name="kode_pos" value="{{ old('kode_pos') }}" placeholder="67123" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                            <input type="text" name="kode_pos" value="{{ old('kode_pos') }}" placeholder="67123" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm font-mono focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                         </div>
                     </div>
 
@@ -172,7 +172,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-surface-50 p-4 rounded-2xl border border-surface-200">
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">1. Provinsi</label>
-                            <select id="provinsi_id" class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" onchange="loadKabupaten(this.value)">
+                            <select id="provinsi_id" class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600" onchange="loadKabupaten(this.value)">
                                 <option value="">Pilih Provinsi...</option>
                                 @foreach($provinsis as $prov)
                                     <option value="{{ $prov->id }}">{{ $prov->nama }}</option>
@@ -181,19 +181,19 @@
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">2. Kabupaten/Kota</label>
-                            <select id="kabupaten_id" disabled class="w-full rounded-xl border border-surface-300 bg-surface-100 px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" onchange="loadKecamatan(this.value)">
+                            <select id="kabupaten_id" disabled class="w-full rounded-xl border border-surface-300 bg-surface-100 px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600" onchange="loadKecamatan(this.value)">
                                 <option value="">Pilih Kabupaten...</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">3. Kecamatan</label>
-                            <select id="kecamatan_id" disabled class="w-full rounded-xl border border-surface-300 bg-surface-100 px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" onchange="loadDesa(this.value)">
+                            <select id="kecamatan_id" disabled class="w-full rounded-xl border border-surface-300 bg-surface-100 px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600" onchange="loadDesa(this.value)">
                                 <option value="">Pilih Kecamatan...</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">4. Desa/Kelurahan</label>
-                            <select name="desa_id" id="desa_id" disabled class="w-full rounded-xl border border-surface-300 bg-surface-100 px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                            <select name="desa_id" id="desa_id" disabled class="w-full rounded-xl border border-surface-300 bg-surface-100 px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                                 <option value="">Pilih Desa...</option>
                             </select>
                         </div>
@@ -202,12 +202,12 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">Nomor WhatsApp / HP Aktif</label>
-                            <input type="tel" name="telepon" value="{{ old('telepon') }}" placeholder="08xxxxxxxxxx" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                            <input type="tel" name="telepon" value="{{ old('telepon') }}" placeholder="08xxxxxxxxxx" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1">Alamat Email (Opsional)</label>
-                            <input type="email" name="email" value="{{ old('email') }}" placeholder="email@domain.com" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                            <input type="email" name="email" value="{{ old('email') }}" placeholder="email@domain.com" class="w-full rounded-xl border border-surface-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                         </div>
                     </div>
                 </div>
@@ -219,31 +219,31 @@
         <div class="lg:col-span-1 space-y-6">
             <div class="bg-white rounded-3xl p-6 border border-surface-200 shadow-sm sticky top-20">
                 <h3 class="text-base font-extrabold text-surface-900 mb-4 pb-3 border-b border-surface-100 flex items-center gap-2">
-                    <i data-lucide="settings" class="w-5 h-5 text-emerald-700"></i>
+                    <i data-lucide="settings" class="w-5 h-5 text-primary-700"></i>
                     Pengaturan Identitas
                 </h3>
                 
                 {{-- NIUP Banner --}}
-                <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl mb-5 text-center">
-                    <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-2 font-bold">
+                <div class="p-4 bg-primary-50 border border-primary-200 rounded-2xl mb-5 text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-primary-100 text-primary-700 flex items-center justify-center mx-auto mb-2 font-bold">
                         <i data-lucide="fingerprint" class="w-6 h-6"></i>
                     </div>
-                    <h4 class="font-extrabold text-emerald-900 text-sm">Auto Generate NIUP</h4>
-                    <p class="text-[0.68rem] text-emerald-700 mt-1 leading-relaxed">
+                    <h4 class="font-extrabold text-primary-900 text-sm">Auto Generate NIUP</h4>
+                    <p class="text-[0.68rem] text-primary-700 mt-1 leading-relaxed">
                         Nomor Induk Unik Pesantren (NIUP) akan dibuatkan otomatis oleh sistem setelah disimpan.
                     </p>
                 </div>
 
                 {{-- Status Keaktifan --}}
                 <div class="flex items-center gap-3 p-3.5 bg-surface-50 border border-surface-200 rounded-2xl mb-6">
-                    <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', '1') == '1' ? 'checked' : '' }} class="w-5 h-5 rounded border-surface-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                    <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', '1') == '1' ? 'checked' : '' }} class="w-5 h-5 rounded border-surface-300 text-primary-600 focus:ring-primary-500 cursor-pointer">
                     <label for="is_active" class="text-xs font-bold text-surface-900 cursor-pointer select-none">
                         Status Orang Ini Aktif (Hidup)
                     </label>
                 </div>
 
                 {{-- Submit Button --}}
-                <button type="submit" class="btn-primary w-full justify-center flex items-center gap-2 py-3 px-6 rounded-xl font-bold text-xs shadow-md shadow-emerald-700/20" style="color: #ffffff !important; background-color: #047857 !important;">
+                <button type="submit" class="btn-primary w-full justify-center flex items-center gap-2 py-3 px-6 rounded-xl font-bold text-xs shadow-md shadow-primary-700/20" style="color: #ffffff !important; background-color: #047857 !important;">
                     <i data-lucide="save" class="w-4 h-4 text-white" style="color: #ffffff !important;"></i>
                     <span style="color: #ffffff !important;">Simpan & Generate NIUP</span>
                 </button>

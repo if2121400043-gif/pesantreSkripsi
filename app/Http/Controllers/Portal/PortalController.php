@@ -12,6 +12,7 @@ use App\Models\CatatanPelanggaran;
 use App\Models\CatatanPrestasi;
 use App\Models\Pembayaran;
 use App\Models\TahunPelajaran;
+use App\Models\Berita;
 use Illuminate\Http\Request;
 
 class PortalController extends Controller
@@ -183,6 +184,13 @@ class PortalController extends Controller
                 ->get();
         }
 
+        // Pengumuman Terbaru untuk Portal Wali
+        $pengumuman_terbaru = Berita::published()
+            ->orderBy('is_pinned', 'desc')
+            ->orderBy('published_at', 'desc')
+            ->take(5)
+            ->get();
+
         $activeTab = $request->get('tab', 'nilai');
 
         return view('portal.beranda', compact(
@@ -190,7 +198,7 @@ class PortalController extends Controller
             'kehadiranStats', 'kehadiranPersen', 'presensis',
             'totalPoinPelanggaran', 'statusKedisiplinan', 'pelanggarans', 'prestasis',
             'sppStatus', 'tagihanTerakhirMsg', 'totalTagihanBelumLunas', 'riwayatTagihan',
-            'grades', 'activeTab'
+            'grades', 'activeTab', 'pengumuman_terbaru'
         ));
     }
 

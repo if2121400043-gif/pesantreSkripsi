@@ -6,7 +6,7 @@
 <div class="space-y-6">
 
     {{-- Hero Header Banner Premium --}}
-    <div class="rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #047857, #065f46) !important; color: #ffffff !important;">
+    <div class="rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #047857, #1e3a5f) !important; color: #ffffff !important;">
         <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
         <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
@@ -34,12 +34,12 @@
         {{-- Card 1: Pegawai Aktif --}}
         @php $isTabAktif = ($tab === 'aktif' && !request('jenis_pegawai')); @endphp
         <a href="{{ route('admin.pegawai.index', ['tab' => 'aktif', 'search' => request('search')]) }}" 
-           class="p-4 rounded-2xl border transition-all duration-200 flex items-center gap-3 group {{ $isTabAktif ? 'bg-emerald-50/90 border-emerald-500 shadow-md ring-2 ring-emerald-500/20 scale-[1.02]' : 'bg-white border-surface-200 shadow-sm hover:border-emerald-300 hover:shadow-md' }}">
-            <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200 group-hover:scale-110 transition-transform">
+           class="p-4 rounded-2xl border transition-all duration-200 flex items-center gap-3 group {{ $isTabAktif ? 'bg-primary-50/90 border-primary-500 shadow-md ring-2 ring-primary-500/20 scale-[1.02]' : 'bg-white border-surface-200 shadow-sm hover:border-primary-300 hover:shadow-md' }}">
+            <div class="w-11 h-11 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center shrink-0 border border-primary-200 group-hover:scale-110 transition-transform">
                 <i data-lucide="user-check" class="w-5 h-5"></i>
             </div>
             <div>
-                <div class="text-xs text-surface-500 font-bold group-hover:text-emerald-800">Pegawai Aktif</div>
+                <div class="text-xs text-surface-500 font-bold group-hover:text-primary-800">Pegawai Aktif</div>
                 <div class="text-xl font-black text-surface-900">{{ $countAktif }} Orang</div>
             </div>
         </a>
@@ -124,7 +124,7 @@
         @if($pegawais->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 @foreach($pegawais as $pegawai)
-                    <div class="bg-white rounded-3xl border border-surface-200 shadow-sm hover:shadow-xl hover:border-emerald-400 transition-all duration-300 p-6 md:p-7 flex flex-col justify-between relative overflow-hidden group">
+                    <div class="bg-white rounded-3xl border border-surface-200 shadow-sm hover:shadow-xl hover:border-primary-400 transition-all duration-300 p-6 md:p-7 flex flex-col justify-between relative overflow-hidden group">
                         
                         {{-- Top Section: Avatar & Status --}}
                         <div>
@@ -134,7 +134,7 @@
                                         {{ substr($pegawai->orang->nama_lengkap ?? 'P', 0, 1) }}
                                     </div>
                                     <div>
-                                        <h3 class="font-extrabold text-surface-900 text-base leading-snug group-hover:text-emerald-700 transition-colors">
+                                        <h3 class="font-extrabold text-surface-900 text-base leading-snug group-hover:text-primary-700 transition-colors">
                                             {{ $pegawai->orang->nama_lengkap }}
                                         </h3>
                                         <div class="text-xs text-surface-500 font-mono mt-0.5">
@@ -144,7 +144,7 @@
                                 </div>
 
                                 @if($pegawai->is_active)
-                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[0.65rem] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200 shrink-0">
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[0.65rem] font-extrabold bg-primary-100 text-primary-800 border border-primary-200 shrink-0">
                                         ● Aktif
                                     </span>
                                 @else
@@ -176,7 +176,7 @@
                                         @if($mapelList->count() > 0)
                                             <div class="flex flex-wrap gap-1 mb-1.5">
                                                 @foreach($mapelList->take(3) as $mName)
-                                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[0.65rem] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[0.65rem] font-extrabold bg-primary-100 text-primary-800 border border-primary-200">
                                                         📚 {{ $mName }}
                                                     </span>
                                                 @endforeach
@@ -184,9 +184,9 @@
                                                     <span class="text-[0.65rem] font-bold text-surface-500">+{{ $mapelList->count() - 3 }} mapel</span>
                                                 @endif
                                             </div>
-                                            <div class="text-xs font-bold text-emerald-800 flex items-center justify-between pt-1 border-t border-surface-200/60">
+                                            <div class="text-xs font-bold text-primary-800 flex items-center justify-between pt-1 border-t border-surface-200/60">
                                                 <span>Beban Mengajar:</span>
-                                                <span class="px-2 py-0.5 rounded-md bg-white border border-emerald-300 shadow-2xs">{{ $totalSesi }} Sesi / Minggu</span>
+                                                <span class="px-2 py-0.5 rounded-md bg-white border border-primary-300 shadow-2xs">{{ $totalSesi }} Sesi / Minggu</span>
                                             </div>
                                         @else
                                             <div class="text-xs text-surface-400 italic">Belum ada jadwal mengajar terpasang</div>

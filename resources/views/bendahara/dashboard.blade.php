@@ -40,10 +40,10 @@
         <div class="bg-white p-5 rounded-2xl border border-surface-200 shadow-sm flex items-center justify-between">
             <div>
                 <div class="text-xs text-surface-500 font-medium">Total Pemasukan Kas</div>
-                <div class="text-xl md:text-2xl font-extrabold text-emerald-700 mt-1">Rp {{ number_format($totalPemasukan, 0, ',', '.') }}</div>
+                <div class="text-xl md:text-2xl font-extrabold text-primary-700 mt-1">Rp {{ number_format($totalPemasukan, 0, ',', '.') }}</div>
                 <div class="text-[0.7rem] text-surface-450 mt-1">Penerimaan riil pembayaran santri</div>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-100">
+            <div class="w-12 h-12 rounded-2xl bg-primary-50 text-primary-700 flex items-center justify-center shrink-0 border border-primary-100">
                 <i data-lucide="wallet" class="w-6 h-6"></i>
             </div>
         </div>
@@ -102,16 +102,16 @@
             </a>
 
             {{-- Card 2: Laporan Keuangan --}}
-            <a href="{{ route('bendahara.laporan-keuangan.index') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-emerald-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
-                <div class="absolute -right-8 -top-8 w-28 h-28 bg-emerald-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+            <a href="{{ route('bendahara.laporan-keuangan.index') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-primary-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute -right-8 -top-8 w-28 h-28 bg-primary-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
                 <div class="relative z-10">
                     <div class="w-14 h-14 rounded-2xl text-white flex items-center justify-center shadow-md mb-4 group-hover:rotate-6 transition-transform" style="background: linear-gradient(135deg, #059669, #047857) !important;">
                         <i data-lucide="file-spreadsheet" class="w-7 h-7" style="color: #ffffff !important;"></i>
                     </div>
-                    <h3 class="text-base font-extrabold text-surface-900 group-hover:text-emerald-700 transition-colors">Laporan Keuangan</h3>
+                    <h3 class="text-base font-extrabold text-surface-900 group-hover:text-primary-700 transition-colors">Laporan Keuangan</h3>
                     <p class="text-xs text-surface-500 mt-1 leading-relaxed">Rekapitulasi total pemasukan, piutang, dan export laporan ke Excel.</p>
                 </div>
-                <div class="mt-6 pt-3 border-t border-surface-100 flex items-center justify-between text-xs font-bold text-emerald-700">
+                <div class="mt-6 pt-3 border-t border-surface-100 flex items-center justify-between text-xs font-bold text-primary-700">
                     <span>Cetak Laporan</span>
                     <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                 </div>
@@ -169,7 +169,7 @@
                 @forelse($pembayaranTerbaru as $p)
                     <div class="py-3 flex items-center justify-between gap-3 hover:bg-surface-50 p-2 rounded-2xl transition-colors">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 font-bold border border-emerald-100">
+                            <div class="w-10 h-10 rounded-2xl bg-primary-50 text-primary-700 flex items-center justify-center shrink-0 font-bold border border-primary-100">
                                 <i data-lucide="check" class="w-5 h-5"></i>
                             </div>
                             <div>
@@ -178,7 +178,7 @@
                             </div>
                         </div>
                         <div class="text-right shrink-0">
-                            <span class="text-xs font-mono font-bold text-emerald-700 block">+ Rp {{ number_format($p->jumlah, 0, ',', '.') }}</span>
+                            <span class="text-xs font-mono font-bold text-primary-700 block">+ Rp {{ number_format($p->jumlah, 0, ',', '.') }}</span>
                             <span class="inline-block mt-0.5 px-2 py-0.5 rounded-md text-[9px] font-extrabold uppercase bg-surface-100 text-surface-700 border border-surface-200">{{ $p->metode }}</span>
                         </div>
                     </div>

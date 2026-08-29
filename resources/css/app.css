@@ -16,44 +16,44 @@
     --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
     --font-heading: 'Plus Jakarta Sans', 'Inter', ui-sans-serif, system-ui, sans-serif;
 
-    /* ── Primary: Deep Emerald ── */
-    --color-primary-50: oklch(0.98 0.02 165);
-    --color-primary-100: oklch(0.95 0.05 165);
-    --color-primary-200: oklch(0.88 0.08 165);
-    --color-primary-300: oklch(0.80 0.12 165);
-    --color-primary-400: oklch(0.68 0.16 165);
-    --color-primary-500: oklch(0.55 0.17 165);
-    --color-primary-600: oklch(0.42 0.15 165);
-    --color-primary-700: oklch(0.35 0.12 165);
-    --color-primary-800: oklch(0.28 0.09 165);
-    --color-primary-900: oklch(0.22 0.07 165);
-    --color-primary-950: oklch(0.15 0.05 165);
+    /* ── Primary: Deep Navy Blue ── */
+    --color-primary-50: oklch(0.98 0.01 245);
+    --color-primary-100: oklch(0.94 0.03 245);
+    --color-primary-200: oklch(0.87 0.06 245);
+    --color-primary-300: oklch(0.76 0.10 245);
+    --color-primary-400: oklch(0.62 0.14 245);
+    --color-primary-500: oklch(0.50 0.16 245);
+    --color-primary-600: oklch(0.40 0.15 245);
+    --color-primary-700: oklch(0.33 0.13 245);
+    --color-primary-800: oklch(0.27 0.10 245);
+    --color-primary-900: oklch(0.22 0.08 245);
+    --color-primary-950: oklch(0.15 0.06 245);
 
-    /* ── Secondary: Royal Gold ── */
-    --color-secondary-50: oklch(0.98 0.02 85);
-    --color-secondary-100: oklch(0.95 0.06 85);
-    --color-secondary-200: oklch(0.90 0.12 85);
-    --color-secondary-300: oklch(0.82 0.16 85);
-    --color-secondary-400: oklch(0.72 0.18 80);
-    --color-secondary-500: oklch(0.62 0.18 75);
-    --color-secondary-600: oklch(0.52 0.16 70);
-    --color-secondary-700: oklch(0.42 0.14 65);
-    --color-secondary-800: oklch(0.35 0.11 60);
-    --color-secondary-900: oklch(0.28 0.08 55);
-    --color-secondary-950: oklch(0.18 0.05 50);
+    /* ── Secondary: Vibrant Gold ── */
+    --color-secondary-50: oklch(0.99 0.04 90);
+    --color-secondary-100: oklch(0.96 0.09 88);
+    --color-secondary-200: oklch(0.92 0.15 85);
+    --color-secondary-300: oklch(0.88 0.19 82);
+    --color-secondary-400: oklch(0.82 0.23 80);
+    --color-secondary-500: oklch(0.75 0.23 75);
+    --color-secondary-600: oklch(0.65 0.21 70);
+    --color-secondary-700: oklch(0.55 0.19 65);
+    --color-secondary-800: oklch(0.45 0.16 60);
+    --color-secondary-900: oklch(0.35 0.13 55);
+    --color-secondary-950: oklch(0.25 0.09 50);
 
-    /* ── Accent: Champagne ── */
-    --color-accent-50: oklch(0.99 0.01 90);
-    --color-accent-100: oklch(0.96 0.03 90);
-    --color-accent-200: oklch(0.92 0.06 90);
-    --color-accent-300: oklch(0.85 0.10 90);
-    --color-accent-400: oklch(0.78 0.12 90);
-    --color-accent-500: oklch(0.70 0.14 90);
-    --color-accent-600: oklch(0.60 0.12 90);
-    --color-accent-700: oklch(0.50 0.10 90);
-    --color-accent-800: oklch(0.40 0.08 90);
-    --color-accent-900: oklch(0.32 0.06 90);
-    --color-accent-950: oklch(0.20 0.04 90);
+    /* ── Accent: Warm Gold Champagne ── */
+    --color-accent-50: oklch(0.99 0.02 85);
+    --color-accent-100: oklch(0.96 0.04 82);
+    --color-accent-200: oklch(0.92 0.08 80);
+    --color-accent-300: oklch(0.86 0.12 78);
+    --color-accent-400: oklch(0.78 0.14 75);
+    --color-accent-500: oklch(0.70 0.15 70);
+    --color-accent-600: oklch(0.60 0.13 65);
+    --color-accent-700: oklch(0.50 0.11 60);
+    --color-accent-800: oklch(0.42 0.09 55);
+    --color-accent-900: oklch(0.34 0.07 50);
+    --color-accent-950: oklch(0.22 0.05 45);
 
     /* ── Neutrals (Slate-tinted) ── */
     --color-surface-50: oklch(0.985 0.003 250);
@@ -301,7 +301,7 @@
     }
     .form-input:focus {
         border-color: var(--color-primary-500);
-        box-shadow: 0 0 0 3px oklch(0.55 0.18 160 / 0.15);
+        box-shadow: 0 0 0 3px oklch(0.50 0.16 245 / 0.15);
         outline: none;
     }
     .form-input::placeholder {

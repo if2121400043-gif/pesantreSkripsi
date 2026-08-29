@@ -27,7 +27,7 @@ $sectionHeaderClass = 'text-base font-bold text-surface-900 dark:text-white mb-4
         </div>
         <div>
             <label class="{{ $labelClass }}">{{ __('Nomor HP/WhatsApp Utama') }} <span class="text-danger-500">*</span></label>
-            <input type="text" name="telepon_wali" value="{{ old('telepon_wali') }}" class="{{ $inputClass }}" placeholder="{{ __('Contoh: 08123456789') }}" required>
+            <input type="text" name="telepon_wali" value="{{ old('telepon_wali') }}" class="{{ $inputClass }}" placeholder="{{ __('Contoh: 08123456789') }}" inputmode="numeric" pattern="(?:\+62|62|0)[0-9]{8,13}" required>
             <p class="text-[0.65rem] text-surface-500 mt-1 leading-tight">Wajib diisi. Jika tidak punya, gunakan No. HP keluarga terdekat yang bisa dihubungi.</p>
         </div>
         <div class="md:col-span-2">
@@ -49,7 +49,7 @@ $sectionHeaderClass = 'text-base font-bold text-surface-900 dark:text-white mb-4
         </div>
         <div>
             <label class="{{ $labelClass }}">{{ __('NIK Ayah') }}</label>
-            <input type="text" name="nik_ayah" value="{{ old('nik_ayah') }}" class="{{ $inputClass }}" maxlength="16" placeholder="16 Digit">
+            <input type="text" name="nik_ayah" value="{{ old('nik_ayah') }}" class="{{ $inputClass }}" maxlength="16" inputmode="numeric" pattern="[0-9]{16}" placeholder="16 Digit">
         </div>
         <div>
             <label class="{{ $labelClass }}">{{ __('Tahun Lahir') }}</label>
@@ -84,7 +84,7 @@ $sectionHeaderClass = 'text-base font-bold text-surface-900 dark:text-white mb-4
         </div>
         <div>
             <label class="{{ $labelClass }}">{{ __('No. HP/WhatsApp Ayah') }}</label>
-            <input type="text" name="no_hp_ayah" value="{{ old('no_hp_ayah') }}" class="{{ $inputClass }}" placeholder="08xxxxxxxxxx">
+            <input type="text" name="no_hp_ayah" value="{{ old('no_hp_ayah') }}" class="{{ $inputClass }}" inputmode="numeric" pattern="(?:\+62|62|0)[0-9]{8,13}" placeholder="08xxxxxxxxxx">
         </div>
     </div>
 </div>
@@ -101,7 +101,7 @@ $sectionHeaderClass = 'text-base font-bold text-surface-900 dark:text-white mb-4
         </div>
         <div>
             <label class="{{ $labelClass }}">{{ __('NIK Ibu') }}</label>
-            <input type="text" name="nik_ibu" value="{{ old('nik_ibu') }}" class="{{ $inputClass }}" maxlength="16" placeholder="16 Digit">
+            <input type="text" name="nik_ibu" value="{{ old('nik_ibu') }}" class="{{ $inputClass }}" maxlength="16" inputmode="numeric" pattern="[0-9]{16}" placeholder="16 Digit">
         </div>
         <div>
             <label class="{{ $labelClass }}">{{ __('Tahun Lahir') }}</label>
@@ -136,7 +136,7 @@ $sectionHeaderClass = 'text-base font-bold text-surface-900 dark:text-white mb-4
         </div>
         <div>
             <label class="{{ $labelClass }}">{{ __('No. HP/WhatsApp Ibu') }}</label>
-            <input type="text" name="no_hp_ibu" value="{{ old('no_hp_ibu') }}" class="{{ $inputClass }}" placeholder="08xxxxxxxxxx">
+            <input type="text" name="no_hp_ibu" value="{{ old('no_hp_ibu') }}" class="{{ $inputClass }}" inputmode="numeric" pattern="(?:\+62|62|0)[0-9]{8,13}" placeholder="08xxxxxxxxxx">
         </div>
     </div>
 </div>
@@ -163,7 +163,7 @@ $sectionHeaderClass = 'text-base font-bold text-surface-900 dark:text-white mb-4
         </div>
         <div>
             <label class="{{ $labelClass }}">{{ __('NIK Wali') }}</label>
-            <input type="text" name="nik_wali" value="{{ old('nik_wali') }}" class="{{ $inputClass }}" maxlength="16" placeholder="16 Digit">
+            <input type="text" name="nik_wali" value="{{ old('nik_wali') }}" class="{{ $inputClass }}" maxlength="16" inputmode="numeric" pattern="[0-9]{16}" placeholder="16 Digit">
         </div>
         <div>
             <label class="{{ $labelClass }}">{{ __('Tahun Lahir') }}</label>
@@ -198,7 +198,7 @@ $sectionHeaderClass = 'text-base font-bold text-surface-900 dark:text-white mb-4
         </div>
         <div>
             <label class="{{ $labelClass }}">{{ __('No. HP/WhatsApp Wali') }}</label>
-            <input type="text" name="no_hp_wali" value="{{ old('no_hp_wali') }}" class="{{ $inputClass }}" placeholder="08xxxxxxxxxx">
+            <input type="text" name="no_hp_wali" value="{{ old('no_hp_wali') }}" class="{{ $inputClass }}" inputmode="numeric" pattern="(?:\+62|62|0)[0-9]{8,13}" placeholder="08xxxxxxxxxx">
         </div>
     </div>
 </div>

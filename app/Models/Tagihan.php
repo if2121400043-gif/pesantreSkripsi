@@ -47,12 +47,19 @@ class Tagihan extends Model
         // atau pembayaran Midtrans yang benar-benar sukses (settlement/capture)
         $validStatuses = ['settlement', 'capture'];
 
-        $totalDibayar = $this->pembayaran()
-            ->where(function ($query) use ($validStatuses) {
-                $query->whereNull('midtrans_status')
-                      ->orWhereIn('midtrans_status', $validStatuses);
-            })
-            ->sum('jumlah');
+        if ($this->relationLoaded('pembayaran')) {
+            $totalDibayar = $this->pembayaran
+                ->filter(fn ($pembayaran) => $pembayaran->midtrans_status === null
+                    || in_array($pembayaran->midtrans_status, $validStatuses, true))
+                ->sum('jumlah');
+        } else {
+            $totalDibayar = $this->pembayaran()
+                ->where(function ($query) use ($validStatuses) {
+                    $query->whereNull('midtrans_status')
+                          ->orWhereIn('midtrans_status', $validStatuses);
+                })
+                ->sum('jumlah');
+        }
 
         $sisaTagihan = max(0, (float) $this->total - (float) $totalDibayar);
 
@@ -60,7 +67,9 @@ class Tagihan extends Model
 
         if ($this->status !== $newStatus) {
             $this->status = $newStatus;
-            $this->save();
+            if ($this->exists) {
+                $this->save();
+            }
         }
 
         return $sisaTagihan;

@@ -84,7 +84,7 @@
             font-size: 0.875rem;
         }
         .offline-btn-retry:hover {
-            background-color: #065f46;
+            background-color: #1e3a5f;
         }
         .offline-link-home {
             display: block;
@@ -105,7 +105,7 @@
 <body class="min-h-screen bg-surface-50 flex items-center justify-center p-4">
     <div class="offline-card max-w-md w-full bg-white rounded-2xl shadow-xl border border-surface-200 p-8 text-center animate-fade-in-up">
         {{-- Branding Icon --}}
-        <div class="offline-icon-container inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 mb-6 shadow-sm">
+        <div class="offline-icon-container inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary-50 text-primary-600 border border-primary-100 mb-6 shadow-sm">
             <i data-lucide="wifi-off" class="w-10 h-10"></i>
         </div>
 
@@ -117,7 +117,7 @@
 
         {{-- Actions --}}
         <div class="space-y-3">
-            <button onclick="window.location.reload()" class="offline-btn-retry w-full btn-primary flex items-center justify-center gap-2 py-3 bg-emerald-700 hover:bg-emerald-800 transition-colors shadow-md">
+            <button onclick="window.location.reload()" class="offline-btn-retry w-full btn-primary flex items-center justify-center gap-2 py-3 bg-primary-700 hover:bg-primary-800 transition-colors shadow-md">
                 <i data-lucide="rotate-cw" class="w-4 h-4"></i>
                 <span>Coba Lagi</span>
             </button>

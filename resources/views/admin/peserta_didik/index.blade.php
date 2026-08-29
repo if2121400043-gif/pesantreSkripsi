@@ -132,8 +132,8 @@
                         </td>
                         <td class="px-6 py-3.5">
                             @if($pd->status === 'AKTIF')
-                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[0.65rem] font-extrabold uppercase bg-emerald-100 text-emerald-700 border border-emerald-200">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Aktif
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[0.65rem] font-extrabold uppercase bg-primary-100 text-primary-700 border border-primary-200">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary-600"></span> Aktif
                                 </span>
                             @elseif($pd->status === 'LULUS')
                                 <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[0.65rem] font-extrabold uppercase bg-blue-100 text-blue-700 border border-blue-200">
@@ -147,7 +147,7 @@
                         </td>
                         <td class="px-6 py-3.5 text-right">
                             <div class="inline-flex items-center justify-end gap-1.5">
-                                <a href="{{ route('admin.peserta-didik.show', $pd) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white border border-emerald-200 text-xs font-bold transition-all shadow-2xs" title="Lihat Profil Akademik">
+                                <a href="{{ route('admin.peserta-didik.show', $pd) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-50 text-primary-700 hover:bg-primary-600 hover:text-white border border-primary-200 text-xs font-bold transition-all shadow-2xs" title="Lihat Profil Akademik">
                                     <i data-lucide="eye" class="w-3.5 h-3.5"></i>
                                     <span>Detail</span>
                                 </a>

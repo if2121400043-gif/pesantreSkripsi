@@ -100,10 +100,10 @@
                                     {{ $rel->hubungan }}
                                 </span>
                                 @if($rel->is_wali_utama)
-                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[0.6rem] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">WALI UTAMA</span>
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[0.6rem] font-extrabold bg-primary-100 text-primary-800 border border-primary-300">WALI UTAMA</span>
                                 @endif
                                 @if($rel->is_mahrom)
-                                    <span class="text-[0.62rem] text-emerald-700 font-bold flex items-center gap-1 mt-0.5"><i data-lucide="shield-check" class="w-3 h-3 text-emerald-600"></i> Mahram</span>
+                                    <span class="text-[0.62rem] text-primary-700 font-bold flex items-center gap-1 mt-0.5"><i data-lucide="shield-check" class="w-3 h-3 text-primary-600"></i> Mahram</span>
                                 @else
                                     <span class="text-[0.62rem] text-amber-700 font-bold flex items-center gap-1 mt-0.5"><i data-lucide="shield-alert" class="w-3 h-3 text-amber-600"></i> Non-Mahram</span>
                                 @endif
@@ -111,9 +111,9 @@
                         </td>
                         <td class="px-6 py-3.5">
                             <div class="flex gap-2 text-surface-400">
-                                <i data-lucide="car" class="w-4 h-4 {{ $rel->boleh_jemput ? 'text-emerald-600' : '' }}" title="Hak Penjemputan"></i>
-                                <i data-lucide="eye" class="w-4 h-4 {{ $rel->boleh_kunjungi ? 'text-emerald-600' : '' }}" title="Hak Kunjungan / Sambangan"></i>
-                                <i data-lucide="phone" class="w-4 h-4 {{ $rel->boleh_komunikasi ? 'text-emerald-600' : '' }}" title="Hak Komunikasi"></i>
+                                <i data-lucide="car" class="w-4 h-4 {{ $rel->boleh_jemput ? 'text-primary-600' : '' }}" title="Hak Penjemputan"></i>
+                                <i data-lucide="eye" class="w-4 h-4 {{ $rel->boleh_kunjungi ? 'text-primary-600' : '' }}" title="Hak Kunjungan / Sambangan"></i>
+                                <i data-lucide="phone" class="w-4 h-4 {{ $rel->boleh_komunikasi ? 'text-primary-600' : '' }}" title="Hak Komunikasi"></i>
                             </div>
                         </td>
                         <td class="px-6 py-3.5 text-right">

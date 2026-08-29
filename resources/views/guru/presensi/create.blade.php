@@ -33,8 +33,8 @@
     {{-- Page Header Bar --}}
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-3xl border border-surface-200 shadow-sm">
         <div>
-            <div class="flex flex-wrap items-center gap-2 text-xs font-semibold text-emerald-800 mb-1">
-                <span class="px-2.5 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 font-bold">
+            <div class="flex flex-wrap items-center gap-2 text-xs font-semibold text-primary-800 mb-1">
+                <span class="px-2.5 py-0.5 rounded-md bg-primary-50 border border-primary-200 font-bold">
                     {{ str_starts_with(strtolower($jadwal->rombel->nama ?? ''), 'kelas') ? $jadwal->rombel->nama : 'Kelas ' . ($jadwal->rombel->nama ?? '-') }}
                 </span>
                 <span>•</span>
@@ -56,33 +56,33 @@
     <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
         
         {{-- Card Informasi Jam Pelajaran --}}
-        <div class="md:col-span-7 bg-emerald-900 text-white p-5 rounded-3xl border border-emerald-800 shadow-sm flex items-center justify-between relative overflow-hidden" style="background-color: #064e3b !important; color: #ffffff !important;">
+        <div class="md:col-span-7 bg-primary-900 text-white p-5 rounded-3xl border border-primary-800 shadow-sm flex items-center justify-between relative overflow-hidden" style="background-color: #064e3b !important; color: #ffffff !important;">
             <div class="space-y-1 relative z-10">
-                <div class="text-[0.68rem] font-bold text-emerald-200 uppercase tracking-wider flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <div class="text-[0.68rem] font-bold text-primary-200 uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-primary-400 animate-pulse"></span>
                     <span>Sesi Jam Pelajaran Berlangsung</span>
                 </div>
                 <h2 class="text-lg font-extrabold text-white leading-tight">
                     {{ $jadwal->mataPelajaran->nama ?? '-' }}
                 </h2>
-                <div class="flex flex-wrap items-center gap-3 text-xs font-semibold text-emerald-100 pt-1">
+                <div class="flex flex-wrap items-center gap-3 text-xs font-semibold text-primary-100 pt-1">
                     <span class="flex items-center gap-1">
-                        <i data-lucide="users" class="w-3.5 h-3.5 text-emerald-300"></i>
+                        <i data-lucide="users" class="w-3.5 h-3.5 text-primary-300"></i>
                         <span>{{ str_starts_with(strtolower($jadwal->rombel->nama ?? ''), 'kelas') ? $jadwal->rombel->nama : 'Kelas ' . ($jadwal->rombel->nama ?? '-') }}</span>
                     </span>
                     <span>•</span>
                     <span class="flex items-center gap-1">
-                        <i data-lucide="clock" class="w-3.5 h-3.5 text-emerald-300"></i>
+                        <i data-lucide="clock" class="w-3.5 h-3.5 text-primary-300"></i>
                         <span>Pukul {{ substr($jadwal->jam_mulai, 0, 5) }} - {{ substr($jadwal->jam_selesai, 0, 5) }} WITA</span>
                     </span>
                     <span>•</span>
                     <span class="flex items-center gap-1">
-                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-300"></i>
+                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-primary-300"></i>
                         <span>Hari {{ ucfirst(strtolower($jadwal->hari ?? '')) }}</span>
                     </span>
                 </div>
             </div>
-            <div class="hidden sm:flex w-12 h-12 rounded-2xl bg-white/10 text-emerald-200 items-center justify-center shrink-0">
+            <div class="hidden sm:flex w-12 h-12 rounded-2xl bg-white/10 text-primary-200 items-center justify-center shrink-0">
                 <i data-lucide="book-open" class="w-6 h-6"></i>
             </div>
         </div>
@@ -91,15 +91,15 @@
         <div class="md:col-span-5 bg-white p-5 rounded-3xl border border-surface-200 shadow-sm flex items-center justify-between">
             <div class="space-y-1">
                 <div class="text-[0.68rem] font-bold text-surface-500 uppercase tracking-wider flex items-center gap-1.5">
-                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-600"></i>
+                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-primary-600"></i>
                     <span id="realtime_date">Memuat tanggal...</span>
                 </div>
                 <div class="text-2xl font-black text-surface-900 tracking-tight flex items-baseline gap-1.5" id="realtime_clock">
                     <span>00:00:00</span>
-                    <span class="text-xs font-bold text-emerald-700">WITA</span>
+                    <span class="text-xs font-bold text-primary-700">WITA</span>
                 </div>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center font-black text-xs shrink-0 tracking-wider">
+            <div class="w-12 h-12 rounded-2xl bg-primary-50 text-primary-700 border border-primary-100 flex items-center justify-center font-black text-xs shrink-0 tracking-wider">
                 LIVE
             </div>
         </div>
@@ -119,7 +119,7 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-3">
-                <button type="button" id="btn_set_semua_hadir" class="px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs rounded-xl transition-all shadow-sm flex items-center gap-2 cursor-pointer" style="background-color: #047857 !important; color: #ffffff !important;">
+                <button type="button" id="btn_set_semua_hadir" class="px-4 py-2.5 bg-primary-700 hover:bg-primary-800 text-white font-extrabold text-xs rounded-xl transition-all shadow-sm flex items-center gap-2 cursor-pointer" style="background-color: #047857 !important; color: #ffffff !important;">
                     <i data-lucide="check-check" class="w-4 h-4 text-white" style="color: #ffffff !important;"></i>
                     <span>Set Semua Hadir</span>
                 </button>
@@ -182,7 +182,7 @@
                                     </div>
                                 </td>
                                 <td class="px-4 py-3.5">
-                                    <input type="text" name="presensi[{{ $peserta->id }}][keterangan]" value="{{ $oldKeterangan }}" class="w-full rounded-xl border-surface-300 text-xs font-medium px-3 py-2 focus:border-emerald-600 focus:ring focus:ring-emerald-500/20" placeholder="Alasan izin / sakit / alfa...">
+                                    <input type="text" name="presensi[{{ $peserta->id }}][keterangan]" value="{{ $oldKeterangan }}" class="w-full rounded-xl border-surface-300 text-xs font-medium px-3 py-2 focus:border-primary-600 focus:ring focus:ring-primary-500/20" placeholder="Alasan izin / sakit / alfa...">
                                 </td>
                             </tr>
                         @empty
@@ -199,7 +199,7 @@
 
             @if($jadwal->rombel->riwayatPeserta->count() > 0)
                 <div class="flex justify-end gap-3 pt-2">
-                    <button type="submit" class="inline-flex items-center gap-2 px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs rounded-xl transition-all shadow-md cursor-pointer" style="background-color: #047857 !important; color: #ffffff !important;">
+                    <button type="submit" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-700 hover:bg-primary-800 text-white font-extrabold text-xs rounded-xl transition-all shadow-md cursor-pointer" style="background-color: #047857 !important; color: #ffffff !important;">
                         <i data-lucide="save" class="w-4 h-4 text-white" style="color: #ffffff !important;"></i>
                         <span>Simpan Presensi Santri</span>
                     </button>

@@ -6,7 +6,7 @@
 <div class="space-y-6">
 
     {{-- Hero Header Banner --}}
-    <div class="rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #047857, #065f46) !important; color: #ffffff !important;">
+    <div class="rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden text-white" style="background: linear-gradient(135deg, #047857, #1e3a5f) !important; color: #ffffff !important;">
         <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
         <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
@@ -23,16 +23,16 @@
             </div>
             
             <div class="flex flex-wrap items-center gap-3 shrink-0">
-                <a href="{{ route('admin.presensi.rekap') }}" class="px-4 py-2.5 rounded-2xl bg-white text-emerald-900 font-extrabold text-xs shadow-md hover:bg-emerald-50 transition-all flex items-center gap-2 cursor-pointer border border-white/30" style="color: #064e3b !important; background-color: #ffffff !important;">
-                    <i data-lucide="printer" class="w-4 h-4 text-emerald-700"></i>
+                <a href="{{ route('admin.presensi.rekap') }}" class="px-4 py-2.5 rounded-2xl bg-white text-primary-900 font-extrabold text-xs shadow-md hover:bg-primary-50 transition-all flex items-center gap-2 cursor-pointer border border-white/30" style="color: #064e3b !important; background-color: #ffffff !important;">
+                    <i data-lucide="printer" class="w-4 h-4 text-primary-700"></i>
                     <span>Rekap & Cetak Laporan</span>
                 </a>
 
                 @if(isset($tahunAktif) && $tahunAktif)
                     <div class="px-4 py-2 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-xs shrink-0 flex items-center gap-2">
-                        <i data-lucide="calendar" class="w-4 h-4 text-emerald-300"></i>
+                        <i data-lucide="calendar" class="w-4 h-4 text-primary-300"></i>
                         <div>
-                            <div class="text-[0.65rem] text-emerald-200 uppercase tracking-wider font-extrabold">TAHUN PELAJARAN AKTIF</div>
+                            <div class="text-[0.65rem] text-primary-200 uppercase tracking-wider font-extrabold">TAHUN PELAJARAN AKTIF</div>
                             <div class="font-bold text-white">{{ $tahunAktif->nama_tahun ?? $tahunAktif->nama }} ({{ $tahunAktif->semester === 'GANJIL' ? 'Ganjil' : 'Genap' }})</div>
                         </div>
                     </div>
@@ -43,8 +43,8 @@
 
     {{-- Success Alert --}}
     @if(session('success'))
-        <div class="p-4 rounded-2xl bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-start gap-3 shadow-2xs">
-            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5"></i>
+        <div class="p-4 rounded-2xl bg-primary-50 text-primary-800 border border-primary-200 flex items-start gap-3 shadow-2xs">
+            <i data-lucide="check-circle" class="w-5 h-5 text-primary-600 shrink-0 mt-0.5"></i>
             <div class="text-xs font-bold">{{ session('success') }}</div>
         </div>
     @endif
@@ -52,7 +52,7 @@
     {{-- FILTER BAR HORIZONAL (Bebas Bug Overflow) --}}
     <div class="bg-white p-6 rounded-3xl border border-surface-200 shadow-sm space-y-4">
         <div class="flex items-center gap-2 pb-3 border-b border-surface-100">
-            <i data-lucide="filter" class="w-4 h-4 text-emerald-700"></i>
+            <i data-lucide="filter" class="w-4 h-4 text-primary-700"></i>
             <h3 class="font-extrabold text-surface-900 text-sm">Filter Parameter Presensi</h3>
         </div>
 
@@ -63,7 +63,7 @@
                     1. Jenis Kegiatan / Presensi <span class="text-rose-500">*</span>
                 </label>
                 <select id="jenis_presensi_id" name="jenis_presensi_id" 
-                        class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 shadow-2xs" 
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 shadow-2xs" 
                         onchange="this.form.submit()">
                     <option value="" disabled {{ !$selectedJenis ? 'selected' : '' }}>-- Pilih Jenis Presensi --</option>
                     @foreach($jenisPresensiList as $jp)
@@ -93,7 +93,7 @@
                             3. Pilih Kelas / Rombel Target <span class="text-rose-500">*</span>
                         </label>
                         <select id="rombel_id" name="rombel_id" 
-                                class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 shadow-2xs" 
+                                class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 shadow-2xs" 
                                 onchange="this.form.submit()">
                             <option value="" disabled {{ !$selectedRombel ? 'selected' : '' }}>-- Pilih Rombel --</option>
                             @foreach($rombels as $rombel)
@@ -107,7 +107,7 @@
                             3. Pilih Kamar / Asrama Target <span class="text-rose-500">*</span>
                         </label>
                         <select id="asrama_id" name="asrama_id" 
-                                class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 shadow-2xs" 
+                                class="w-full px-3.5 py-2.5 rounded-xl border border-surface-300 bg-white text-xs font-semibold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 shadow-2xs" 
                                 onchange="this.form.submit()">
                             <option value="" disabled {{ !$selectedAsrama ? 'selected' : '' }}>-- Pilih Asrama --</option>
                             @foreach($asramas as $asrama)
@@ -117,7 +117,7 @@
                             @endforeach
                         </select>
                     @else
-                        <div class="pt-6 text-xs font-bold text-emerald-700 flex items-center gap-1.5">
+                        <div class="pt-6 text-xs font-bold text-primary-700 flex items-center gap-1.5">
                             <i data-lucide="check-circle" class="w-4 h-4"></i>
                             Presensi berlaku untuk seluruh santri aktif
                         </div>
@@ -137,7 +137,7 @@
 
         @if(!$selectedJenis)
             <div class="p-12 text-center text-surface-500 max-w-md mx-auto space-y-3">
-                <div class="w-16 h-16 bg-emerald-50 text-emerald-700 rounded-3xl flex items-center justify-center mx-auto border border-emerald-100 shadow-2xs">
+                <div class="w-16 h-16 bg-primary-50 text-primary-700 rounded-3xl flex items-center justify-center mx-auto border border-primary-100 shadow-2xs">
                     <i data-lucide="clipboard-list" class="w-8 h-8"></i>
                 </div>
                 <h3 class="text-base font-extrabold text-surface-900">Silakan Pilih Jenis Presensi</h3>
@@ -171,7 +171,7 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-5 border-b border-surface-200">
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="px-2.5 py-0.5 rounded-full text-[0.65rem] font-black uppercase bg-emerald-100 text-emerald-800">
+                        <span class="px-2.5 py-0.5 rounded-full text-[0.65rem] font-black uppercase bg-primary-100 text-primary-800">
                             {{ $selectedJenis->nama }}
                         </span>
                         <span class="text-xs text-surface-400 font-medium">•</span>
@@ -194,8 +194,8 @@
 
                 {{-- Fast Action: Set All HADIR --}}
                 <div class="flex items-center gap-2">
-                    <button type="button" onclick="setAllStatus('HADIR')" class="px-3.5 py-2 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 font-extrabold text-xs hover:bg-emerald-100 transition-all flex items-center gap-1.5 shadow-2xs">
-                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+                    <button type="button" onclick="setAllStatus('HADIR')" class="px-3.5 py-2 rounded-xl bg-primary-50 text-primary-800 border border-primary-200 font-extrabold text-xs hover:bg-primary-100 transition-all flex items-center gap-1.5 shadow-2xs">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-600"></i>
                         <span>Set Semua HADIR</span>
                     </button>
                     <button type="button" onclick="setAllStatus('ALPHA')" class="px-3.5 py-2 rounded-xl bg-rose-50 text-rose-800 border border-rose-200 font-extrabold text-xs hover:bg-rose-100 transition-all flex items-center gap-1.5 shadow-2xs">
@@ -257,7 +257,7 @@
                                                 {{-- HADIR --}}
                                                 <label class="cursor-pointer">
                                                     <input type="radio" name="presensi[{{ $p->id }}][status]" value="HADIR" class="peer sr-only status-radio-hadir" {{ $currentStatus === 'HADIR' ? 'checked' : '' }}>
-                                                    <div class="px-3 py-1.5 rounded-xl border border-surface-300 text-surface-600 text-xs font-bold peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:border-emerald-600 hover:border-emerald-400 transition-all shadow-2xs flex items-center gap-1">
+                                                    <div class="px-3 py-1.5 rounded-xl border border-surface-300 text-surface-600 text-xs font-bold peer-checked:bg-primary-600 peer-checked:text-white peer-checked:border-primary-600 hover:border-primary-400 transition-all shadow-2xs flex items-center gap-1">
                                                         <span>H</span>
                                                         <span class="hidden sm:inline text-[0.65rem] font-semibold">Hadir</span>
                                                     </div>
@@ -295,7 +295,7 @@
                                         {{-- CATATAN / KETERANGAN --}}
                                         <td class="px-4 py-3">
                                             <input type="text" name="presensi[{{ $p->id }}][keterangan]" 
-                                                   class="w-full px-3 py-1.5 text-xs rounded-xl border border-surface-300 bg-white text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-colors" 
+                                                   class="w-full px-3 py-1.5 text-xs rounded-xl border border-surface-300 bg-white text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-colors" 
                                                    placeholder="Catatan opsional (misal: Demam, Izin Pulang)..." 
                                                    value="{{ $currentKeterangan }}">
                                         </td>

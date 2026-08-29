@@ -156,15 +156,15 @@
             </button>
 
             {{-- Install PWA Button (topbar integration) --}}
-            <button id="btn-install-pwa" type="button" class="hidden flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 text-xs font-bold hover:bg-emerald-100 transition-colors" title="Install Aplikasi ke HP">
+            <button id="btn-install-pwa" type="button" class="hidden flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-primary-50 text-primary-700 text-xs font-bold hover:bg-primary-100 transition-colors" title="Install Aplikasi ke HP">
                 <i data-lucide="download" class="w-3.5 h-3.5"></i>
                 <span class="hidden sm:inline">Install App</span>
             </button>
 
             {{-- Tahun Pelajaran Active --}}
             @if($activeTaNama)
-            <div class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 text-xs font-semibold border border-emerald-100" id="active-ta">
-                <i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-600"></i>
+            <div class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-50 text-primary-800 text-xs font-semibold border border-primary-100" id="active-ta">
+                <i data-lucide="calendar" class="w-3.5 h-3.5 text-primary-600"></i>
                 <span>TA {{ $activeTaNama }}</span>
             </div>
             @endif
@@ -186,7 +186,7 @@
                     <div class="px-4 py-3 border-b border-surface-100 flex items-center justify-between bg-surface-50/50">
                         <h3 class="font-bold text-sm text-surface-900 font-heading">Notifikasi</h3>
                         @if(count($notifications) > 0)
-                            <span class="px-2 py-0.5 text-xs font-bold bg-emerald-100 text-emerald-800 rounded-full">{{ count($notifications) }} baru</span>
+                            <span class="px-2 py-0.5 text-xs font-bold bg-primary-100 text-primary-800 rounded-full">{{ count($notifications) }} baru</span>
                         @endif
                     </div>
                     
@@ -221,7 +221,7 @@
                         class="flex items-center gap-2 p-1.5 pr-2.5 rounded-xl hover:bg-surface-100 transition-colors border border-transparent hover:border-surface-200"
                         id="btn-user-menu"
                         aria-label="Menu pengguna">
-                    <div class="w-8 h-8 rounded-lg bg-emerald-700 text-white flex items-center justify-center text-xs font-bold shadow-2xs">
+                    <div class="w-8 h-8 rounded-lg bg-primary-700 text-white flex items-center justify-center text-xs font-bold shadow-2xs">
                         {{ strtoupper(substr(auth()->user()->orang->nama_lengkap ?? auth()->user()->username ?? 'A', 0, 1)) }}
                     </div>
                     <span class="hidden md:inline text-xs font-bold text-surface-800">{{ auth()->user()->orang->nama_lengkap ?? auth()->user()->username ?? 'Pengguna' }}</span>
@@ -236,13 +236,13 @@
                         <p class="text-[0.7rem] text-surface-500 truncate mt-0.5">{{ auth()->user()->email ?? auth()->user()->username }}</p>
                     </div>
                     <div class="py-1 text-xs font-medium">
-                        <a href="{{ route('akun.profil') }}" class="flex items-center gap-2.5 px-4 py-2 text-surface-700 hover:bg-emerald-50 hover:text-emerald-800 transition-colors">
+                        <a href="{{ route('akun.profil') }}" class="flex items-center gap-2.5 px-4 py-2 text-surface-700 hover:bg-primary-50 hover:text-primary-800 transition-colors">
                             <i data-lucide="user" class="w-4 h-4 text-surface-400"></i> Profil Saya
                         </a>
-                        <a href="{{ route('akun.ganti-password') }}" class="flex items-center gap-2.5 px-4 py-2 text-surface-700 hover:bg-emerald-50 hover:text-emerald-800 transition-colors">
+                        <a href="{{ route('akun.ganti-password') }}" class="flex items-center gap-2.5 px-4 py-2 text-surface-700 hover:bg-primary-50 hover:text-primary-800 transition-colors">
                             <i data-lucide="key" class="w-4 h-4 text-surface-400"></i> Ganti Password
                         </a>
-                        <a href="{{ route('akun.ganti-peran') }}" class="flex items-center gap-2.5 px-4 py-2 text-surface-700 hover:bg-emerald-50 hover:text-emerald-800 transition-colors">
+                        <a href="{{ route('akun.ganti-peran') }}" class="flex items-center gap-2.5 px-4 py-2 text-surface-700 hover:bg-primary-50 hover:text-primary-800 transition-colors">
                             <i data-lucide="repeat" class="w-4 h-4 text-surface-400"></i> Ganti Peran
                         </a>
                     </div>
@@ -363,17 +363,17 @@
                 }
 
                 searchResults.innerHTML = filtered.map((item, idx) => `
-                    <a href="${item.url}" class="flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-800 transition-colors group">
+                    <a href="${item.url}" class="flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-primary-50 hover:text-primary-800 transition-colors group">
                         <div class="flex items-center gap-3 min-w-0">
-                            <div class="w-8 h-8 rounded-lg bg-surface-100 group-hover:bg-emerald-100 flex items-center justify-center shrink-0 text-surface-600 group-hover:text-emerald-700 transition-colors">
+                            <div class="w-8 h-8 rounded-lg bg-surface-100 group-hover:bg-primary-100 flex items-center justify-center shrink-0 text-surface-600 group-hover:text-primary-700 transition-colors">
                                 <i data-lucide="${item.icon}" class="w-4 h-4"></i>
                             </div>
                             <div class="min-w-0">
-                                <p class="text-xs font-bold text-surface-800 group-hover:text-emerald-900 truncate">${item.title}</p>
-                                <p class="text-[0.65rem] text-surface-400 group-hover:text-emerald-600">${item.category}</p>
+                                <p class="text-xs font-bold text-surface-800 group-hover:text-primary-900 truncate">${item.title}</p>
+                                <p class="text-[0.65rem] text-surface-400 group-hover:text-primary-600">${item.category}</p>
                             </div>
                         </div>
-                        <i data-lucide="arrow-right" class="w-4 h-4 text-surface-300 group-hover:text-emerald-600 transition-colors shrink-0"></i>
+                        <i data-lucide="arrow-right" class="w-4 h-4 text-surface-300 group-hover:text-primary-600 transition-colors shrink-0"></i>
                     </a>
                 `).join('');
 

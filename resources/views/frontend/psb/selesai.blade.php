@@ -20,15 +20,19 @@
                     <i data-lucide="check-circle" class="w-12 h-12 relative z-10"></i>
                 </div>
 
-                <h1 class="text-3xl font-extrabold text-surface-900 dark:text-white mb-4">{{ __('Pendaftaran Berhasil!') }}</h1>
+                <h1 class="text-3xl font-extrabold text-surface-900 dark:text-white mb-4">{{ __('Data Pendaftaran Tersimpan') }}</h1>
                 <p class="text-surface-600 dark:text-surface-400 text-lg mb-8 leading-relaxed max-w-lg mx-auto">
-                    {{ __('Alhamdulillah, data pendaftaran ananda') }} <strong class="text-surface-900 dark:text-white">{{ $calonSantri->nama_lengkap }}</strong> {{ __('telah kami terima dengan Nomor Pendaftaran:') }}
+                    {{ __('Data pendaftaran ananda') }} <strong class="text-surface-900 dark:text-white">{{ $calonSantri->nama_lengkap }}</strong> {{ __('telah tersimpan dengan Nomor Pendaftaran:') }}
                 </p>
 
                 <div class="inline-block px-8 py-4 bg-surface-100 dark:bg-surface-800 rounded-2xl mb-10 border border-surface-200 dark:border-surface-700">
                     <span class="block text-sm text-surface-500 dark:text-surface-400 font-bold mb-1 uppercase tracking-widest">{{ __('No. Pendaftaran') }}</span>
                     <span class="text-3xl font-black text-primary-600 dark:text-primary-400 tracking-tight">{{ $calonSantri->no_pendaftaran }}</span>
                 </div>
+
+                <p class="mb-8 text-sm font-semibold text-primary-700 dark:text-primary-400">
+                    {{ __('Status saat ini:') }} {{ $calonSantri->workflow_status_label }}
+                </p>
 
                 <div class="p-6 bg-info-50 dark:bg-info-500/10 border border-info-200 dark:border-info-500/20 rounded-2xl text-left mb-10">
                     <h4 class="font-bold text-info-800 dark:text-info-400 mb-2 flex items-center gap-2">
@@ -40,6 +44,10 @@
                     </p>
                     
                     <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="{{ route('frontend.psb.status', ['no_pendaftaran' => $calonSantri->no_pendaftaran]) }}" class="flex-1 px-6 py-3.5 bg-info-600 hover:bg-info-700 text-white font-bold rounded-xl shadow-lg hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="search" class="w-5 h-5"></i>
+                            {{ __('Cek Status') }}
+                        </a>
                         @php
                             $phone = $pesantren?->telepon ?? '0';
                             // Remove non-numeric characters except leading '+'

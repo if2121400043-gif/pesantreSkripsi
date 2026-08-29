@@ -27,7 +27,7 @@ class CalonSantri extends Model
         'pekerjaan_wali', 'penghasilan_wali', 'no_hp_wali', 'hubungan_wali',
         // Lainnya
         'alamat', 'lembaga_tujuan_id',
-        'status', 'catatan_verifikasi', 'diverifikasi_oleh', 'tanggal_verifikasi'
+        'status', 'status_workflow', 'catatan_verifikasi', 'diverifikasi_oleh', 'tanggal_verifikasi'
     ];
 
     // Attribute Casting (Otomatisasi Tipe Data)
@@ -51,7 +51,31 @@ class CalonSantri extends Model
             if (empty($calon->status)) {
                 $calon->status = 'BARU_MASUK';
             }
+            if (empty($calon->status_workflow)) {
+                $calon->status_workflow = 'DRAFT';
+            }
         });
+    }
+
+    public function getWorkflowStatusAttribute(): string
+    {
+        return $this->attributes['status_workflow']
+            ?? match ($this->attributes['status'] ?? null) {
+                'DITERIMA' => 'DITERIMA',
+                'TIDAK_LULUS', 'DIBATALKAN' => 'DITOLAK',
+                default => 'MENUNGGU_VERIFIKASI',
+            };
+    }
+
+    public function getWorkflowStatusLabelAttribute(): string
+    {
+        return [
+            'DRAFT' => 'Draft',
+            'MENUNGGU_VERIFIKASI' => 'Menunggu Verifikasi',
+            'TIDAK_LENGKAP' => 'Tidak Lengkap',
+            'DITERIMA' => 'Diterima',
+            'DITOLAK' => 'Ditolak',
+        ][$this->workflow_status] ?? 'Menunggu Verifikasi';
     }
 
     // ── MUTATORS (Penjaga Kerapihan Data) ──

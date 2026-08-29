@@ -45,8 +45,8 @@
                             <a href="#" class="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl shadow-md hover:-translate-y-0.5 transition-all text-xs">
                                 <i data-lucide="file-text" class="w-4 h-4"></i> Unduh Brosur Informasi
                             </a>
-                            <a href="{{ route('frontend.profil') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-md hover:-translate-y-0.5 transition-all text-xs">
-                                <i data-lucide="book-open" class="w-4 h-4"></i> Profil Lulusan
+                            <a href="{{ route('frontend.profil') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-500 text-white font-bold rounded-xl shadow-md hover:-translate-y-0.5 transition-all text-xs">
+                                <i data-lucide="book-open" class="w-4 h-4"></i> Tentang Kami
                             </a>
                         </div>
                     </div>
@@ -84,44 +84,44 @@
                 </div>
 
                 <div class="lg:col-span-5">
-                    <div class="bg-[#04241d] text-white rounded-3xl shadow-xl overflow-hidden border border-emerald-800/50 p-6 md:p-8 relative">
+                    <div class="bg-[#0a1628] text-white rounded-3xl shadow-xl overflow-hidden border border-primary-800/50 p-6 md:p-8 relative">
                         <!-- Background patterns -->
-                        <div class="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#22c55e_1px,transparent_1px)] [background-size:12px_12px] pointer-events-none"></div>
-                        <div class="absolute right-0 top-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none -translate-y-1/3"></div>
+                        <div class="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:12px_12px] pointer-events-none"></div>
+                        <div class="absolute right-0 top-0 w-32 h-32 bg-primary-500/10 rounded-full blur-2xl pointer-events-none -translate-y-1/3"></div>
 
                         <!-- Header Gelombang -->
                         <div class="mb-6 relative z-10 flex justify-between items-center">
                             <div>
-                                <span class="text-[9px] uppercase tracking-wider text-emerald-400 font-bold font-outfit">{{ __('Gelombang Saat Ini') }}</span>
+                                <span class="text-[9px] uppercase tracking-wider text-secondary-400 font-bold font-outfit">{{ __('Gelombang Saat Ini') }}</span>
                                 <h3 class="text-xl font-bold font-outfit text-white leading-tight mt-1">{{ $gelombangAktif->nama }}</h3>
                             </div>
-                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981] animate-pulse"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-secondary-500 shadow-[0_0_8px_#c8a84e] animate-pulse"></span>
                         </div>
 
                         <!-- Area Hitung Mundur -->
                         <div class="bg-white/5 border border-white/10 rounded-2xl p-4 mb-6 relative z-10">
-                            <span class="text-[10px] text-emerald-300 font-bold uppercase tracking-widest flex items-center gap-1.5 mb-3">
+                            <span class="text-[10px] text-primary-300 font-bold uppercase tracking-widest flex items-center gap-1.5 mb-3">
                                 <i data-lucide="clock" class="w-3.5 h-3.5 animate-spin" style="animation-duration: 8s;"></i> {{ __('Sisa Waktu Pendaftaran') }}
                             </span>
                             <div class="grid grid-cols-4 gap-2">
                                 <!-- Hari -->
                                 <div class="bg-white/5 backdrop-blur-md rounded-xl p-2.5 border border-white/5 text-center">
-                                    <span id="countdown-hari" class="block text-2xl md:text-3xl font-extrabold text-emerald-400 font-outfit">--</span>
+                                    <span id="countdown-hari" class="block text-2xl md:text-3xl font-extrabold text-secondary-400 font-outfit">--</span>
                                     <span class="text-[8px] text-slate-400 font-bold tracking-wider uppercase">Hari</span>
                                 </div>
                                 <!-- Jam -->
                                 <div class="bg-white/5 backdrop-blur-md rounded-xl p-2.5 border border-white/5 text-center">
-                                    <span id="countdown-jam" class="block text-2xl md:text-3xl font-extrabold text-emerald-400 font-outfit">--</span>
+                                    <span id="countdown-jam" class="block text-2xl md:text-3xl font-extrabold text-secondary-400 font-outfit">--</span>
                                     <span class="text-[8px] text-slate-400 font-bold tracking-wider uppercase">Jam</span>
                                 </div>
                                 <!-- Menit -->
                                 <div class="bg-white/5 backdrop-blur-md rounded-xl p-2.5 border border-white/5 text-center">
-                                    <span id="countdown-menit" class="block text-2xl md:text-3xl font-extrabold text-emerald-400 font-outfit">--</span>
+                                    <span id="countdown-menit" class="block text-2xl md:text-3xl font-extrabold text-secondary-400 font-outfit">--</span>
                                     <span class="text-[8px] text-slate-400 font-bold tracking-wider uppercase">Menit</span>
                                 </div>
                                 <!-- Detik -->
                                 <div class="bg-white/5 backdrop-blur-md rounded-xl p-2.5 border border-white/5 text-center">
-                                    <span id="countdown-detik" class="block text-2xl md:text-3xl font-extrabold text-emerald-400 font-outfit">--</span>
+                                    <span id="countdown-detik" class="block text-2xl md:text-3xl font-extrabold text-secondary-400 font-outfit">--</span>
                                     <span class="text-[8px] text-slate-400 font-bold tracking-wider uppercase">Detik</span>
                                 </div>
                             </div>
@@ -131,7 +131,7 @@
                         <div class="space-y-3 mb-6 relative z-10">
                             <!-- Pendaftaran -->
                             <div class="bg-white/5 border border-white/5 rounded-xl p-3 flex gap-3 items-center">
-                                <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0">
+                                <div class="w-8 h-8 rounded-lg bg-primary-500/20 text-primary-400 flex items-center justify-center flex-shrink-0">
                                     <i data-lucide="calendar" class="w-4 h-4"></i>
                                 </div>
                                 <div class="leading-tight text-[11px]">
@@ -144,7 +144,7 @@
 
                             <!-- Seleksi -->
                             <div class="bg-white/5 border border-white/5 rounded-xl p-3 flex gap-3 items-center">
-                                <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0">
+                                <div class="w-8 h-8 rounded-lg bg-primary-500/20 text-primary-400 flex items-center justify-center flex-shrink-0">
                                     <i data-lucide="file-check" class="w-4 h-4"></i>
                                 </div>
                                 <div class="leading-tight text-[11px]">
@@ -161,7 +161,7 @@
 
                             <!-- Daftar Ulang -->
                             <div class="bg-white/5 border border-white/5 rounded-xl p-3 flex gap-3 items-center">
-                                <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0">
+                                <div class="w-8 h-8 rounded-lg bg-primary-500/20 text-primary-400 flex items-center justify-center flex-shrink-0">
                                     <i data-lucide="clipboard-check" class="w-4 h-4"></i>
                                 </div>
                                 <div class="leading-tight text-[11px]">
@@ -181,6 +181,9 @@
                         <div class="relative z-10">
                             <a href="{{ route('frontend.psb.daftar', ['gelombang_id' => $gelombangAktif->id]) }}" class="block w-full py-4 text-center bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-bold rounded-xl shadow-lg transition-all text-sm hover:-translate-y-0.5">
                                 {{ __('Daftar Sekarang') }}
+                            </a>
+                            <a href="{{ route('frontend.psb.status') }}" class="block w-full py-3 text-center border border-surface-300 dark:border-surface-700 text-surface-700 dark:text-surface-300 font-semibold rounded-xl transition-all text-sm">
+                                {{ __('Cek Status Pendaftaran') }}
                             </a>
                         </div>
                     </div>

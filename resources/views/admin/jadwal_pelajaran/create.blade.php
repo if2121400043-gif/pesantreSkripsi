@@ -40,7 +40,7 @@
     }
     .btn-quick-duration {
         background-color: #ecfdf5 !important;
-        color: #065f46 !important;
+        color: #1e3a5f !important;
         border-color: #a7f3d0 !important;
     }
     .btn-quick-duration:hover {
@@ -61,7 +61,7 @@
 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
     <div>
         <div class="flex items-center gap-2 text-xs text-surface-500 mb-1.5">
-            <a href="{{ route('admin.jadwal-pelajaran.index', ['rombel_id' => $rombelId, 'tahun_pelajaran_id' => $tahunId]) }}" class="hover:text-emerald-700 transition-colors font-medium">Jadwal Pelajaran</a>
+            <a href="{{ route('admin.jadwal-pelajaran.index', ['rombel_id' => $rombelId, 'tahun_pelajaran_id' => $tahunId]) }}" class="hover:text-primary-700 transition-colors font-medium">Jadwal Pelajaran</a>
             <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
             <span class="text-surface-900 font-bold">Tambah Sesi Baru</span>
         </div>
@@ -79,8 +79,8 @@
 
     {{-- Notifikasi Error Global / Flash --}}
     @if(session('success'))
-        <div class="bg-emerald-50 text-emerald-950 p-4 rounded-2xl border border-emerald-300 shadow-sm flex items-start gap-3">
-            <div class="w-7 h-7 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0 mt-0.5" style="background-color: #047857 !important; color: #ffffff !important;">
+        <div class="bg-primary-50 text-primary-950 p-4 rounded-2xl border border-primary-300 shadow-sm flex items-start gap-3">
+            <div class="w-7 h-7 rounded-xl bg-primary-600 text-white flex items-center justify-center font-bold shrink-0 mt-0.5" style="background-color: #047857 !important; color: #ffffff !important;">
                 <i data-lucide="check-circle" class="w-4 h-4 text-white" style="color: #ffffff !important;"></i>
             </div>
             <div class="text-xs font-bold leading-relaxed pt-1">
@@ -123,17 +123,17 @@
             <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-7 border border-surface-200 shadow-sm space-y-5">
                 
                 {{-- Header Target Kelas dengan Tombol Ubah Kelas --}}
-                <div class="p-4 sm:p-5 bg-emerald-50/80 border border-emerald-200 rounded-2xl space-y-4">
+                <div class="p-4 sm:p-5 bg-primary-50/80 border border-primary-200 rounded-2xl space-y-4">
                     <div class="flex items-center justify-between gap-4">
                         
                         {{-- Icon + Info Block dengan Margin & Gap Jelas --}}
                         <div class="flex items-center gap-4 min-w-0">
-                            <div class="w-12 h-12 rounded-2xl bg-emerald-700 text-white flex items-center justify-center font-bold shrink-0 shadow-sm" style="background-color: #047857 !important; color: #ffffff !important;">
+                            <div class="w-12 h-12 rounded-2xl bg-primary-700 text-white flex items-center justify-center font-bold shrink-0 shadow-sm" style="background-color: #047857 !important; color: #ffffff !important;">
                                 <i data-lucide="school" class="w-6 h-6"></i>
                             </div>
                             <div class="min-w-0 space-y-1">
-                                <div class="text-[0.7rem] font-black text-emerald-800 uppercase tracking-wider block">Target Kelas & Rombel</div>
-                                <div class="text-base font-black text-emerald-950 font-heading truncate leading-tight block" id="text_nama_kelas">
+                                <div class="text-[0.7rem] font-black text-primary-800 uppercase tracking-wider block">Target Kelas & Rombel</div>
+                                <div class="text-base font-black text-primary-950 font-heading truncate leading-tight block" id="text_nama_kelas">
                                     @if($rombel)
                                         {{ $rombel->lembaga->singkatan ?? $rombel->lembaga->nama }} — {{ str_starts_with(strtoupper($rombel->nama ?? ''), 'KELAS') ? strtoupper($rombel->nama) : 'KELAS ' . strtoupper($rombel->nama) }}
                                     @else
@@ -144,15 +144,15 @@
                         </div>
 
                         {{-- Tombol Ubah Kelas --}}
-                        <button type="button" id="btn_toggle_ubah_kelas" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-extrabold text-xs transition-all shadow-2xs shrink-0">
-                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-emerald-700"></i>
+                        <button type="button" id="btn_toggle_ubah_kelas" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-primary-100 text-primary-800 border border-primary-300 font-extrabold text-xs transition-all shadow-2xs shrink-0">
+                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-primary-700"></i>
                             <span>Ubah Kelas</span>
                         </button>
                     </div>
 
                     {{-- Container Select Rombel (Dengan padding-top & margin-top yang lega dari garis border) --}}
-                    <div id="wrapper_select_rombel" class="pt-4 border-t border-emerald-200/90 space-y-2 {{ $rombel ? 'hidden' : '' }}">
-                        <label class="block text-xs font-extrabold text-emerald-950 mb-1">
+                    <div id="wrapper_select_rombel" class="pt-4 border-t border-primary-200/90 space-y-2 {{ $rombel ? 'hidden' : '' }}">
+                        <label class="block text-xs font-extrabold text-primary-950 mb-1">
                             Pilih Kelas / Rombel Baru <span class="text-rose-500">*</span>
                         </label>
                         <select name="rombel_id" id="rombel_id" required class="select2-search w-full">
@@ -170,9 +170,9 @@
                 <div>
                     <label class="block text-xs font-bold text-surface-700 mb-1.5 flex items-center justify-between">
                         <span>Hari Pelaksanaan <span class="text-rose-500">*</span></span>
-                        <span class="text-[0.68rem] text-emerald-700 font-bold">Mengatur Peta Jam Terisi</span>
+                        <span class="text-[0.68rem] text-primary-700 font-bold">Mengatur Peta Jam Terisi</span>
                     </label>
-                    <select name="hari" id="select_hari" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all">
+                    <select name="hari" id="select_hari" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600 transition-all">
                         @foreach(['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'AHAD'] as $h)
                             <option value="{{ $h }}" {{ old('hari', $hari ?? 'SENIN') === $h ? 'selected' : '' }}>Hari {{ ucfirst(strtolower($h)) }}</option>
                         @endforeach
@@ -184,11 +184,11 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1.5">Jam Mulai <span class="text-rose-500">*</span></label>
-                            <input type="time" name="jam_mulai" id="jam_mulai" value="{{ old('jam_mulai', $lastJamMulai ?? '07:30') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+                            <input type="time" name="jam_mulai" id="jam_mulai" value="{{ old('jam_mulai', $lastJamMulai ?? '07:30') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-surface-700 mb-1.5">Jam Selesai <span class="text-rose-500">*</span></label>
-                            <input type="time" name="jam_selesai" id="jam_selesai" value="{{ old('jam_selesai', $lastJamSelesai ?? '08:15') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all">
+                            <input type="time" name="jam_selesai" id="jam_selesai" value="{{ old('jam_selesai', $lastJamSelesai ?? '08:15') }}" required class="w-full rounded-xl border border-surface-300 bg-white px-3.5 py-2.5 text-xs font-bold text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600 transition-all">
                         </div>
                     </div>
 
@@ -267,7 +267,7 @@
                                 <p class="text-[0.68rem] text-surface-500">Peta jam terpakai untuk cegah bentrok.</p>
                             </div>
                         </div>
-                        <span id="label_hari_aktif" class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-900 text-[0.7rem] font-black uppercase tracking-wider">
+                        <span id="label_hari_aktif" class="px-2.5 py-1 rounded-full bg-primary-100 text-primary-900 text-[0.7rem] font-black uppercase tracking-wider">
                             Hari Senin
                         </span>
                     </div>
@@ -275,13 +275,13 @@
                     {{-- Dynamic Occupied Schedules Container --}}
                     <div id="occupied_container" class="space-y-3 min-h-[160px]">
                         <div class="text-center py-8 text-surface-400 text-xs">
-                            <i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto mb-2 text-emerald-600"></i>
+                            <i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto mb-2 text-primary-600"></i>
                             <span>Memuat peta jam terisi...</span>
                         </div>
                     </div>
 
                     <div class="mt-4 pt-3 border-t border-surface-100 flex items-center gap-2 text-[0.68rem] text-surface-450">
-                        <i data-lucide="info" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>
+                        <i data-lucide="info" class="w-3.5 h-3.5 text-primary-600 shrink-0"></i>
                         <span>Sistem otomatis menolak jika jam yang diinput menabrak jam yang terisi di atas.</span>
                     </div>
                 </div>
@@ -327,7 +327,7 @@
 
             container.html(`
                 <div class="text-center py-6 text-surface-400 text-xs">
-                    <i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto mb-2 text-emerald-600"></i>
+                    <i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto mb-2 text-primary-600"></i>
                     <span>Memeriksa jam terisi...</span>
                 </div>
             `);
@@ -336,12 +336,12 @@
             $.getJSON('/admin/jadwal-pelajaran/occupied', { rombel_id: rombelId, hari: hari }, function(data) {
                 if (!data || data.length === 0) {
                     container.html(`
-                        <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-center">
-                            <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-2">
+                        <div class="p-4 bg-primary-50 border border-primary-200 rounded-2xl text-center">
+                            <div class="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center mx-auto mb-2">
                                 <i data-lucide="check-circle-2" class="w-4 h-4"></i>
                             </div>
-                            <h4 class="font-extrabold text-emerald-900 text-xs mb-0.5">Belum Ada Jam Terisi</h4>
-                            <p class="text-[0.68rem] text-emerald-700">Hari ini kelas masih kosong. Bebas menginput jam berapa saja.</p>
+                            <h4 class="font-extrabold text-primary-900 text-xs mb-0.5">Belum Ada Jam Terisi</h4>
+                            <p class="text-[0.68rem] text-primary-700">Hari ini kelas masih kosong. Bebas menginput jam berapa saja.</p>
                         </div>
                     `);
                 } else {
@@ -427,9 +427,9 @@
             jamSelesaiInput.val(formattedEnd);
 
             // Visual feedback highlight
-            jamSelesaiInput.addClass('ring-2 ring-emerald-500 bg-emerald-50');
+            jamSelesaiInput.addClass('ring-2 ring-primary-500 bg-primary-50');
             setTimeout(function() {
-                jamSelesaiInput.removeClass('ring-2 ring-emerald-500 bg-emerald-50');
+                jamSelesaiInput.removeClass('ring-2 ring-primary-500 bg-primary-50');
             }, 600);
         });
 

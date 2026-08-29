@@ -30,9 +30,9 @@
 
     {{-- Stats Quick Summary Cards --}}
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div class="bg-white rounded-2xl p-4 border border-emerald-200 shadow-2xs text-center">
-            <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider block">HADIR</span>
-            <span class="text-2xl sm:text-3xl font-black text-emerald-800 mt-1 block">{{ $kehadiranStats['HADIR'] }}</span>
+        <div class="bg-white rounded-2xl p-4 border border-primary-200 shadow-2xs text-center">
+            <span class="text-xs font-bold text-primary-700 uppercase tracking-wider block">HADIR</span>
+            <span class="text-2xl sm:text-3xl font-black text-primary-800 mt-1 block">{{ $kehadiranStats['HADIR'] }}</span>
         </div>
         <div class="bg-white rounded-2xl p-4 border border-sky-200 shadow-2xs text-center">
             <span class="text-xs font-bold text-sky-700 uppercase tracking-wider block">IZIN</span>
@@ -78,7 +78,7 @@
                         </td>
                         <td class="py-4 px-5 text-center">
                             @if($presensi->status === 'HADIR')
-                                <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-extrabold rounded-full border border-emerald-200">HADIR</span>
+                                <span class="px-3 py-1 bg-primary-100 text-primary-800 text-xs font-extrabold rounded-full border border-primary-200">HADIR</span>
                             @elseif($presensi->status === 'SAKIT')
                                 <span class="px-3 py-1 bg-amber-100 text-amber-800 text-xs font-extrabold rounded-full border border-amber-200">SAKIT</span>
                             @elseif($presensi->status === 'IZIN')

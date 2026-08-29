@@ -52,6 +52,10 @@
                     <option value="DITERIMA" class="bg-success-100 text-success-900 font-medium" {{ request('status') == 'DITERIMA' ? 'selected' : '' }}>Diterima</option>
                     <option value="TIDAK_LULUS" class="bg-danger-100 text-danger-900 font-medium" {{ request('status') == 'TIDAK_LULUS' ? 'selected' : '' }}>Tidak Lulus</option>
                     <option value="DIBATALKAN" class="bg-surface-200 text-surface-600 font-medium" {{ request('status') == 'DIBATALKAN' ? 'selected' : '' }}>Dibatalkan</option>
+                    <option value="DRAFT" {{ request('status') == 'DRAFT' ? 'selected' : '' }}>Draft</option>
+                    <option value="MENUNGGU_VERIFIKASI" {{ request('status') == 'MENUNGGU_VERIFIKASI' ? 'selected' : '' }}>Menunggu Verifikasi</option>
+                    <option value="TIDAK_LENGKAP" {{ request('status') == 'TIDAK_LENGKAP' ? 'selected' : '' }}>Tidak Lengkap</option>
+                    <option value="DITOLAK" {{ request('status') == 'DITOLAK' ? 'selected' : '' }}>Ditolak</option>
                 </select>
             </div>
             <button type="submit" class="btn-secondary px-4 py-2 hidden sm:block">Cari</button>
@@ -98,16 +102,16 @@
                         <x-badge variant="surface">{{ $cs->lembagaTujuan->singkatan ?? $cs->lembagaTujuan->nama ?? 'Umum/Pesantren' }}</x-badge>
                     </td>
                     <td class="px-6 py-4 text-center">
-                        @if($cs->status === 'DITERIMA')
+                        @if($cs->workflow_status === 'DITERIMA')
                             <x-badge type="success" dot>Diterima</x-badge>
-                        @elseif($cs->status === 'TIDAK_LULUS')
-                            <x-badge type="danger" dot>Tidak Lulus</x-badge>
-                        @elseif($cs->status === 'HADIR_TES')
-                            <x-badge type="warning" dot>Hadir Tes</x-badge>
-                        @elseif($cs->status === 'DIBATALKAN')
-                            <x-badge type="surface" dot>Dibatalkan</x-badge>
+                        @elseif($cs->workflow_status === 'DITOLAK')
+                            <x-badge type="danger" dot>Ditolak</x-badge>
+                        @elseif($cs->workflow_status === 'TIDAK_LENGKAP')
+                            <x-badge type="warning" dot>Tidak Lengkap</x-badge>
+                        @elseif($cs->workflow_status === 'DRAFT')
+                            <x-badge type="surface" dot>Draft</x-badge>
                         @else
-                            <x-badge type="info" dot>Baru Masuk</x-badge>
+                            <x-badge type="info" dot>Menunggu Verifikasi</x-badge>
                         @endif
                     </td>
                     <td class="px-6 py-4 text-right">

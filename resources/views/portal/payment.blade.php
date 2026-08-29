@@ -76,8 +76,8 @@
     <x-card>
         <div class="space-y-4">
             <div class="flex items-center gap-3 pb-4 border-b border-surface-100">
-                <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center">
-                    <i data-lucide="credit-card" class="w-5 h-5 text-emerald-600"></i>
+                <div class="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center">
+                    <i data-lucide="credit-card" class="w-5 h-5 text-primary-600"></i>
                 </div>
                 <div>
                     <h2 class="text-lg font-bold text-surface-900">Metode Pembayaran</h2>
@@ -100,7 +100,7 @@
             <button
                 id="btn-bayar"
                 onclick="payWithSnap()"
-                class="w-full py-3.5 px-6 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-200 transition-all duration-200 flex items-center justify-center gap-2 text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                class="w-full py-3.5 px-6 bg-gradient-to-r from-primary-600 to-teal-600 hover:from-primary-700 hover:to-teal-700 text-white font-bold rounded-xl shadow-lg shadow-primary-200 transition-all duration-200 flex items-center justify-center gap-2 text-base disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 <i data-lucide="shield-check" class="w-5 h-5"></i>
                 <span id="btn-bayar-text">Bayar Sekarang — Rp {{ number_format($sisaTagihan, 0, ',', '.') }}</span>

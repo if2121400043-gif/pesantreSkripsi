@@ -91,7 +91,7 @@
                     <td class="px-6 py-3.5">
                         <div class="flex gap-1 flex-wrap w-36">
                             @if($orang->pesertaDidik)
-                                <span class="px-2 py-0.5 rounded text-[0.62rem] font-extrabold uppercase bg-emerald-100 text-emerald-800 border border-emerald-200">Santri</span>
+                                <span class="px-2 py-0.5 rounded text-[0.62rem] font-extrabold uppercase bg-primary-100 text-primary-800 border border-primary-200">Santri</span>
                             @endif
                             
                             @if($orang->pegawai)
@@ -109,8 +109,8 @@
                     </td>
                     <td class="px-6 py-3.5">
                         @if($orang->is_active)
-                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[0.65rem] font-extrabold uppercase bg-emerald-100 text-emerald-700 border border-emerald-200">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Aktif
+                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[0.65rem] font-extrabold uppercase bg-primary-100 text-primary-700 border border-primary-200">
+                                <span class="w-1.5 h-1.5 rounded-full bg-primary-600"></span> Aktif
                             </span>
                         @else
                             <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[0.65rem] font-extrabold uppercase bg-rose-100 text-rose-700 border border-rose-200">
@@ -120,7 +120,7 @@
                     </td>
                     <td class="px-6 py-3.5 text-right">
                         <div class="inline-flex items-center justify-end gap-1.5">
-                            <a href="{{ route('admin.orang.show', $orang) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white border border-emerald-200 text-xs font-bold transition-all shadow-2xs" title="Lihat Detail Profil">
+                            <a href="{{ route('admin.orang.show', $orang) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-50 text-primary-700 hover:bg-primary-600 hover:text-white border border-primary-200 text-xs font-bold transition-all shadow-2xs" title="Lihat Detail Profil">
                                 <i data-lucide="eye" class="w-3.5 h-3.5"></i>
                                 <span>Detail</span>
                             </a>

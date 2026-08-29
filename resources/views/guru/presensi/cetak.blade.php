@@ -136,7 +136,7 @@
             gap: 6px;
         }
         .btn-print:hover {
-            background: #065f46;
+            background: #1e3a5f;
         }
         @media print {
             .no-print {

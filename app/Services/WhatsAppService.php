@@ -149,6 +149,18 @@ class WhatsAppService
         return self::send($phone, $message);
     }
 
+    public static function sendRegistrationReceived($phone, $santriName, $registrationNumber, $statusUrl, $status = 'Draft')
+    {
+        $message = "Assalamu'alaikum Wr. Wb.\n\n"
+                 . "Pendaftaran santri baru atas nama *{$santriName}* telah kami terima.\n"
+                 . "Nomor pendaftaran: *{$registrationNumber}*\n"
+                 . "Status: *{$status}*\n\n"
+                 . "Pantau status pendaftaran: {$statusUrl}\n\n"
+                 . "Wassalamu'alaikum Wr. Wb.";
+
+        return self::send($phone, $message);
+    }
+
     // ═══════════════════════════════════════════════════
     // HELPER: Format Phone Number
     // ═══════════════════════════════════════════════════

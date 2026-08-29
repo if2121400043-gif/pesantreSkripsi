@@ -39,7 +39,7 @@
                         <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600"></i>
                         Catatan Pelanggaran Disiplin
                     </span>
-                    <span class="px-2.5 py-0.5 text-xs font-extrabold rounded-full {{ $totalPoinPelanggaran > 0 ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800' }}">
+                    <span class="px-2.5 py-0.5 text-xs font-extrabold rounded-full {{ $totalPoinPelanggaran > 0 ? 'bg-rose-100 text-rose-800' : 'bg-primary-100 text-primary-800' }}">
                         {{ $statusKedisiplinan }}
                     </span>
                 </h2>
@@ -67,7 +67,7 @@
                     </div>
                 @else
                     <div class="py-12 text-center">
-                        <i data-lucide="check-circle" class="w-12 h-12 text-emerald-500 mx-auto mb-3"></i>
+                        <i data-lucide="check-circle" class="w-12 h-12 text-primary-500 mx-auto mb-3"></i>
                         <h3 class="text-base font-bold text-surface-900 mb-1">Alhamdulillah Suci Pelanggaran</h3>
                         <p class="text-xs text-surface-500 max-w-xs mx-auto">Tidak ada catatan pelanggaran disiplin yang tercatat. Pertahankan istiqomah ananda.</p>
                     </div>

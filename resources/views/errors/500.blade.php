@@ -18,7 +18,7 @@
             </p>
         </div>
         <div class="pt-4 border-t border-surface-100 flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="{{ url('/') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-emerald-700 text-white font-extrabold text-xs hover:bg-emerald-800 transition-all shadow-md shadow-emerald-700/20">
+            <a href="{{ url('/') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-primary-700 text-white font-extrabold text-xs hover:bg-primary-800 transition-all shadow-md shadow-primary-700/20">
                 <i data-lucide="home" class="w-4 h-4"></i>
                 <span>Kembali ke Beranda</span>
             </a>

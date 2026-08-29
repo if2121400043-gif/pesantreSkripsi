@@ -37,7 +37,7 @@ class SendWhatsAppMessage implements ShouldQueue
     public int $backoff = 10;
 
     /**
-     * @param string $type    Jenis pesan: 'tagihan_baru', 'tagihan_reminder', 'pembayaran_sukses', 'welcome', 'custom'
+     * @param string $type    Jenis pesan: 'tagihan_baru', 'tagihan_reminder', 'pembayaran_sukses', 'welcome', 'registration_received', 'custom'
      * @param string $phone   Nomor HP tujuan (format 08xxx)
      * @param array  $data    Data dinamis sesuai jenis pesan
      */
@@ -85,6 +85,13 @@ class SendWhatsAppMessage implements ShouldQueue
             'custom' => WhatsAppService::sendCustomMessage(
                 $this->phone,
                 $this->data['message'],
+            ),
+            'registration_received' => WhatsAppService::sendRegistrationReceived(
+                $this->phone,
+                $this->data['santri_nama'],
+                $this->data['no_pendaftaran'],
+                $this->data['status_url'],
+                $this->data['status'] ?? 'Draft',
             ),
             default => false,
         };

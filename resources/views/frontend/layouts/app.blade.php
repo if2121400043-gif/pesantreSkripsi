@@ -7,7 +7,7 @@
     <meta name="description" content="@yield('meta_description', ($pesantren?->nama ?? 'Pesantren') . ' — ' . __('Lembaga Pendidikan Islam'))">
     
     {{-- PWA Meta Tags --}}
-    <meta name="theme-color" content="#065f46">
+    <meta name="theme-color" content="#1e3a5f">
     <meta name="application-name" content="PP Nurul Furqon">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,7 +16,7 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
     <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
-    <link rel="mask-icon" href="/icons/icon-192x192.png" color="#065f46">
+    <link rel="mask-icon" href="/icons/icon-192x192.png" color="#1e3a5f">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,12 +41,12 @@
 
         /* Navbar glass - works for both light and dark mode */
         .navbar-glass {
-            background: rgba(255, 255, 255, 0.85);
+            background: linear-gradient(to right, rgba(30, 58, 95, 0.95), rgba(43, 76, 126, 0.95)); /* Navy blue gradient */
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
         html.dark .navbar-glass {
-            background: rgba(15, 23, 42, 0.85); /* surface-950 equivalent */
+            background: linear-gradient(to right, rgba(15, 23, 42, 0.95), rgba(30, 58, 95, 0.95)); /* Darker navy gradient */
         }
         .navbar-scrolled {
             box-shadow: 0 4px 20px -2px rgba(0,0,0,0.05);
@@ -60,6 +60,25 @@
             transition: all 0.2s ease-in-out;
             transform-origin: top right;
         }
+
+        /* Secondary gold footer */
+        .footer-gold {
+            background:
+                radial-gradient(circle at 88% 12%, rgba(255, 244, 194, 0.24), transparent 28%),
+                linear-gradient(118deg, #7b5315 0%, #b98122 38%, #d6a63c 68%, #a86f1b 100%);
+            color: #fff8e7;
+        }
+        .footer-gold .text-white { color: #fffdf5 !important; }
+        .footer-gold .text-surface-300,
+        .footer-gold .text-surface-400 { color: rgba(255, 248, 231, 0.82) !important; }
+        .footer-gold .text-surface-500 { color: rgba(255, 248, 231, 0.68) !important; }
+        .footer-gold .border-surface-800\/60 { border-color: rgba(255, 248, 231, 0.24) !important; }
+        .footer-gold .bg-surface-900 { background-color: rgba(92, 57, 10, 0.34) !important; }
+        .footer-gold .bg-surface-800 { background-color: rgba(92, 57, 10, 0.46) !important; }
+        .footer-gold .hover\:bg-surface-700:hover { background-color: rgba(74, 45, 8, 0.62) !important; }
+        .footer-gold .border-surface-700 { border-color: rgba(255, 248, 231, 0.28) !important; }
+        .footer-gold .text-primary-400,
+        .footer-gold .text-accent-500 { color: #fff0ae !important; }
     </style>
     @stack('styles')
 </head>
@@ -74,26 +93,34 @@
                 <a href="{{ route('frontend.home') }}" class="flex items-center gap-3 flex-shrink-0 group">
                     <img src="{{ asset('images/logo-pesantren.webp') }}?v={{ time() }}" alt="Logo" class="w-12 h-12 object-contain bg-white rounded-2xl shadow-lg shadow-primary-500/30 p-0.5 group-hover:shadow-primary-500/50 transition-all duration-300 transform group-hover:-translate-y-0.5">
                     <div class="hidden sm:block leading-tight">
-                        <span class="block font-extrabold text-surface-900 dark:text-white text-[17px] tracking-tight">{{ $pesantren?->nama ?? 'Pesantren' }}</span>
-                        <span class="block text-[11px] text-primary-600 dark:text-primary-400 font-bold uppercase tracking-widest mt-0.5">{{ __('Lembaga Pendidikan Islam') }}</span>
+                        <span class="block font-extrabold text-white text-[17px] tracking-tight uppercase">{{ $pesantren?->nama ?? 'Pondok Pesantren Nurul Furqon' }}</span>
+                        <span class="block text-[11px] text-primary-200 font-bold uppercase tracking-widest mt-0.5">{{ __('Lembaga Pendidikan Islam') }}</span>
                     </div>
                 </a>
 
                 {{-- Desktop Menu --}}
                 <div class="hidden lg:flex items-center gap-2">
-                    <a href="{{ route('frontend.home') }}" class="px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-300 {{ request()->routeIs('frontend.home') ? 'text-primary-700 bg-primary-50 dark:bg-primary-900/30 dark:text-primary-400' : 'text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800' }}">{{ __('Beranda') }}</a>
+                    <a href="{{ route('frontend.home') }}" class="px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-300 {{ request()->routeIs('frontend.home') ? 'text-white bg-white/20' : 'text-primary-100 hover:text-white hover:bg-white/10' }}">{{ __('Beranda') }}</a>
                     
-                    <a href="{{ route('frontend.profil') }}" class="px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-300 {{ request()->routeIs('frontend.profil') ? 'text-primary-700 bg-primary-50 dark:bg-primary-900/30 dark:text-primary-400' : 'text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800' }}">{{ __('Profil') }}</a>
+                    <a href="{{ route('frontend.profil') }}" class="px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-300 {{ request()->routeIs('frontend.profil') ? 'text-white bg-white/20' : 'text-primary-100 hover:text-white hover:bg-white/10' }}">{{ __('Tentang Kami') }}</a>
                     
-                    <a href="{{ route('frontend.berita') }}" class="px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-300 {{ request()->routeIs('frontend.berita*') ? 'text-primary-700 bg-primary-50 dark:bg-primary-900/30 dark:text-primary-400' : 'text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800' }}">{{ __('Berita') }}</a>
+                    <a href="{{ route('frontend.publikasi') }}" class="px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-300 {{ request()->routeIs('frontend.publikasi*') || request()->routeIs('frontend.berita*') ? 'text-white bg-white/20' : 'text-primary-100 hover:text-white hover:bg-white/10' }}">{{ __('Publikasi') }}</a>
+                    
+                    <a href="#" class="px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-300 text-primary-100 hover:text-white hover:bg-white/10">{{ __('Kurikulum') }}</a>
                 </div>
 
                 {{-- Action Area (Theme, Lang, CTA) --}}
                 <div class="hidden lg:flex items-center gap-3">
-                    
+                    <a href="/psb" class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-400 hover:to-secondary-500 text-surface-900 text-sm font-bold rounded-xl shadow-lg shadow-secondary-500/25 hover:shadow-secondary-500/40 transition-all duration-300 hover:-translate-y-0.5 border border-secondary-400">
+                        <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                        {{ __('Pendaftaran Santri Baru') }}
+                    </a>
+
+                    <div class="h-6 w-px bg-white/20 mx-1"></div>
+
                     {{-- Language Switcher --}}
                     <div class="relative">
-                        <button id="langBtn" class="flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white rounded-xl hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors">
+                        <button id="langBtn" class="flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-primary-100 hover:text-white rounded-xl hover:bg-white/10 transition-colors">
                             <i data-lucide="globe" class="w-4 h-4"></i>
                             <span>{{ strtoupper(app()->getLocale()) }}</span>
                             <i data-lucide="chevron-down" class="w-3 h-3"></i>
@@ -106,46 +133,12 @@
                             </div>
                         </div>
                     </div>
-
-                    {{-- Dark Mode Toggle --}}
-                    <button id="theme-toggle" type="button" class="text-surface-500 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 focus:outline-none focus:ring-4 focus:ring-surface-200 dark:focus:ring-surface-700 rounded-xl text-sm p-2.5 transition-colors">
-                        <i id="theme-toggle-dark-icon" data-lucide="moon" class="hidden w-4 h-4"></i>
-                        <i id="theme-toggle-light-icon" data-lucide="sun" class="hidden w-4 h-4"></i>
-                    </button>
-
-                    <div class="h-6 w-px bg-surface-200 dark:bg-surface-800 mx-1"></div>
-
-                    @auth
-                        @php
-                            $userRedirect = auth()->user()->active_role->role->redirect_url ?? '/portal/beranda';
-                        @endphp
-                        <a href="{{ url($userRedirect) }}" class="inline-flex items-center gap-1.5 px-4 py-2.5 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-200 text-sm font-extrabold rounded-xl transition-all duration-300 shadow-sm">
-                            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-                            <span>Dashboard Saya</span>
-                        </a>
-                    @else
-                        <a href="/login" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-surface-700 dark:text-surface-300 hover:text-primary-600 dark:hover:text-primary-400 text-sm font-bold transition-all duration-300">
-                            <i data-lucide="log-in" class="w-4 h-4"></i>
-                            {{ __('Masuk') }}
-                        </a>
-                    @endauth
-
-                    <div class="h-6 w-px bg-surface-200 dark:bg-surface-800 mx-1"></div>
-
-                    <a href="/psb" class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 text-white text-sm font-bold rounded-xl shadow-lg shadow-primary-600/25 hover:shadow-primary-600/40 transition-all duration-300 hover:-translate-y-0.5">
-                        <i data-lucide="graduation-cap" class="w-4 h-4"></i>
-                        {{ __('Daftar PSB') }}
-                    </a>
                 </div>
 
                 {{-- Mobile Hamburger --}}
                 <div class="flex items-center gap-2 lg:hidden">
-                    <button id="theme-toggle-mobile" type="button" class="text-surface-500 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-xl p-2 transition-colors">
-                        <i id="theme-toggle-dark-icon-mobile" data-lucide="moon" class="hidden w-5 h-5"></i>
-                        <i id="theme-toggle-light-icon-mobile" data-lucide="sun" class="hidden w-5 h-5"></i>
-                    </button>
-                    
-                    <button id="mobileMenuBtn" class="p-2 text-surface-600 dark:text-surface-300 hover:text-surface-900 dark:hover:text-white rounded-xl hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors">
+
+                    <button id="mobileMenuBtn" class="p-2 text-primary-100 hover:text-white rounded-xl hover:bg-white/10 transition-colors">
                         <i data-lucide="menu" class="w-6 h-6" id="menuIconOpen"></i>
                         <i data-lucide="x" class="w-6 h-6 hidden" id="menuIconClose"></i>
                     </button>
@@ -157,9 +150,9 @@
         <div id="mobileMenu" class="hidden lg:hidden bg-white/95 dark:bg-surface-950/95 backdrop-blur-xl border-t border-surface-100 dark:border-surface-800 shadow-xl absolute w-full">
             <div class="max-w-7xl mx-auto px-4 py-5 space-y-2">
                 <a href="{{ route('frontend.home') }}" class="block px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('frontend.home') ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400' : 'text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800' }}">{{ __('Beranda') }}</a>
-                <a href="{{ route('frontend.profil') }}" class="block px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('frontend.profil') ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400' : 'text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800' }}">{{ __('Profil') }}</a>
-                <a href="{{ route('frontend.berita') }}" class="block px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('frontend.berita*') ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400' : 'text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800' }}">{{ __('Berita') }}</a>
-                <a href="{{ route('frontend.psb') }}" class="block px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('frontend.psb*') ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400' : 'text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800' }}">{{ __('Info PSB') }}</a>
+                <a href="{{ route('frontend.profil') }}" class="block px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('frontend.profil') ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400' : 'text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800' }}">{{ __('Tentang Kami') }}</a>
+                <a href="{{ route('frontend.publikasi') }}" class="block px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('frontend.publikasi*') || request()->routeIs('frontend.berita*') ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400' : 'text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800' }}">{{ __('Publikasi') }}</a>
+                <a href="#" class="block px-4 py-3 rounded-xl text-sm font-bold text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800">{{ __('Kurikulum') }}</a>
                 
                 <div class="pt-2 flex justify-between items-center px-4">
                     <span class="text-xs font-bold text-surface-500 uppercase">Bahasa / Language</span>
@@ -174,11 +167,11 @@
                         @php
                             $userRedirect = auth()->user()->active_role->role->redirect_url ?? '/portal/beranda';
                         @endphp
-                        <a href="{{ url($userRedirect) }}" class="block w-full text-center px-4 py-3 bg-emerald-600 text-white font-extrabold rounded-xl shadow-md">Dashboard Saya</a>
+                        <a href="{{ url($userRedirect) }}" class="block w-full text-center px-4 py-3 bg-primary-600 text-white font-extrabold rounded-xl shadow-md">Dashboard Saya</a>
                     @else
                         <a href="/login" class="block w-full text-center px-4 py-3 border border-surface-200 dark:border-surface-800 text-surface-700 dark:text-surface-300 font-bold rounded-xl">{{ __('Masuk') }}</a>
                     @endauth
-                    <a href="/psb" class="block w-full text-center px-4 py-3.5 bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-bold rounded-xl shadow-lg shadow-primary-600/20">{{ __('Daftar PSB Sekarang') }}</a>
+                    <a href="/psb" class="block w-full text-center px-4 py-3.5 bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-bold rounded-xl shadow-lg shadow-primary-600/20">{{ __('Pendaftaran Santri Baru') }}</a>
                 </div>
             </div>
         </div>
@@ -190,44 +183,26 @@
     </main>
 
     {{-- ═══════════ FOOTER ═══════════ --}}
-    <footer class="bg-surface-950 dark:bg-[#0a0f1a] text-surface-300 relative overflow-hidden">
+    <footer class="footer-gold relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-                {{-- Col 1: About --}}
-                <div class="lg:col-span-1">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+                {{-- Col 1: Deskripsi --}}
+                <div class="flex flex-col items-center md:items-start text-center md:text-left">
                     <div class="flex items-center gap-3 mb-6">
                         <img src="{{ asset('images/logo-pesantren.webp') }}?v={{ time() }}" alt="Logo" class="w-12 h-12 object-contain bg-white rounded-2xl shadow-lg shadow-primary-500/20 p-0.5">
-                        <span class="text-white font-extrabold text-[17px] tracking-tight">{{ $pesantren?->nama ?? 'Pesantren' }}</span>
+                        <span class="text-white font-extrabold text-[17px] tracking-tight uppercase">{{ $pesantren?->nama ?? 'Pondok Pesantren Nurul Furqon' }}</span>
                     </div>
                     <p class="text-surface-400 text-sm leading-relaxed font-medium">
                         {{ __('Lembaga Pendidikan Islam') }} terpadu yang menyeimbangkan ilmu agama, akademik, dan pembentukan akhlak santri di era modern.
                     </p>
                 </div>
 
-                {{-- Col 2: Pendidikan --}}
-                <div>
-                    <h4 class="text-white font-bold text-sm uppercase tracking-widest mb-6 border-b border-surface-800 pb-2 inline-block">{{ __('Pendidikan') }}</h4>
-                    <ul class="space-y-3 text-sm font-medium">
-                        <li><a href="{{ route('frontend.profil') }}" class="text-surface-400 hover:text-accent-400 transition-colors flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-accent-500"></span> {{ __('Profil Pesantren') }}</a></li>
-                        <li><a href="{{ route('frontend.berita') }}" class="text-surface-400 hover:text-accent-400 transition-colors flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-accent-500"></span> {{ __('Berita & Kegiatan') }}</a></li>
-                    </ul>
-                </div>
-
-                {{-- Col 3: Informasi --}}
-                <div>
-                    <h4 class="text-white font-bold text-sm uppercase tracking-widest mb-6 border-b border-surface-800 pb-2 inline-block">{{ __('Informasi') }}</h4>
-                    <ul class="space-y-3 text-sm font-medium">
-                        <li><a href="{{ route('frontend.psb') }}" class="text-surface-400 hover:text-accent-400 transition-colors flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-accent-500"></span> {{ __('Pendaftaran Santri Baru') }}</a></li>
-                        <li><a href="{{ route('login') }}" class="text-surface-400 hover:text-accent-400 transition-colors flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-accent-500"></span> {{ __('Portal Login') }}</a></li>
-                    </ul>
-                </div>
-
-                {{-- Col 4: Kontak --}}
-                <div>
-                    <h4 class="text-white font-bold text-sm uppercase tracking-widest mb-6 border-b border-surface-800 pb-2 inline-block">{{ __('Kontak') }}</h4>
+                {{-- Col 2: Kontak --}}
+                <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                    <h4 class="text-white font-bold text-sm uppercase tracking-widest mb-6 border-b border-surface-800 pb-2 inline-block">{{ __('Hubungi Kami') }}</h4>
                     <ul class="space-y-4 text-sm font-medium text-surface-400">
                         @if($pesantren?->alamat)
-                        <li class="flex items-start gap-3 group">
+                        <li class="flex items-start justify-center md:justify-start gap-3 group">
                             <div class="w-8 h-8 rounded-full bg-surface-900 flex items-center justify-center flex-shrink-0 group-hover:bg-primary-900 transition-colors text-primary-400">
                                 <i data-lucide="map-pin" class="w-4 h-4"></i>
                             </div>
@@ -235,7 +210,7 @@
                         </li>
                         @endif
                         @if($pesantren?->telepon)
-                        <li class="flex items-center gap-3 group">
+                        <li class="flex items-center justify-center md:justify-start gap-3 group">
                             <div class="w-8 h-8 rounded-full bg-surface-900 flex items-center justify-center flex-shrink-0 group-hover:bg-primary-900 transition-colors text-primary-400">
                                 <i data-lucide="phone" class="w-4 h-4"></i>
                             </div>
@@ -243,7 +218,7 @@
                         </li>
                         @endif
                         @if($pesantren?->email)
-                        <li class="flex items-center gap-3 group">
+                        <li class="flex items-center justify-center md:justify-start gap-3 group">
                             <div class="w-8 h-8 rounded-full bg-surface-900 flex items-center justify-center flex-shrink-0 group-hover:bg-primary-900 transition-colors text-primary-400">
                                 <i data-lucide="mail" class="w-4 h-4"></i>
                             </div>
@@ -252,13 +227,32 @@
                         @endif
                     </ul>
                 </div>
+
+                {{-- Col 3: Akses Portal --}}
+                <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                    <h4 class="text-white font-bold text-sm uppercase tracking-widest mb-6 border-b border-surface-800 pb-2 inline-block">{{ __('Akses Internal') }}</h4>
+                    <div class="w-full max-w-[240px]">
+                        @auth
+                            @php
+                                $userRedirect = auth()->user()->active_role->role->redirect_url ?? '/portal/beranda';
+                            @endphp
+                            <a href="{{ url($userRedirect) }}" class="inline-flex w-full items-center justify-center gap-2 px-4 py-3 bg-primary-600 hover:bg-primary-500 text-white text-sm font-bold rounded-xl transition-all duration-300 shadow-lg shadow-primary-600/20 hover:-translate-y-0.5">
+                                <i data-lucide="layout-dashboard" class="w-4 h-4"></i> {{ __('Dashboard Saya') }}
+                            </a>
+                        @else
+                            <a href="/login" class="inline-flex w-full items-center justify-center gap-2 px-4 py-3 bg-surface-800 hover:bg-surface-700 text-white text-sm font-bold rounded-xl transition-all duration-300 border border-surface-700 hover:border-surface-600 shadow-sm hover:-translate-y-0.5">
+                                <i data-lucide="log-in" class="w-4 h-4"></i> {{ __('Masuk ke Portal') }}
+                            </a>
+                        @endauth
+                    </div>
+                </div>
             </div>
         </div>
 
         {{-- Copyright --}}
         <div class="border-t border-surface-800/60 relative z-10">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row justify-between items-center text-xs font-medium text-surface-500">
-                <p>&copy; {{ date('Y') }} <span class="text-surface-300">{{ $pesantren?->nama ?? 'Pesantren' }}</span>. {{ __('All rights reserved.') }}</p>
+                <p>&copy; {{ date('Y') }} <span class="text-surface-300 uppercase">{{ $pesantren?->nama ?? 'Pondok Pesantren Nurul Furqon' }}</span>. {{ __('All rights reserved.') }}</p>
                 <p class="mt-2 md:mt-0 flex items-center gap-1.5">
                     {{ __('Sistem Manajemen Pesantren') }} <i data-lucide="sparkles" class="w-3 h-3 text-accent-500"></i>
                 </p>

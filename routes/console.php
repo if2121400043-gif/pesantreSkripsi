@@ -102,11 +102,19 @@ Artisan::command('app:clean-psb-drafts', function () {
     $this->info('Membersihkan data draf PSB yang tidak lengkap...');
     
     $expiredDate = now()->subDays(30);
-    $deleted = \App\Models\CalonSantri::where('status_workflow', 'DRAFT')
+    $drafts = \App\Models\CalonSantri::where('status_workflow', 'DRAFT')
         ->where('created_at', '<', $expiredDate)
-        ->delete();
+        ->get();
         
-    $this->info("Berhasil menghapus $deleted draf PSB kedaluwarsa.");
+    $count = 0;
+    foreach ($drafts as $draft) {
+        // Hapus akun User yang terkait agar email/username bisa dipakai lagi
+        \App\Models\User::where('username', $draft->no_pendaftaran)->delete();
+        $draft->delete();
+        $count++;
+    }
+        
+    $this->info("Berhasil menghapus $count draf PSB dan akun terkait yang kedaluwarsa.");
 })->purpose('Membersihkan draf pendaftaran PSB yang sudah lebih dari 30 hari');
 
 // ── SCHEDULER REGISTRATION ──

@@ -269,7 +269,7 @@
             { title: 'Data Peserta Didik / Santri', category: 'Kepesantrenan', url: '/admin/peserta-didik', icon: 'users' },
             { title: 'Data Pegawai & Guru', category: 'Kepegawaian', url: '/admin/pegawai', icon: 'briefcase' },
             { title: 'Pendaftaran Calon Santri (PSB)', category: 'PSB', url: '/admin/calon-santri', icon: 'user-plus' },
-            { title: 'Gelombang PSB', category: 'PSB', url: '/admin/gelombang-psb', icon: 'layers' },
+
             { title: 'Rombongan Belajar (Rombel/Kelas)', category: 'Akademik', url: '/admin/rombel', icon: 'school' },
             { title: 'Mata Pelajaran (Mapel)', category: 'Akademik', url: '/admin/mata-pelajaran', icon: 'book-open' },
             { title: 'Jadwal Pelajaran', category: 'Akademik', url: '/admin/jadwal-pelajaran', icon: 'calendar' },

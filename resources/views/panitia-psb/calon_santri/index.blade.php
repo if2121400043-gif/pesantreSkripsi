@@ -25,16 +25,7 @@
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Nama Pendaftar atau No Registrasi..." 
                        class="w-full pl-10 pr-4 py-2 rounded-lg border border-surface-300 bg-white text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-colors">
             </div>
-            <div class="sm:w-48">
-                <select name="gelombang_id" class="w-full px-4 py-2 rounded-lg border border-surface-300 bg-white text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500" onchange="this.form.submit()">
-                    <option value="">Semua Gelombang</option>
-                    @foreach($gelombangs as $g)
-                        <option value="{{ $g->id }}" {{ request('gelombang_id') == $g->id ? 'selected' : '' }}>
-                            {{ $g->nama }} (T.A {{ $g->tahunPelajaran->nama }})
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+
             <div class="sm:w-40">
                 @php
                     $statusBg = 'bg-white';
@@ -59,7 +50,7 @@
                 </select>
             </div>
             <button type="submit" class="btn-secondary px-4 py-2 hidden sm:block">Cari</button>
-            @if(request()->anyFilled(['search', 'gelombang_id', 'status']))
+            @if(request()->anyFilled(['search', 'status']))
                 <a href="{{ route('panitia-psb.calon-santri.index') }}" class="btn-secondary px-4 py-2 text-danger-600 border-danger-200 hover:bg-danger-50 flex items-center justify-center">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </a>
@@ -74,7 +65,7 @@
                 <tr>
                     <th class="px-6 py-4 font-semibold">Tgl Daftar & No. Reg</th>
                     <th class="px-6 py-4 font-semibold">Nama Pendaftar</th>
-                    <th class="px-6 py-4 font-semibold">Gelombang</th>
+
                     <th class="px-6 py-4 font-semibold text-center">Tujuan Lembaga</th>
                     <th class="px-6 py-4 font-semibold text-center">Status</th>
                     <th class="px-6 py-4 font-semibold text-right">Aksi</th>
@@ -94,10 +85,7 @@
                             @if($cs->asal_sekolah) • Dari: {{ $cs->asal_sekolah }} @endif
                         </div>
                     </td>
-                    <td class="px-6 py-4">
-                        <div class="font-medium text-surface-900">{{ $cs->gelombang->nama }}</div>
-                        <div class="text-xs text-surface-500 mt-0.5">T.A {{ $cs->gelombang->tahunPelajaran->nama }}</div>
-                    </td>
+
                     <td class="px-6 py-4 text-center">
                         <x-badge variant="surface">{{ $cs->lembagaTujuan->singkatan ?? $cs->lembagaTujuan->nama ?? 'Umum/Pesantren' }}</x-badge>
                     </td>
@@ -122,7 +110,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-6 py-12 text-center text-surface-500">
+                    <td colspan="5" class="px-6 py-12 text-center text-surface-500">
                         <div class="flex flex-col items-center justify-center">
                             <i data-lucide="user-x" class="w-12 h-12 text-surface-300 mb-3"></i>
                             <p class="font-medium text-surface-900 mb-1">Belum Ada Pendaftar</p>

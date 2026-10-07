@@ -82,16 +82,8 @@
 
 {{-- Filter --}}
 <div class="bg-white rounded-2xl shadow-sm border border-surface-200 p-6 mb-8 print:hidden">
-    <form action="{{ route('admin.laporan.psb') }}" method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
-        <div class="space-y-1.5">
-            <label class="block text-xs font-bold text-surface-600 uppercase tracking-wider">Gelombang</label>
-            <select name="gelombang_id" class="w-full text-sm rounded-xl border border-surface-300 px-3 py-2 bg-surface-50 focus:bg-white text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
-                <option value="SEMUA">Semua Gelombang</option>
-                @foreach($gelombangs as $g)
-                    <option value="{{ $g->id }}" {{ request('gelombang_id') == $g->id ? 'selected' : '' }}>{{ $g->nama }}</option>
-                @endforeach
-            </select>
-        </div>
+    <form action="{{ route('admin.laporan.psb') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+
         <div class="space-y-1.5">
             <label class="block text-xs font-bold text-surface-600 uppercase tracking-wider">Status</label>
             <select name="status" class="w-full text-sm rounded-xl border border-surface-300 px-3 py-2 bg-surface-50 focus:bg-white text-surface-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
@@ -141,7 +133,7 @@
                     <th class="px-4 py-3">Nama Lengkap</th>
                     <th class="px-4 py-3 text-center">JK</th>
                     <th class="px-4 py-3">Asal Sekolah</th>
-                    <th class="px-4 py-3">Gelombang</th>
+
                     <th class="px-4 py-3">Lembaga Tujuan</th>
                     <th class="px-4 py-3 text-center">Status</th>
                 </tr>
@@ -160,7 +152,7 @@
                         @endif
                     </td>
                     <td class="px-4 py-3 text-xs text-surface-600">{{ $c->asal_sekolah ?? '-' }}</td>
-                    <td class="px-4 py-3 text-xs text-surface-700">{{ $c->gelombang?->nama ?? '-' }}</td>
+
                     <td class="px-4 py-3 text-xs text-surface-700">{{ $c->lembagaTujuan?->nama ?? '-' }}</td>
                     <td class="px-4 py-3 text-center">
                         @php
@@ -179,7 +171,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="8" class="px-6 py-12 text-center text-surface-550">
+                    <td colspan="7" class="px-6 py-12 text-center text-surface-550">
                         <i data-lucide="info" class="w-6 h-6 mx-auto mb-2 text-surface-400"></i>
                         Tidak ada data pendaftar PSB yang ditemukan.
                     </td>

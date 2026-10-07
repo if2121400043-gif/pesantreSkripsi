@@ -5,15 +5,18 @@ $opsiPekerjaan = ['Petani', 'Pedagang/Wiraswasta', 'PNS/ASN', 'TNI/Polri', 'Kary
 $opsiPenghasilan = ['< Rp 1.000.000', 'Rp 1.000.000 - Rp 2.000.000', 'Rp 2.000.000 - Rp 5.000.000', 'Rp 5.000.000 - Rp 10.000.000', '> Rp 10.000.000', 'Tidak Berpenghasilan'];
 $opsiTinggalBersama = ['Orang Tua', 'Wali', 'Pesantren/Asrama', 'Lainnya'];
 $opsiHubunganWali = ['Kakek/Nenek', 'Paman/Bibi', 'Kakak', 'Saudara Lainnya', 'Lainnya'];
-$inputClass = 'w-full rounded-xl border-surface-300 dark:border-surface-700 bg-white dark:bg-surface-800 text-surface-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring focus:ring-primary-500/20 placeholder:text-surface-400 dark:placeholder:text-surface-500 transition-colors';
-$labelClass = 'block text-sm font-semibold text-surface-700 dark:text-surface-300 mb-1.5';
-$sectionHeaderClass = 'text-base font-bold text-surface-900 dark:text-white mb-4 pb-2 border-b border-surface-200 dark:border-surface-800 flex items-center gap-2';
+$inputClass = 'w-full py-3.5 px-4 rounded-xl border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-800 text-surface-900 dark:text-white shadow-inner focus:bg-white dark:focus:bg-surface-900 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 placeholder:text-surface-400 transition-all duration-200 font-medium';
+$labelClass = 'text-xs font-black text-surface-500 dark:text-surface-400 uppercase tracking-widest transition-colors mb-2 block';
+$sectionHeaderClass = 'text-2xl font-black text-surface-900 dark:text-white mb-8 flex items-center gap-3 border-b border-surface-200 dark:border-surface-800 pb-4';
 @endphp
 
 {{-- Tinggal Bersama & Alamat --}}
 <div>
     <h4 class="{{ $sectionHeaderClass }}">
-        <i data-lucide="home" class="w-4 h-4 text-primary-500 dark:text-primary-400"></i> {{ __('Alamat & Tempat Tinggal') }}
+        <div class="w-12 h-12 flex items-center justify-center bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-xl shadow-inner shrink-0">
+            <i data-lucide="home" class="w-6 h-6"></i>
+        </div>
+        {{ __('Alamat & Tempat Tinggal') }}
     </h4>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
@@ -40,7 +43,10 @@ $sectionHeaderClass = 'text-base font-bold text-surface-900 dark:text-white mb-4
 {{-- Data Ayah Kandung --}}
 <div>
     <h4 class="{{ $sectionHeaderClass }}">
-        <i data-lucide="user-round" class="w-4 h-4 text-primary-500 dark:text-primary-400"></i> {{ __('Data Ayah Kandung') }}
+        <div class="w-12 h-12 flex items-center justify-center bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 rounded-xl shadow-inner shrink-0">
+            <i data-lucide="user" class="w-6 h-6"></i>
+        </div>
+        {{ __('Data Ayah Kandung') }}
     </h4>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
@@ -92,7 +98,10 @@ $sectionHeaderClass = 'text-base font-bold text-surface-900 dark:text-white mb-4
 {{-- Data Ibu Kandung --}}
 <div>
     <h4 class="{{ $sectionHeaderClass }}">
-        <i data-lucide="user-round" class="w-4 h-4 text-pink-500 dark:text-pink-400"></i> {{ __('Data Ibu Kandung') }}
+        <div class="w-12 h-12 flex items-center justify-center bg-pink-100 dark:bg-pink-500/20 text-pink-600 dark:text-pink-400 rounded-xl shadow-inner shrink-0">
+            <i data-lucide="user" class="w-6 h-6"></i>
+        </div>
+        {{ __('Data Ibu Kandung') }}
     </h4>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
@@ -144,7 +153,10 @@ $sectionHeaderClass = 'text-base font-bold text-surface-900 dark:text-white mb-4
 {{-- Data Wali (Dinamis) --}}
 <div id="wali-section" style="display: {{ old('tinggal_bersama') == 'Wali' ? 'block' : 'none' }};">
     <h4 class="{{ $sectionHeaderClass }}">
-        <i data-lucide="users" class="w-4 h-4 text-secondary-500 dark:text-secondary-400"></i> {{ __('Data Wali') }}
+        <div class="w-12 h-12 flex items-center justify-center bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 rounded-xl shadow-inner shrink-0">
+            <i data-lucide="users" class="w-6 h-6"></i>
+        </div>
+        {{ __('Data Wali') }}
     </h4>
     <p class="text-sm text-surface-500 dark:text-surface-400 mb-4 -mt-2">{{ __('Diisi jika calon santri tinggal bersama wali (bukan orang tua kandung).') }}</p>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

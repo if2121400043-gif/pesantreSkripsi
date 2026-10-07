@@ -149,7 +149,7 @@ Route::middleware('auth')->group(function () {
         
         // PSB
         Route::prefix('psb')->name('psb.')->group(function () {
-            Route::resource('gelombang', \App\Http\Controllers\Admin\GelombangPsbController::class)->except(['create', 'show', 'edit']);
+
             Route::resource('calon-santri', \App\Http\Controllers\Admin\CalonSantriController::class);
             Route::put('calon-santri/{calon_santri}/verifikasi', [\App\Http\Controllers\Admin\CalonSantriController::class, 'verifikasi'])->name('calon-santri.verifikasi');
             Route::patch('calon-santri/{calon_santri}/dokumen/{dokumen}', [\App\Http\Controllers\Admin\CalonSantriController::class, 'verifikasiDokumen'])->name('calon-santri.verifikasi-dokumen');
@@ -182,6 +182,14 @@ Route::middleware('auth')->group(function () {
         Route::get('api/provinsi/{provinsi}/kabupaten', [\App\Http\Controllers\Admin\OrangController::class, 'getKabupaten']);
         Route::get('api/kabupaten/{kabupaten}/kecamatan', [\App\Http\Controllers\Admin\OrangController::class, 'getKecamatan']);
         Route::get('api/kecamatan/{kecamatan}/desa', [\App\Http\Controllers\Admin\OrangController::class, 'getDesa']);
+    });
+
+    // ── Portal Calon Santri Routes ──
+    Route::middleware('role:CALON_SANTRI')->prefix('portal-calon')->name('portal-calon.')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('portal-calon.dashboard');
+        });
+        Route::get('/dashboard', [\App\Http\Controllers\PortalCalon\PortalCalonController::class, 'dashboard'])->name('dashboard');
     });
 
     // ── Portal Wali Santri Routes ──
@@ -228,8 +236,6 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:PANITIA_PSB')->prefix('panitia-psb')->name('panitia-psb.')->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\PanitiaPsb\DashboardController::class, 'index'])->name('dashboard');
 
-        // Gelombang PSB
-        Route::resource('gelombang', \App\Http\Controllers\PanitiaPsb\GelombangController::class)->except(['create', 'show', 'edit']);
 
         // Calon Santri
         Route::resource('calon-santri', \App\Http\Controllers\PanitiaPsb\CalonSantriController::class);
@@ -288,10 +294,10 @@ Route::controller(FrontendController::class)->group(function () {
     // PSB Public Routes
     Route::prefix('psb')->name('frontend.psb')->group(function () {
         Route::get('/', 'psb');
-        Route::get('/daftar', 'daftar')->name('.daftar');
-        Route::post('/daftar', 'storePsb')->middleware('throttle:5,1')->name('.store');
+        Route::get('/register', 'daftar')->name('.daftar');
+        Route::post('/register', 'storePsb')->middleware('throttle:5,1')->name('.store');
         Route::get('/status', 'status')->name('.status');
-        Route::get('/upload/{no_pendaftaran}', 'uploadBerkas')->name('.upload');
+        Route::get('/sukses/{no_pendaftaran}', 'suksesRegistrasi')->name('.sukses');
         Route::post('/upload/{no_pendaftaran}', 'storeBerkas')->name('.store-berkas');
         Route::get('/selesai/{no_pendaftaran}', 'selesai')->name('.selesai');
     });

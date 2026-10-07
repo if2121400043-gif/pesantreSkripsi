@@ -88,11 +88,6 @@
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200 group-open:rotate-180 text-primary-300"></i>
                 </summary>
                 <div class="pl-4 pr-1 py-1 mt-1 space-y-1 ml-4 border-l border-white/10">
-                    <a href="{{ url('/admin/psb/gelombang') }}"
-                       class="nav-sub-item {{ request()->is('admin/psb/gelombang*') ? 'active' : '' }}">
-                        <i data-lucide="door-open" class="nav-icon"></i>
-                        <span>Gelombang PSB</span>
-                    </a>
                     <a href="{{ url('/admin/psb/calon-santri') }}"
                        class="nav-sub-item {{ request()->is('admin/psb/calon-santri*') ? 'active' : '' }}">
                         <i data-lucide="user-plus" class="nav-icon"></i>
@@ -444,12 +439,6 @@
             </a>
 
             <div class="nav-section sidebar-text">Penerimaan Santri Baru</div>
-            
-            <a href="{{ url('/panitia-psb/gelombang') }}"
-               class="nav-item {{ request()->is('panitia-psb/gelombang*') ? 'active' : '' }}">
-                <i data-lucide="door-open" class="nav-icon"></i>
-                <span class="sidebar-text">Gelombang PSB</span>
-            </a>
             
             <a href="{{ url('/panitia-psb/calon-santri') }}"
                class="nav-item {{ request()->is('panitia-psb/calon-santri*') ? 'active' : '' }}">

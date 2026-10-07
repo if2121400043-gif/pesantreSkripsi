@@ -118,7 +118,7 @@
                     <i data-lucide="clipboard-list" class="w-6 h-6 text-sky-600 group-hover:text-white transition-colors"></i>
                 </div>
                 <h3 class="text-lg font-extrabold text-surface-900 group-hover:text-sky-700 transition-colors">Laporan PSB</h3>
-                <p class="text-xs text-surface-500 mt-2 leading-relaxed">Statistik penerimaan santri baru per gelombang, status, gender & lembaga tujuan.</p>
+                <p class="text-xs text-surface-500 mt-2 leading-relaxed">Statistik penerimaan santri baru berdasarkan status, gender & lembaga tujuan.</p>
                 <div class="mt-4 flex items-center gap-1.5 text-xs font-bold text-sky-600 group-hover:text-sky-700">
                     <span>Buka Laporan</span>
                     <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>

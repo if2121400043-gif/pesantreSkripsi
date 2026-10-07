@@ -14,12 +14,12 @@
 @endphp
 
 <div class="alert alert-{{ $type }}" role="alert" x-data="{ show: true }" x-show="show" x-transition>
-    <i data-lucide="{{ $icons[$type] ?? 'info' }}" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+    <i data-lucide="{{ $icons[$type] ?? 'info' }}" class="w-5 h-5 shrink-0 mt-0.5"></i>
     <div class="flex-1">
         {{ $message }}{{ $slot }}
     </div>
     @if($dismissible)
-        <button @click="show = false" class="flex-shrink-0 opacity-60 hover:opacity-100 transition-opacity" aria-label="Tutup">
+        <button @click="show = false" class="shrink-0 opacity-60 hover:opacity-100 transition-opacity" aria-label="Tutup">
             <i data-lucide="x" class="w-4 h-4"></i>
         </button>
     @endif

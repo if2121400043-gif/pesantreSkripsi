@@ -13,7 +13,7 @@ class CalonSantri extends Model
     protected $table = 'calon_santri';
     
     protected $fillable = [
-        'gelombang_id', 'no_pendaftaran', 'nama_lengkap', 'jenis_kelamin',
+        'no_pendaftaran', 'nama_lengkap', 'jenis_kelamin',
         'tempat_lahir', 'tanggal_lahir', 'nik', 'no_kk', 'asal_sekolah', 'nisn',
         // Data Ayah
         'nama_ayah', 'nik_ayah', 'tahun_lahir_ayah', 'pendidikan_ayah',
@@ -44,7 +44,7 @@ class CalonSantri extends Model
         static::creating(function ($calon) {
             // Otomatis generate nomor pendaftaran jika kosong
             if (empty($calon->no_pendaftaran)) {
-                $calon->no_pendaftaran = self::generateNoPendaftaran($calon->gelombang_id);
+                $calon->no_pendaftaran = self::generateNoPendaftaran();
             }
             
             // Set status default jika kosong
@@ -115,22 +115,22 @@ class CalonSantri extends Model
     // ──────────────────────────────────────
 
     // 
-    public static function generateNoPendaftaran($gelombangId)
+    public static function generateNoPendaftaran()
     {
-        $tahun = date('Y'); // Mengambil tahun saat ini
+        $prefix = 'PSB-';
+        $random = strtoupper(Str::random(8));
+        $noPendaftaran = $prefix . $random;
         
-        // Menghitung jumlah pendaftar di gelombang tersebut, lalu ditambah 1
-        $count = self::where('gelombang_id', $gelombangId)->count() + 1;
-        
-        // Menghasilkan format: PSB-2026-0001
-        return 'PSB-' . $tahun . '-' . str_pad($count, 4, '0', STR_PAD_LEFT);
+        while (self::where('no_pendaftaran', $noPendaftaran)->exists()) {
+            $random = strtoupper(Str::random(8));
+            $noPendaftaran = $prefix . $random;
+        }
+
+        return $noPendaftaran;
     }
     // ──────────────────────────
 
-    public function gelombang(): BelongsTo
-    {
-        return $this->belongsTo(GelombangPsb::class, 'gelombang_id');
-    }
+    // ──────────────────────────
 
     public function lembagaTujuan(): BelongsTo
     {

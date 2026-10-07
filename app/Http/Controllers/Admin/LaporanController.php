@@ -8,7 +8,7 @@ use App\Models\Attendance;
 use App\Models\CatatanPelanggaran;
 use App\Models\CatatanPrestasi;
 use App\Models\CalonSantri;
-use App\Models\GelombangPsb;
+
 use App\Models\TahunPelajaran;
 use App\Models\Lembaga;
 use App\Models\Rombel;
@@ -408,14 +408,10 @@ class LaporanController extends Controller
     // =========================================================================
     public function psb(Request $request)
     {
-        $gelombangs = GelombangPsb::orderBy('created_at', 'desc')->get();
         $lembagas   = Lembaga::orderBy('urutan')->get();
 
-        $query = CalonSantri::with(['gelombang', 'lembagaTujuan']);
+        $query = CalonSantri::with(['lembagaTujuan']);
 
-        if ($request->filled('gelombang_id') && $request->gelombang_id !== 'SEMUA') {
-            $query->where('gelombang_id', $request->gelombang_id);
-        }
         if ($request->filled('status') && $request->status !== 'SEMUA') {
             $query->where('status', $request->status);
         }
@@ -436,7 +432,7 @@ class LaporanController extends Controller
         $putriCount     = $calonSantris->where('jenis_kelamin', 'P')->count();
 
         return view('admin.laporan.psb', compact(
-            'calonSantris', 'gelombangs', 'lembagas',
+            'calonSantris', 'lembagas',
             'totalPendaftar', 'totalDiterima', 'totalDitolak', 'totalMenunggu',
             'putraCount', 'putriCount'
         ));
@@ -444,11 +440,7 @@ class LaporanController extends Controller
 
     public function exportPsb(Request $request)
     {
-        $query = CalonSantri::with(['gelombang', 'lembagaTujuan']);
-
-        if ($request->filled('gelombang_id') && $request->gelombang_id !== 'SEMUA') {
-            $query->where('gelombang_id', $request->gelombang_id);
-        }
+        $query = CalonSantri::with(['lembagaTujuan']);
         if ($request->filled('status') && $request->status !== 'SEMUA') {
             $query->where('status', $request->status);
         }

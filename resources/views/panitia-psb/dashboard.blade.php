@@ -87,22 +87,6 @@
                 </div>
             </a>
 
-            {{-- Card 2: Kelola Gelombang PSB --}}
-            <a href="{{ route('panitia-psb.gelombang.index') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-indigo-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
-                <div class="absolute -right-8 -top-8 w-28 h-28 bg-indigo-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
-                <div class="relative z-10">
-                    <div class="w-14 h-14 rounded-2xl text-white flex items-center justify-center shadow-md mb-4 group-hover:rotate-6 transition-transform" style="background: linear-gradient(135deg, #4f46e5, #3730a3) !important;">
-                        <i data-lucide="door-open" class="w-7 h-7" style="color: #ffffff !important;"></i>
-                    </div>
-                    <h3 class="text-base font-extrabold text-surface-900 group-hover:text-indigo-700 transition-colors">Gelombang Pendaftaran</h3>
-                    <p class="text-xs text-surface-500 mt-1 leading-relaxed">Atur kuota pendaftaran, jadwal tes, serta tanggal buka dan tutup gelombang.</p>
-                </div>
-                <div class="mt-6 pt-3 border-t border-surface-100 flex items-center justify-between text-xs font-bold text-indigo-700">
-                    <span>Atur Gelombang</span>
-                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
-                </div>
-            </a>
-
             {{-- Card 3: Cetak & Rekap Data --}}
             <a href="{{ route('panitia-psb.calon-santri.index') }}" class="group bg-white rounded-3xl p-5 border border-surface-200 shadow-sm hover:shadow-xl hover:border-amber-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
                 <div class="absolute -right-8 -top-8 w-28 h-28 bg-amber-100/50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
@@ -123,47 +107,7 @@
     </div>
 
     {{-- Tables Grid --}}
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        
-        {{-- Gelombang Aktif --}}
-        <div class="bg-white rounded-3xl p-6 border border-surface-200 shadow-sm">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="font-bold text-surface-900 text-base flex items-center gap-2">
-                    <i data-lucide="door-open" class="w-5 h-5 text-purple-700"></i>
-                    Gelombang Pendaftaran Aktif
-                </h3>
-            </div>
-
-            <div class="divide-y divide-surface-100">
-                @forelse($gelombangsAktif as $gel)
-                    <div class="py-3.5 first:pt-0 last:pb-0">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <div class="font-extrabold text-surface-900 text-sm">{{ $gel->nama }}</div>
-                                <div class="text-xs text-surface-500 mt-0.5">
-                                    {{ \Carbon\Carbon::parse($gel->tanggal_buka)->format('d M Y') }} — {{ \Carbon\Carbon::parse($gel->tanggal_tutup)->format('d M Y') }}
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-sm font-extrabold text-purple-700">{{ $gel->calon_santri_count }}</div>
-                                <div class="text-[0.65rem] text-surface-450">/ {{ $gel->kuota }} kuota</div>
-                            </div>
-                        </div>
-                        @php
-                            $persen = $gel->kuota > 0 ? min(($gel->calon_santri_count / $gel->kuota) * 100, 100) : 0;
-                        @endphp
-                        <div class="w-full h-2 bg-surface-100 rounded-full mt-2.5 overflow-hidden">
-                            <div class="{{ $persen >= 100 ? 'bg-danger-500' : 'bg-purple-600' }} h-full rounded-full transition-all" style="width: {{ $persen }}%"></div>
-                        </div>
-                    </div>
-                @empty
-                    <div class="py-8 text-center text-surface-500">
-                        <i data-lucide="door-open" class="w-8 h-8 text-surface-300 mx-auto mb-2"></i>
-                        <p class="text-xs">Belum ada gelombang aktif saat ini.</p>
-                    </div>
-                @endforelse
-            </div>
-        </div>
+    <div class="grid grid-cols-1 gap-6">
 
         {{-- Pendaftar Terbaru --}}
         <div class="bg-white rounded-3xl p-6 border border-surface-200 shadow-sm">

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\PanitiaPsb;
 
 use App\Http\Controllers\Controller;
 use App\Models\CalonSantri;
-use App\Models\GelombangPsb;
 use App\Models\Lembaga;
 use App\Models\Orang;
 use App\Models\PesertaDidik;
@@ -17,12 +16,8 @@ class CalonSantriController extends Controller
 {
     public function index(Request $request)
     {
-        $query = CalonSantri::with(['gelombang', 'lembagaTujuan']);
+        $query = CalonSantri::with(['lembagaTujuan']);
 
-        if ($request->filled('gelombang_id')) {
-            $query->where('gelombang_id', $request->gelombang_id);
-        }
-        
         if ($request->filled('status')) {
             $query->where(function ($statusQuery) use ($request) {
                 $statusQuery->where('status', $request->status)
@@ -39,25 +34,20 @@ class CalonSantriController extends Controller
         }
 
         $calonSantris = $query->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
-        $gelombangs = GelombangPsb::orderBy('tanggal_buka', 'desc')->get();
 
-        return view('panitia-psb.calon_santri.index', compact('calonSantris', 'gelombangs'));
+        return view('panitia-psb.calon_santri.index', compact('calonSantris'));
     }
 
     public function create()
     {
-        $gelombangs = GelombangPsb::where('is_active', true)
-            ->where('tanggal_tutup', '>=', now()->toDateString())
-            ->get();
         $lembagas = Lembaga::where('is_active', true)->get();
         
-        return view('panitia-psb.calon_santri.create', compact('gelombangs', 'lembagas'));
+        return view('panitia-psb.calon_santri.create', compact('lembagas'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'gelombang_id' => 'required|exists:gelombang_psb,id',
             'nama_lengkap' => 'required|string|max:200',
             'jenis_kelamin' => 'required|in:L,P',
             'tempat_lahir' => 'nullable|string|max:100',

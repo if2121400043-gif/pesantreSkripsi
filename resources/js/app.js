@@ -3,6 +3,22 @@
 // All UI interactions are handled via addEventListener (no inline onclick)
 // ============================================================
 
+import { createIcons, icons } from 'lucide';
+
+// Initialize Lucide icons on page load and after AJAX
+function initializeIcons() {
+    try {
+        createIcons({ icons });
+    } catch (error) {
+        console.error('Error initializing Lucide icons:', error);
+    }
+}
+
+// Re-initialize icons when content is dynamically added
+const observer = new MutationObserver(() => {
+    initializeIcons();
+});
+
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebar-overlay');
@@ -138,10 +154,16 @@ window.addEventListener('resize', function() {
 
 // ── Attach all event listeners on DOM ready ──
 document.addEventListener('DOMContentLoaded', function() {
-    // Re-create Lucide icons (for dynamically loaded content)
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
+    // Initialize Lucide icons
+    initializeIcons();
+
+    // Watch for dynamic content and re-initialize icons
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: false,
+        characterData: false
+    });
 
     // Hamburger menu button
     const toggleSidebarBtn = document.getElementById('btn-toggle-sidebar');

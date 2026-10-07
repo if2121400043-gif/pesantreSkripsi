@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Pesantren;
 use App\Models\Berita;
-use App\Models\GelombangPsb;
 use App\Models\TahunPelajaran;
 use App\Models\CalonSantri;
 use App\Models\Orang;
@@ -16,6 +15,10 @@ use App\Models\Pegawai;
 use App\Models\Lembaga;
 use App\Models\DokumenPsb;
 use App\Models\Media;
+use App\Models\User;
+use App\Models\Role;
+use App\Models\UserRole;
+use Illuminate\Support\Facades\Hash;
 use App\Jobs\SendWhatsAppMessage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
@@ -28,21 +31,14 @@ class FrontendController extends Controller
     public function index()
     {
         $pesantren = Pesantren::first();
-        
+
         // Cek status Pendaftaran Santri Baru (PSB)
         $tahunAktif = TahunPelajaran::where('is_active', true)->first();
-        $isPsbBuka = false;
-        if ($tahunAktif) {
-            $isPsbBuka = GelombangPsb::where('tahun_pelajaran_id', $tahunAktif->id)
-                ->where('is_active', true)
-                ->whereDate('tanggal_buka', '<=', now())
-                ->whereDate('tanggal_tutup', '>=', now())
-                ->exists();
-        }
-        
+        $isPsbBuka = true; // Set always open or manage via setting if needed
+
         $totalSantri = PesertaDidik::where('status', 'AKTIF')->count();
         $totalPegawai = Pegawai::where('is_active', true)->count();
-        
+
         $totalRombel = Rombel::whereHas('tahunPelajaran', function($q) {
             $q->where('is_active', true);
         })->count();
@@ -61,10 +57,10 @@ class FrontendController extends Controller
             ->orderBy('published_at', 'desc')
             ->take(5)
             ->get();
-            
+
         $lembagas = Lembaga::where('is_active', true)->orderBy('urutan')->get();
 
-        return view('frontend.home', compact('pesantren', 'totalSantri', 'totalPegawai', 'totalRombel', 'berita_terbaru', 'pengumuman_terbaru', 'lembagas', 'isPsbBuka'));
+        return view('frontend.home', compact('pesantren', 'berita_terbaru', 'pengumuman_terbaru', 'lembagas', 'isPsbBuka'));
     }
 
     // ── Halaman Profil Pesantren ──
@@ -107,7 +103,7 @@ class FrontendController extends Controller
             ->orderBy('published_at', 'desc')
             ->paginate(4, ['*'], 'pengumuman_page')
             ->withQueryString();
-            
+
         return view('frontend.berita.index', compact('pesantren', 'beritas', 'pengumumans'));
     }
 
@@ -118,9 +114,9 @@ class FrontendController extends Controller
         $berita = Berita::where('slug', $slug)
             ->where('is_published', true)
             ->firstOrFail();
-            
+
         $berita->increment('view_count');
-            
+
         $beritaLainnya = Berita::where('is_published', true)
             ->where('id', '!=', $berita->id)
             ->orderBy('published_at', 'desc')
@@ -135,17 +131,9 @@ class FrontendController extends Controller
     {
         $pesantren = Pesantren::first();
         $tahunAktif = TahunPelajaran::where('is_active', true)->first();
-        
-        $gelombangsAktif = collect();
-        if ($tahunAktif) {
-            $gelombangsAktif = GelombangPsb::where('tahun_pelajaran_id', $tahunAktif->id)
-                ->where('is_active', true)
-                ->whereDate('tanggal_buka', '<=', now())
-                ->whereDate('tanggal_tutup', '>=', now())
-                ->get();
-        }
 
-        return view('frontend.psb.landing', compact('pesantren', 'tahunAktif', 'gelombangsAktif'));
+        $gelombangsAktif = collect();
+        return view('frontend.psb.landing', compact('pesantren', 'tahunAktif'));
     }
 
     // ── Halaman Form Pendaftaran PSB ──
@@ -153,27 +141,6 @@ class FrontendController extends Controller
     {
         $pesantren = Pesantren::first();
         $tahunAktif = TahunPelajaran::where('is_active', true)->first();
-        
-        $gelombangAktif = null;
-        if ($tahunAktif) {
-            $query = GelombangPsb::where('tahun_pelajaran_id', $tahunAktif->id)
-                ->where('is_active', true)
-                ->whereDate('tanggal_buka', '<=', now())
-                ->whereDate('tanggal_tutup', '>=', now());
-                
-            if ($request->has('gelombang_id')) {
-                $gelombangAktif = clone $query;
-                $gelombangAktif = $gelombangAktif->where('id', $request->gelombang_id)->first();
-            }
-            
-            if (!$gelombangAktif) {
-                $gelombangAktif = $query->first();
-            }
-        }
-
-        if (!$gelombangAktif) {
-            return redirect()->route('frontend.psb')->with('error', 'Pendaftaran saat ini sedang ditutup.');
-        }
 
         $captcha_num1 = random_int(10, 99);
         $captcha_num2 = random_int(10, 99);
@@ -182,7 +149,7 @@ class FrontendController extends Controller
 
         $lembagas = Lembaga::where('is_active', true)->orderBy('urutan')->get();
 
-        return view('frontend.psb.daftar', compact('pesantren', 'tahunAktif', 'gelombangAktif', 'captcha_num1', 'captcha_num2', 'lembagas'));
+        return view('frontend.psb.register', compact('pesantren', 'tahunAktif', 'captcha_num1', 'captcha_num2', 'lembagas'));
     }
 
     // ── KODE YANG DIUBAH (PERBAIKAN LOGIKA) ──
@@ -209,7 +176,8 @@ class FrontendController extends Controller
         }
 
         $validated = $request->validate([
-            'gelombang_id' => 'required|exists:gelombang_psb,id',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|confirmed',
             'nik' => 'required|digits:16|unique:calon_santri,nik|unique:orang,nik',
             'kk' => 'required|digits:16',
             'nama_lengkap' => 'required|string|max:255',
@@ -256,20 +224,6 @@ class FrontendController extends Controller
 
         try {
             $calonSantri = DB::transaction(function () use ($validated) {
-                $gelombang = GelombangPsb::whereKey($validated['gelombang_id'])
-                    ->where('is_active', true)
-                    ->whereDate('tanggal_buka', '<=', today())
-                    ->whereDate('tanggal_tutup', '>=', today())
-                    ->lockForUpdate()
-                    ->first();
-
-                if (!$gelombang) {
-                    throw new \RuntimeException('Pendaftaran untuk gelombang ini sudah ditutup.');
-                }
-
-                if ($gelombang->kuota > 0 && $gelombang->pendaftar()->count() >= $gelombang->kuota) {
-                    throw new \RuntimeException('Kuota pendaftaran untuk gelombang ini sudah penuh.');
-                }
 
                 if (
                     CalonSantri::where('nik', $validated['nik'])->lockForUpdate()->exists()
@@ -280,10 +234,29 @@ class FrontendController extends Controller
 
                 $data = $validated;
                 $data['no_kk'] = $data['kk'] ?? null;
-                unset($data['kk']);
+                unset($data['kk'], $data['email'], $data['password'], $data['password_confirmation']);
                 $data['status_workflow'] = 'DRAFT';
 
-                return CalonSantri::create($data);
+                $calonSantri = CalonSantri::create($data);
+
+                $user = User::create([
+                    'username' => $calonSantri->no_pendaftaran,
+                    'email' => $validated['email'],
+                    'password' => Hash::make($validated['password']),
+                    'is_active' => true,
+                ]);
+
+                $calonRole = Role::where('nama', 'CALON_SANTRI')->first();
+                if ($calonRole) {
+                    UserRole::create([
+                        'user_id' => $user->id,
+                        'role_id' => $calonRole->id,
+                        'is_active' => true,
+                        'is_default' => true,
+                    ]);
+                }
+
+                return $calonSantri;
             });
             session()->forget(['captcha_answer', 'captcha_created_at']);
 
@@ -296,8 +269,8 @@ class FrontendController extends Controller
                 ]);
             }
 
-            return redirect()->route('frontend.psb.upload', ['no_pendaftaran' => $calonSantri->no_pendaftaran])
-                ->with('success', 'Formulir berhasil disimpan. Silakan lanjutkan dengan mengunggah berkas persyaratan.');
+            return redirect()->route('frontend.psb.sukses', ['no_pendaftaran' => $calonSantri->no_pendaftaran])
+                ->with('success', 'Formulir berhasil disimpan. Silakan login menggunakan Nomer Registrasi Anda.');
 
         } catch (\RuntimeException $e) {
             return back()->with('error', $e->getMessage())->withInput();
@@ -308,13 +281,13 @@ class FrontendController extends Controller
     }
     // ───────────────────────────────────────
 
-    // ── Halaman Form Upload Berkas ──
-    public function uploadBerkas($no_pendaftaran)
+    // ── Halaman Sukses Pendaftaran ──
+    public function suksesRegistrasi($no_pendaftaran)
     {
         $pesantren = Pesantren::first();
         $calonSantri = CalonSantri::where('no_pendaftaran', $no_pendaftaran)->firstOrFail();
-        
-        return view('frontend.psb.upload', compact('pesantren', 'calonSantri'));
+
+        return view('frontend.psb.sukses', compact('pesantren', 'calonSantri'));
     }
 
     // ── Proses Menyimpan Berkas yang Diupload ──
@@ -401,10 +374,10 @@ class FrontendController extends Controller
     public function selesai($no_pendaftaran)
     {
         $pesantren = Pesantren::first();
-        
+
         // Dihapus relasi ->with('orang') karena CalonSantri saat ini belum terhubung dengan tabel Orang
         $calonSantri = CalonSantri::where('no_pendaftaran', $no_pendaftaran)->firstOrFail();
-        
+
         return view('frontend.psb.selesai', compact('pesantren', 'calonSantri'));
     }
 
@@ -412,7 +385,7 @@ class FrontendController extends Controller
     public function media(Request $request)
     {
         $pesantren = Pesantren::first();
-        
+
         $query = Media::where('is_active', true);
 
         if ($request->has('kategori') && $request->kategori != '') {
@@ -420,7 +393,7 @@ class FrontendController extends Controller
         }
 
         $medias = $query->orderBy('created_at', 'desc')->paginate(12);
-        
+
         // Ambil kategori unik untuk filter
         $categories = Media::where('is_active', true)
             ->whereNotNull('kategori')

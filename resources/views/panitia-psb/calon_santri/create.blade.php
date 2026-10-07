@@ -24,18 +24,6 @@
             <x-card title="Data Pendaftaran">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-surface-700 mb-1">Pilih Gelombang <span class="text-danger-500">*</span></label>
-                        <select name="gelombang_id" required class="w-full rounded-lg border border-surface-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
-                            <option value="" disabled selected>Pilih Gelombang Aktif...</option>
-                            @foreach($gelombangs as $g)
-                                <option value="{{ $g->id }}">{{ $g->nama }} (T.A {{ $g->tahunPelajaran->nama }})</option>
-                            @endforeach
-                        </select>
-                        @if($gelombangs->isEmpty())
-                            <p class="text-xs text-danger-500 mt-1">Belum ada gelombang PSB yang aktif. Silakan buka gelombang terlebih dahulu.</p>
-                        @endif
-                    </div>
-                    <div>
                         <label class="block text-sm font-medium text-surface-700 mb-1">Tujuan Pendidikan <span class="text-danger-500">*</span></label>
                         <select name="lembaga_tujuan_id" required class="w-full rounded-lg border border-surface-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
                             <option value="" disabled selected>Pilih Lembaga Tujuan...</option>
@@ -186,7 +174,7 @@
 
             <div class="flex justify-end gap-3 pt-4 border-t border-surface-200">
                 <a href="{{ route('panitia-psb.calon-santri.index') }}" class="btn-secondary">Batal</a>
-                <button type="submit" class="btn-primary" {{ $gelombangs->isEmpty() ? 'disabled' : '' }}>
+                <button type="submit" class="btn-primary">
                     <i data-lucide="save" class="w-4 h-4"></i> Simpan Pendaftaran
                 </button>
             </div>

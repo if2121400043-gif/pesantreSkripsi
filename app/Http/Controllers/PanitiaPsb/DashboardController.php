@@ -4,7 +4,6 @@ namespace App\Http\Controllers\PanitiaPsb;
 
 use App\Http\Controllers\Controller;
 use App\Models\CalonSantri;
-use App\Models\GelombangPsb;
 use App\Models\TahunPelajaran;
 use Illuminate\Http\Request;
 
@@ -22,18 +21,8 @@ class DashboardController extends Controller
         $tidakLulus = CalonSantri::where('status', 'TIDAK_LULUS')->count();
         $dibatalkan = CalonSantri::where('status', 'DIBATALKAN')->count();
 
-        // Gelombang aktif saat ini
-        $gelombangsAktif = collect();
-        if ($tahunAktif) {
-            $gelombangsAktif = GelombangPsb::withCount('calonSantri')
-                ->where('tahun_pelajaran_id', $tahunAktif->id)
-                ->where('is_active', true)
-                ->orderBy('tanggal_buka', 'desc')
-                ->get();
-        }
-
         // Pendaftar terbaru
-        $pendaftarTerbaru = CalonSantri::with(['gelombang', 'lembagaTujuan'])
+        $pendaftarTerbaru = CalonSantri::with(['lembagaTujuan'])
             ->orderBy('created_at', 'desc')
             ->limit(10)
             ->get();
@@ -46,7 +35,6 @@ class DashboardController extends Controller
             'diterima',
             'tidakLulus',
             'dibatalkan',
-            'gelombangsAktif',
             'pendaftarTerbaru'
         ));
     }

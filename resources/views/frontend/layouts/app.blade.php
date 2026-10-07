@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', __('Beranda')) — {{ $pesantren?->nama ?? 'Pesantren' }}</title>
     <meta name="description" content="@yield('meta_description', ($pesantren?->nama ?? 'Pesantren') . ' — ' . __('Lembaga Pendidikan Islam'))">
-    
+
     {{-- PWA Meta Tags --}}
     <meta name="theme-color" content="#1e3a5f">
     <meta name="application-name" content="PP Nurul Furqon">
@@ -25,7 +25,6 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- Dark Mode Script (Prevent FOUC) -->
     <script>
@@ -41,20 +40,24 @@
 
         /* Navbar glass - works for both light and dark mode */
         .navbar-glass {
-            background: linear-gradient(to right, rgba(30, 58, 95, 0.95), rgba(43, 76, 126, 0.95)); /* Navy blue gradient */
+            background: linear-gradient(110deg, #162f52 0%, #1e3a5f 48%, #315b91 100%) !important;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
         html.dark .navbar-glass {
-            background: linear-gradient(to right, rgba(15, 23, 42, 0.95), rgba(30, 58, 95, 0.95)); /* Darker navy gradient */
+            background: linear-gradient(110deg, #0f172a 0%, #162f52 52%, #1e3a5f 100%) !important;
         }
-        .navbar-scrolled {
-            box-shadow: 0 4px 20px -2px rgba(0,0,0,0.05);
+        .navbar-register-button {
+            background:
+                radial-gradient(circle at 88% 12%, rgba(255, 244, 194, 0.24), transparent 28%),
+                linear-gradient(118deg, #7b5315 0%, #b98122 38%, #d6a63c 68%, #a86f1b 100%) !important;
+            color: #fff8e7 !important;
+            text-transform: uppercase;
         }
-        html.dark .navbar-scrolled {
-            box-shadow: 0 4px 20px -2px rgba(0,0,0,0.5);
+        .navbar-register-button:hover {
+            filter: brightness(1.08);
         }
-        
+
         /* Language Dropdown Animation */
         #langDropdown {
             transition: all 0.2s ease-in-out;
@@ -84,13 +87,14 @@
 </head>
 <body class="bg-surface-50 text-surface-900 dark:bg-surface-950 dark:text-surface-200 antialiased transition-colors duration-300 selection:bg-primary-500 selection:text-white overflow-x-hidden">
 
+    @if(empty($hideNavbar))
     {{-- ═══════════ NAVBAR ═══════════ --}}
     <nav class="fixed top-0 inset-x-0 z-50 navbar-glass border-b border-surface-200/50 dark:border-surface-800/80 transition-all duration-300" id="mainNavbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-[80px]">
+            <div class="flex items-center justify-between h-20">
 
                 {{-- Logo --}}
-                <a href="{{ route('frontend.home') }}" class="flex items-center gap-3 flex-shrink-0 group">
+                <a href="{{ route('frontend.home') }}" class="flex items-center gap-3 shrink-0 group">
                     <img src="{{ asset('images/logo-pesantren.webp') }}?v={{ time() }}" alt="Logo" class="w-12 h-12 object-contain bg-white rounded-2xl shadow-lg shadow-primary-500/30 p-0.5 group-hover:shadow-primary-500/50 transition-all duration-300 transform group-hover:-translate-y-0.5">
                     <div class="hidden sm:block leading-tight">
                         <span class="block font-extrabold text-white text-[17px] tracking-tight uppercase">{{ $pesantren?->nama ?? 'Pondok Pesantren Nurul Furqon' }}</span>
@@ -101,29 +105,28 @@
                 {{-- Desktop Menu --}}
                 <div class="hidden lg:flex items-center gap-2">
                     <a href="{{ route('frontend.home') }}" class="px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-300 {{ request()->routeIs('frontend.home') ? 'text-white bg-white/20' : 'text-primary-100 hover:text-white hover:bg-white/10' }}">{{ __('Beranda') }}</a>
-                    
+
                     <a href="{{ route('frontend.profil') }}" class="px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-300 {{ request()->routeIs('frontend.profil') ? 'text-white bg-white/20' : 'text-primary-100 hover:text-white hover:bg-white/10' }}">{{ __('Tentang Kami') }}</a>
-                    
+
                     <a href="{{ route('frontend.publikasi') }}" class="px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-300 {{ request()->routeIs('frontend.publikasi*') || request()->routeIs('frontend.berita*') ? 'text-white bg-white/20' : 'text-primary-100 hover:text-white hover:bg-white/10' }}">{{ __('Publikasi') }}</a>
-                    
+
                     <a href="#" class="px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-300 text-primary-100 hover:text-white hover:bg-white/10">{{ __('Kurikulum') }}</a>
                 </div>
 
                 {{-- Action Area (Theme, Lang, CTA) --}}
                 <div class="hidden lg:flex items-center gap-3">
-                    <a href="/psb" class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-400 hover:to-secondary-500 text-surface-900 text-sm font-bold rounded-xl shadow-lg shadow-secondary-500/25 hover:shadow-secondary-500/40 transition-all duration-300 hover:-translate-y-0.5 border border-secondary-400">
-                        <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                    <a href="/psb" class="navbar-register-button inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold rounded-xl shadow-lg shadow-secondary-500/25 hover:shadow-secondary-500/40 transition-all duration-300 hover:-translate-y-0.5 border border-secondary-400">
+                        <x-icon name="graduation-cap" size="w-4 h-4" />
                         {{ __('Pendaftaran Santri Baru') }}
                     </a>
 
                     <div class="h-6 w-px bg-white/20 mx-1"></div>
-
                     {{-- Language Switcher --}}
                     <div class="relative">
                         <button id="langBtn" class="flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-primary-100 hover:text-white rounded-xl hover:bg-white/10 transition-colors">
-                            <i data-lucide="globe" class="w-4 h-4"></i>
+                            <x-icon name="globe" size="w-4 h-4" />
                             <span>{{ strtoupper(app()->getLocale()) }}</span>
-                            <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                            <x-icon name="chevron-down" size="w-3 h-3" />
                         </button>
                         {{-- Dropdown --}}
                         <div id="langDropdown" class="absolute right-0 mt-2 w-32 bg-white dark:bg-surface-900 rounded-xl shadow-dropdown border border-surface-100 dark:border-surface-800 opacity-0 invisible transform scale-95 z-50">
@@ -139,8 +142,8 @@
                 <div class="flex items-center gap-2 lg:hidden">
 
                     <button id="mobileMenuBtn" class="p-2 text-primary-100 hover:text-white rounded-xl hover:bg-white/10 transition-colors">
-                        <i data-lucide="menu" class="w-6 h-6" id="menuIconOpen"></i>
-                        <i data-lucide="x" class="w-6 h-6 hidden" id="menuIconClose"></i>
+                        <x-icon name="menu" size="w-6 h-6" class="block" id="menuIconOpen" />
+                        <x-icon name="x" size="w-6 h-6 hidden" id="menuIconClose" />
                     </button>
                 </div>
             </div>
@@ -153,7 +156,7 @@
                 <a href="{{ route('frontend.profil') }}" class="block px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('frontend.profil') ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400' : 'text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800' }}">{{ __('Tentang Kami') }}</a>
                 <a href="{{ route('frontend.publikasi') }}" class="block px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('frontend.publikasi*') || request()->routeIs('frontend.berita*') ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400' : 'text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800' }}">{{ __('Publikasi') }}</a>
                 <a href="#" class="block px-4 py-3 rounded-xl text-sm font-bold text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800">{{ __('Kurikulum') }}</a>
-                
+
                 <div class="pt-2 flex justify-between items-center px-4">
                     <span class="text-xs font-bold text-surface-500 uppercase">Bahasa / Language</span>
                     <div class="flex gap-2">
@@ -171,21 +174,23 @@
                     @else
                         <a href="/login" class="block w-full text-center px-4 py-3 border border-surface-200 dark:border-surface-800 text-surface-700 dark:text-surface-300 font-bold rounded-xl">{{ __('Masuk') }}</a>
                     @endauth
-                    <a href="/psb" class="block w-full text-center px-4 py-3.5 bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-bold rounded-xl shadow-lg shadow-primary-600/20">{{ __('Pendaftaran Santri Baru') }}</a>
+                    <a href="/psb" class="navbar-register-button block w-full text-center px-4 py-3.5 font-bold rounded-xl shadow-lg shadow-secondary-500/20">{{ __('Pendaftaran Santri Baru') }}</a>
                 </div>
             </div>
         </div>
     </nav>
+    @endif
 
     {{-- ═══════════ MAIN ═══════════ --}}
-    <main class="mobile-safe pt-[80px] min-h-screen">
+    <main class="mobile-safe @if(empty($hideNavbar)) pt-[80px] @endif min-h-screen">
         @yield('content')
     </main>
 
+    @if(empty($hideFooter))
     {{-- ═══════════ FOOTER ═══════════ --}}
     <footer class="footer-gold relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+            <div class="grid pt-20-1 md:grid-cols-3 gap-8 lg:gap-12">
                 {{-- Col 1: Deskripsi --}}
                 <div class="flex flex-col items-center md:items-start text-center md:text-left">
                     <div class="flex items-center gap-3 mb-6">
@@ -204,23 +209,23 @@
                         @if($pesantren?->alamat)
                         <li class="flex items-start justify-center md:justify-start gap-3 group">
                             <div class="w-8 h-8 rounded-full bg-surface-900 flex items-center justify-center flex-shrink-0 group-hover:bg-primary-900 transition-colors text-primary-400">
-                                <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                <x-icon name="map-pin" size="w-4 h-4" />
                             </div>
                             <span class="pt-1.5">{{ $pesantren->alamat }}</span>
                         </li>
                         @endif
                         @if($pesantren?->telepon)
                         <li class="flex items-center justify-center md:justify-start gap-3 group">
-                            <div class="w-8 h-8 rounded-full bg-surface-900 flex items-center justify-center flex-shrink-0 group-hover:bg-primary-900 transition-colors text-primary-400">
-                                <i data-lucide="phone" class="w-4 h-4"></i>
+                            <div class="w-8 h-8 rounded-full bg-surface-900 flex items-center justify-center shrink-0 group-hover:bg-primary-900 transition-colors text-primary-400">
+                                <x-icon name="phone" size="w-4 h-4" />
                             </div>
                             <span>{{ $pesantren->telepon }}</span>
                         </li>
                         @endif
                         @if($pesantren?->email)
                         <li class="flex items-center justify-center md:justify-start gap-3 group">
-                            <div class="w-8 h-8 rounded-full bg-surface-900 flex items-center justify-center flex-shrink-0 group-hover:bg-primary-900 transition-colors text-primary-400">
-                                <i data-lucide="mail" class="w-4 h-4"></i>
+                            <div class="w-8 h-8 rounded-full bg-surface-900 flex items-center justify-center shrink-0 group-hover:bg-primary-900 transition-colors text-primary-400">
+                                <x-icon name="mail" size="w-4 h-4" />
                             </div>
                             <span>{{ $pesantren->email }}</span>
                         </li>
@@ -237,11 +242,11 @@
                                 $userRedirect = auth()->user()->active_role->role->redirect_url ?? '/portal/beranda';
                             @endphp
                             <a href="{{ url($userRedirect) }}" class="inline-flex w-full items-center justify-center gap-2 px-4 py-3 bg-primary-600 hover:bg-primary-500 text-white text-sm font-bold rounded-xl transition-all duration-300 shadow-lg shadow-primary-600/20 hover:-translate-y-0.5">
-                                <i data-lucide="layout-dashboard" class="w-4 h-4"></i> {{ __('Dashboard Saya') }}
+                                <x-icon name="layout-dashboard" size="w-4 h-4" /> {{ __('Dashboard Saya') }}
                             </a>
                         @else
                             <a href="/login" class="inline-flex w-full items-center justify-center gap-2 px-4 py-3 bg-surface-800 hover:bg-surface-700 text-white text-sm font-bold rounded-xl transition-all duration-300 border border-surface-700 hover:border-surface-600 shadow-sm hover:-translate-y-0.5">
-                                <i data-lucide="log-in" class="w-4 h-4"></i> {{ __('Masuk ke Portal') }}
+                                <x-icon name="log-in" size="w-4 h-4" /> {{ __('Masuk ke Portal') }}
                             </a>
                         @endauth
                     </div>
@@ -254,22 +259,19 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row justify-between items-center text-xs font-medium text-surface-500">
                 <p>&copy; {{ date('Y') }} <span class="text-surface-300 uppercase">{{ $pesantren?->nama ?? 'Pondok Pesantren Nurul Furqon' }}</span>. {{ __('All rights reserved.') }}</p>
                 <p class="mt-2 md:mt-0 flex items-center gap-1.5">
-                    {{ __('Sistem Manajemen Pesantren') }} <i data-lucide="sparkles" class="w-3 h-3 text-accent-500"></i>
+                    {{ __('Sistem Manajemen Pesantren') }} <x-icon name="sparkles" size="w-3 h-3" class="text-accent-500" />
                 </p>
             </div>
         </div>
     </footer>
+    @endif
 
     <script>
-        // Init icons
-        lucide.createIcons();
-
         // Mobile menu toggle
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         const menuIconOpen = document.getElementById('menuIconOpen');
         const menuIconClose = document.getElementById('menuIconClose');
-
         mobileMenuBtn.addEventListener('click', () => {
             const isHidden = mobileMenu.classList.toggle('hidden');
             menuIconOpen.classList.toggle('hidden', !isHidden);
@@ -309,10 +311,10 @@
         }
 
         // Dark Mode Logic
-        var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-        var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-        var themeToggleDarkIconMobile = document.getElementById('theme-toggle-dark-icon-mobile');
-        var themeToggleLightIconMobile = document.getElementById('theme-toggle-light-icon-mobile');
+        let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        let themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        let themeToggleDarkIconMobile = document.getElementById('theme-toggle-dark-icon-mobile');
+        let themeToggleLightIconMobile = document.getElementById('theme-toggle-light-icon-mobile');
 
         // Change the icons inside the button based on previous settings
         function updateIcons() {
@@ -357,8 +359,8 @@
             }
         }
 
-        var themeToggleBtn = document.getElementById('theme-toggle');
-        var themeToggleBtnMobile = document.getElementById('theme-toggle-mobile');
+        let themeToggleBtn = document.getElementById('theme-toggle');
+        let themeToggleBtnMobile = document.getElementById('theme-toggle-mobile');
 
         if(themeToggleBtn) {
             themeToggleBtn.addEventListener('click', toggleTheme);
